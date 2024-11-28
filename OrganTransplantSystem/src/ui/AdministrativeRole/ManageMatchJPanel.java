@@ -5,8 +5,8 @@
 package ui.AdministrativeRole;
 
 import Business.Employee.Employee;
-import Business.Enterprise.Enterprise;
-import Business.Organization.Organization;
+import model.Enterprise.Enterprise;
+import model.Organization.Organization;
 import Business.Role.Role;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
