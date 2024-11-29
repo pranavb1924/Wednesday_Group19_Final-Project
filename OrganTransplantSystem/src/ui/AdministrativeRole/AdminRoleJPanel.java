@@ -6,7 +6,10 @@ package ui.AdministrativeRole;
 
 import java.awt.CardLayout;
 import javax.swing.*;
-
+import ui.DonorManagement.DonorRegistrationWorkArea;
+import ui.HospitalManagement.ViewHospitalJPanel;
+import model.HospitalManagement.*;
+import java.sql.*;
 /**
  *
  * @author pranavb
@@ -18,8 +21,13 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
      */
     
     JPanel userProcessContainer = new JPanel();
-    public AdminRoleJPanel() {
+    HospitalDirectory hospitalDirectory = new HospitalDirectory();
+    Connection connection;
+    public AdminRoleJPanel(JPanel userProcessContainer, HospitalDirectory hospitalDirectory, Connection connection) {
         initComponents();
+        this.userProcessContainer = userProcessContainer;
+        this.hospitalDirectory = hospitalDirectory;
+        this.connection = connection;
     }
 
     /**
@@ -32,11 +40,12 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnDonorManagement = new javax.swing.JButton();
+        btnManageHospitals = new javax.swing.JButton();
+        btnTransplantList = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(22, 29, 29));
+        setForeground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(1200, 830));
         setMinimumSize(new java.awt.Dimension(1200, 830));
 
@@ -44,33 +53,33 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("MY WORK AREA -ADMINISTRATIVE ROLE");
 
-        jButton1.setBackground(new java.awt.Color(111, 147, 146));
-        jButton1.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("MANAGE DONOR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnDonorManagement.setBackground(new java.awt.Color(111, 147, 146));
+        btnDonorManagement.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btnDonorManagement.setForeground(new java.awt.Color(255, 255, 255));
+        btnDonorManagement.setText("DONOR MANAGEMENT");
+        btnDonorManagement.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnDonorManagementActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(111, 147, 146));
-        jButton2.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("MANAGE HOSPITAL");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnManageHospitals.setBackground(new java.awt.Color(111, 147, 146));
+        btnManageHospitals.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btnManageHospitals.setForeground(new java.awt.Color(255, 255, 255));
+        btnManageHospitals.setText("MANAGE HOSPITAL");
+        btnManageHospitals.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnManageHospitalsActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(111, 147, 146));
-        jButton3.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("MANAGE RECIPIENT");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnTransplantList.setBackground(new java.awt.Color(111, 147, 146));
+        btnTransplantList.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btnTransplantList.setForeground(new java.awt.Color(255, 255, 255));
+        btnTransplantList.setText("TransplantList");
+        btnTransplantList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnTransplantListActionPerformed(evt);
             }
         });
 
@@ -78,18 +87,21 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(384, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(387, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(384, 384, 384))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(384, 384, 384))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnDonorManagement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnManageHospitals, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnTransplantList, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(373, 373, 373))))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnDonorManagement, btnManageHospitals});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,40 +109,43 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
                 .addGap(101, 101, 101)
                 .addComponent(jLabel1)
                 .addGap(78, 78, 78)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnManageHospitals, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(442, Short.MAX_VALUE))
+                .addComponent(btnDonorManagement, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(btnTransplantList, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(439, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnDonorManagement, btnManageHospitals});
 
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnTransplantListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransplantListActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnTransplantListActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnManageHospitalsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageHospitalsActionPerformed
         // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        userProcessContainer.remove(this);
+        ViewHospitalJPanel viewHospitalJPanel = new ViewHospitalJPanel(this.userProcessContainer, this.hospitalDirectory, this.connection);
+        userProcessContainer.add("ViewHospitalJPanel", viewHospitalJPanel);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        layout.previous(userProcessContainer);
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+        layout.next(userProcessContainer);
+    }//GEN-LAST:event_btnManageHospitalsActionPerformed
+
+    private void btnDonorManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDonorManagementActionPerformed
+        // TODO add your handling code here:
+        DonorDetailJPanel donorDetailJPanel = new DonorDetailJPanel();
+        userProcessContainer.add("DonorDetailJPanel", donorDetailJPanel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
+    }//GEN-LAST:event_btnDonorManagementActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnDonorManagement;
+    private javax.swing.JButton btnManageHospitals;
+    private javax.swing.JButton btnTransplantList;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

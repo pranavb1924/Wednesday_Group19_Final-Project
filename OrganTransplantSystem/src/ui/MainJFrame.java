@@ -15,6 +15,8 @@ import java.awt.Image;
 import javax.swing.JPanel;
 import ui.DonorManagement.*;
 import ui.AdministrativeRole.*;
+import model.HospitalManagement.*;
+import ui.HospitalManagement.*;
 
 /**
  *
@@ -29,18 +31,25 @@ public class MainJFrame extends javax.swing.JFrame {
     
     User currentUser = new User();
     UserDirectory userDirectory = new UserDirectory();
+    HospitalDirectory hospitalDirectory = new HospitalDirectory();
+    DoctorDirectory doctorDirectory = new DoctorDirectory();
     JPanel userProcessContainer = new JPanel();
+    String currentUserRole;
+    Connection currentConnection;
 
     public MainJFrame() {
         initComponents();
         setSize(1200, 900);         // Set fixed size
-setResizable(false);       // Prevent resizing
-setMinimumSize(new java.awt.Dimension(1200, 900)); // Enforce minimum size
-setMaximumSize(new java.awt.Dimension(1200, 900)); // Enforce maximum size
-setPreferredSize(new java.awt.Dimension(1200, 900)); // Optional for layout managers
-this.userProcessContainer.setLayout(new CardLayout());
-
+        setResizable(false);       // Prevent resizing
+        setMinimumSize(new java.awt.Dimension(1200, 900)); // Enforce minimum size
+        setMaximumSize(new java.awt.Dimension(1200, 900)); // Enforce maximum size
+        setPreferredSize(new java.awt.Dimension(1200, 900)); // Optional for layout managers
+        this.userProcessContainer.setLayout(new CardLayout());
         this.setContainerBackground("src/images/bg.png");
+        this.currentConnection = connectToDatabase();
+        this.createUser();
+        this.loadHospitals();
+        this.loadDoctors();
         //fetchAndDisplayUsers();
     }
 
@@ -58,17 +67,16 @@ this.userProcessContainer.setLayout(new CardLayout());
         loginJButton = new javax.swing.JButton();
         userNameJTextField = new javax.swing.JTextField();
         passwordField = new javax.swing.JPasswordField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblPassword = new javax.swing.JLabel();
+        lblUserName = new javax.swing.JLabel();
         loginJLabel = new javax.swing.JLabel();
-        loginJButton1 = new javax.swing.JButton();
+        btnRegisterDonor = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
         container = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("GROUP 19 ");
-        setMaximumSize(new java.awt.Dimension(600, 570));
         setMinimumSize(new java.awt.Dimension(600, 570));
-        setPreferredSize(new java.awt.Dimension(600, 570));
         setResizable(false);
         setSize(new java.awt.Dimension(600, 570));
         getContentPane().setLayout(new java.awt.CardLayout());
@@ -91,21 +99,31 @@ this.userProcessContainer.setLayout(new CardLayout());
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("PASSWORD");
+        lblPassword.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        lblPassword.setForeground(new java.awt.Color(255, 255, 255));
+        lblPassword.setText("PASSWORD");
 
-        jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("USER NAME");
+        lblUserName.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        lblUserName.setForeground(new java.awt.Color(255, 255, 255));
+        lblUserName.setText("USER NAME");
 
-        loginJButton1.setBackground(new java.awt.Color(22, 29, 29));
-        loginJButton1.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        loginJButton1.setForeground(new java.awt.Color(255, 255, 255));
-        loginJButton1.setText("REGISTER");
-        loginJButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnRegisterDonor.setBackground(new java.awt.Color(22, 29, 29));
+        btnRegisterDonor.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btnRegisterDonor.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegisterDonor.setText("REGISTER");
+        btnRegisterDonor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loginJButton1ActionPerformed(evt);
+                btnRegisterDonorActionPerformed(evt);
+            }
+        });
+
+        btnBack.setBackground(new java.awt.Color(41, 28, 28));
+        btnBack.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(255, 255, 255));
+        btnBack.setText("HOME");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
             }
         });
 
@@ -116,45 +134,50 @@ this.userProcessContainer.setLayout(new CardLayout());
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(124, 124, 124)
-                        .addComponent(loginJLabel)
-                        .addGap(313, 313, 313))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(205, 205, 205)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(userNameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6)))
+                        .addGap(104, 104, 104)
+                        .addComponent(loginJLabel))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(35, 35, 35)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblPassword)
+                    .addComponent(lblUserName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(userNameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
                 .addComponent(loginJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(loginJButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(395, Short.MAX_VALUE))
+                .addComponent(btnRegisterDonor, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(415, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(loginJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnRegisterDonor, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(12, 12, 12))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lblUserName)
+                                .addComponent(userNameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lblPassword)
+                                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(loginJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(loginJButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(userNameJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addComponent(loginJLabel)
-                .addContainerGap(3, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
@@ -172,85 +195,47 @@ this.userProcessContainer.setLayout(new CardLayout());
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginJButtonActionPerformed
-        // Get user name
+
         String userName = userNameJTextField.getText();
-        // Get Password
         char[] passwordCharArray = passwordField.getPassword();
         String password = String.valueOf(passwordCharArray);
 
         if (authenticateUser(userName, password)){
             JOptionPane.showMessageDialog(this, "Login Successful", "Error", JOptionPane.INFORMATION_MESSAGE);
-            
-            AdminRoleJPanel AdminRoleJPanel = new AdminRoleJPanel();
-        container.add("AdminRoleJPanel", AdminRoleJPanel);
+        
+        
+        JPanel profilePanel = this.loadProfile();
+        container.add("profilePanel", profilePanel);
         CardLayout layout = (CardLayout) container.getLayout();
         layout.next(container);
+        this.setComponentsVisibility(false);
             
 
         }
-
-        //        Step1: Check in the system admin user account directory if you have the user
-        //        UserAccount userAccount=system.getUserAccountDirectory().authenticateUser(userName, password);
-        //
-        //        Enterprise inEnterprise=null;
-        //        Organization inOrganization=null;
-        //
-        //        if(userAccount==null){
-            //            //Step 2: Go inside each network and check each enterprise
-            //            for(Network network:system.getNetworkList()){
-                //                //Step 2.a: check against each enterprise
-                //                for(Enterprise enterprise:network.getEnterpriseDirectory().getEnterpriseList()){
-                    //                    userAccount=enterprise.getUserAccountDirectory().authenticateUser(userName, password);
-                    //                    if(userAccount==null){
-                        //                       //Step 3:check against each organization for each enterprise
-                        //                       for(Organization organization:enterprise.getOrganizationDirectory().getOrganizationList()){
-                            //                           userAccount=organization.getUserAccountDirectory().authenticateUser(userName, password);
-                            //                           if(userAccount!=null){
-                                //                               inEnterprise=enterprise;
-                                //                               inOrganization=organization;
-                                //                               break;
-                                //                           }
-                            //                       }
-                        //
-                        //                    }
-                    //                    else{
-                        //                       inEnterprise=enterprise;
-                        //                       break;
-                        //                    }
-                    //                    if(inOrganization!=null){
-                        //                        break;
-                        //                    }
-                    //                }
-                //                if(inEnterprise!=null){
-                    //                    break;
-                    //                }
-                //            }
-            //        }
-        //
-        //        if(userAccount==null){
-            //            JOptionPane.showMessageDialog(null, "Invalid credentials");
-            //            return;
-            //        }
-        //        else{
-            //            CardLayout layout=(CardLayout)container.getLayout();
-            //            container.add("workArea",userAccount.getRole().createWorkArea(container, userAccount, inOrganization, inEnterprise, system));
-            //            layout.next(container);
-            //        }
-        //
-        //        loginJButton.setEnabled(false);
-        //        logoutJButton.setEnabled(true);
-        //        userNameJTextField.setEnabled(false);
-        //        passwordField.setEnabled(false);
     }//GEN-LAST:event_loginJButtonActionPerformed
 
-    private void loginJButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginJButton1ActionPerformed
+    private void btnRegisterDonorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterDonorActionPerformed
         // TODO add your handling code here:
         
         DonorRegistrationWorkArea donorRegistrationWorkArea = new DonorRegistrationWorkArea();
         container.add("DonorRegistrationWorkArea", donorRegistrationWorkArea);
         CardLayout layout = (CardLayout) container.getLayout();
         layout.next(container);
-    }//GEN-LAST:event_loginJButton1ActionPerformed
+        this.setComponentsVisibility(false);
+    }//GEN-LAST:event_btnRegisterDonorActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        
+        this.setComponentsVisibility(true);
+        
+
+        container.add("container", container);
+        CardLayout layout = (CardLayout) container.getLayout();
+        layout.next(container);
+        this.setComponentsVisibility(false);
+        
+    }//GEN-LAST:event_btnBackActionPerformed
 
     /**
      *
@@ -306,28 +291,98 @@ this.userProcessContainer.setLayout(new CardLayout());
         //JOptionPane.showMessageDialog(this, "Failed to connect to the database.", "Error", JOptionPane.ERROR_MESSAGE);
         return null;
     }
-}
+    }
     
     private boolean authenticateUser(String username, String password) {
-    Connection conn = connectToDatabase();
-    if (conn != null) {
+
+        for (User u: this.userDirectory.getUserList()){
+            if (u.getUsername().equalsIgnoreCase(username) && u.getPassword().equals(password)){
+                this.currentUser = u;
+                this.currentUserRole = u.getRole();
+                return true;
+            }
+        }
+   
+    return false;
+    }
+    
+    public void createUser(){
+        
+        Connection connection = connectToDatabase();
+        
         try {
-            String query = "SELECT * FROM user WHERE username = '"+username+"' AND password = '"+password+"'"; // Query to fetch all users
-            PreparedStatement stmt = conn.prepareStatement(query);  
+            String query = "SELECT * FROM user"; // Query to fetch all users
+            PreparedStatement stmt = connection.prepareStatement(query); 
             ResultSet resultSet = stmt.executeQuery();
+ 
             while (resultSet.next()) {
                 String userName= resultSet.getString("username");
-                String passWord = resultSet.getString("password");              
-                return !(userName.isBlank() || passWord.isBlank());
+                String passWord = resultSet.getString("password");
+                String email = resultSet.getString("email");
+                String role = resultSet.getString("Role");
+                String id = resultSet.getString("ReferenceId");
+                User user = new User();
+                user.setUsername(userName);
+                user.setEmail(email);
+                user.setPassword(passWord);
+                user.setId(id);
+                String getRoles = "SELECT * FROM Roles where RoleId = '"+role+"'";
+                PreparedStatement stmt2 = connection.prepareCall(getRoles);
+                ResultSet roleResultSet = stmt2.executeQuery();
+                while (roleResultSet.next()){
+                    String userRole = roleResultSet.getString("Role");
+                    user.setRole(userRole);
+                    this.userDirectory.AddUser(user);
+                }
+
             }
-            conn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            connection.close();
+        } 
+        catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error fetching user data.", "Error", JOptionPane.ERROR_MESSAGE);
-        }             
+        }        
     }
-    return false;
-}
+    
+    private JPanel loadProfile(){
+        
+            switch (this.currentUserRole.toUpperCase()) {
+                case "UNOS ADMIN":
+                    AdminRoleJPanel adminRoleJPanel = new AdminRoleJPanel(container, this.hospitalDirectory, this.currentConnection);
+                    return adminRoleJPanel;
+                    // Add logic for admin role
+                case "HOSPITAL ADMIN":
+                    Hospital currentHospital = this.hospitalDirectory.findHospitalByAdminId(this.currentUser.getId());
+                    HospitalAdminRoleJPanel hospitalAdminRoleJPanel = new HospitalAdminRoleJPanel(container, this.hospitalDirectory, this.doctorDirectory, this.currentConnection, currentHospital, this.currentUser);
+                    return hospitalAdminRoleJPanel;
+
+                case "VIEWER":
+                    System.out.println("Welcome, Viewer! You have read-only access.");
+                    // Add logic for viewer role
+                    break;
+                case "GUEST":
+                    System.out.println("Welcome, Guest! Limited access granted.");
+                    // Add logic for guest role
+                    break;
+                default:
+                    System.out.println("Unrecognized role. Access denied.");
+                    // Handle unrecognized role
+                    break;
+                }
+            return null;
+
+    }
+    
+    public void setComponentsVisibility(boolean isVisible) {
+        loginJButton.setVisible(isVisible);
+        userNameJTextField.setVisible(isVisible);
+        passwordField.setVisible(isVisible);
+        lblPassword.setVisible(isVisible);
+        lblUserName.setVisible(isVisible);
+        loginJLabel.setVisible(isVisible);
+        btnRegisterDonor.setVisible(isVisible);
+        btnBack.setVisible(!isVisible);
+    }
+
     
     private void setContainerBackground(String imagePath) {
     try {
@@ -351,18 +406,90 @@ this.userProcessContainer.setLayout(new CardLayout());
         javax.swing.JOptionPane.showMessageDialog(this, "Failed to load background image.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 }
+    
+    private void loadHospitals(){
+        Connection connection = connectToDatabase();
+        
+        try {
+            String query = "SELECT * FROM Hospitals"; // Query to fetch all users
+            PreparedStatement stmt = connection.prepareStatement(query); 
+            ResultSet resultSet = stmt.executeQuery();
+            
+            while(resultSet.next()){
+                String id = resultSet.getString("HospitalID");
+                String name = resultSet.getString("Name");
+                String address = resultSet.getString("Address");
+                String city = resultSet.getString("City");
+                String state = resultSet.getString("State");
+                String phone = resultSet.getString("Phone");
+                String adminId = resultSet.getString("AdminId") == null ? "" : resultSet.getString("AdminId");
+                
+                Hospital hospital = new Hospital();
+                hospital.setId(id);
+                hospital.setAddress(address);
+                hospital.setCity(city);
+                hospital.setName(name);
+                hospital.setPhone(phone);
+                hospital.setState(state);
+                hospital.setAdminId(adminId);
+                
+                
+                this.hospitalDirectory.addHospital(hospital);
+                        
+            }
+            connection.close();
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error fetching user data.", "Error", JOptionPane.ERROR_MESSAGE);
+        }        
+        
+    }
+    
+        private void loadDoctors(){
+        Connection connection = connectToDatabase();
+        
+        try {
+            String query = "SELECT * FROM Doctors"; // Query to fetch all users
+            PreparedStatement stmt = connection.prepareStatement(query); 
+            ResultSet resultSet = stmt.executeQuery();
+            
+            while(resultSet.next()){
+                String id = resultSet.getString("DoctorID");
+                String name = resultSet.getString("Name");
+                String specialization = resultSet.getString("Specialization");
+                String hospitalId = resultSet.getString("HospitalID");
+                String phone = resultSet.getString("Phone");
+
+                
+                Doctor doctor = new Doctor();
+                doctor.setDoctorId(id);
+                doctor.setHospitalId(hospitalId);
+                doctor.setName(name);
+                doctor.setSpecialization(specialization);
+                doctor.setPhone(phone);
+                
+                this.doctorDirectory.addNewDoctor(doctor);
+                        
+            }
+            connection.close();
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error fetching user data.", "Error", JOptionPane.ERROR_MESSAGE);
+        }        
+        
+    }
 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnRegisterDonor;
     private javax.swing.JPanel container;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JLabel lblPassword;
+    private javax.swing.JLabel lblUserName;
     private javax.swing.JButton loginJButton;
-    private javax.swing.JButton loginJButton1;
     private javax.swing.JLabel loginJLabel;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JTextField userNameJTextField;
