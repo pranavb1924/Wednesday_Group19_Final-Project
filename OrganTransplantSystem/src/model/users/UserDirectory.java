@@ -51,6 +51,14 @@ public class UserDirectory {
         return null;
     }
     
+    public void AddUser(User u){
+        if (this.userList == null){
+            this.userList = new ArrayList<User>();
+        }
+        
+        this.userList.add(u);
+    }
+    
     public boolean authenticateUser(){
         
        return false;

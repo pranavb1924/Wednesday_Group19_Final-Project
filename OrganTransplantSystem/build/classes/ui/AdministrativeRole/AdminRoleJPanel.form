@@ -5,6 +5,9 @@
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="1d" green="1d" red="16" type="rgb"/>
     </Property>
+    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+    </Property>
     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[1200, 830]"/>
     </Property>
@@ -27,17 +30,22 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="384" max="32767" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace pref="387" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jButton2" linkSize="1" min="-2" pref="498" max="-2" attributes="0"/>
-                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                      <Component id="jButton3" alignment="1" min="-2" pref="498" max="-2" attributes="0"/>
-                      <Component id="jButton1" linkSize="1" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="384" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="btnDonorManagement" linkSize="1" max="32767" attributes="0"/>
+                          <Component id="btnManageHospitals" linkSize="1" min="-2" pref="498" max="-2" attributes="0"/>
+                          <Component id="btnTransplantList" alignment="1" min="-2" pref="498" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="373" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="384" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -47,12 +55,12 @@
               <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
-              <Component id="jButton2" linkSize="2" min="-2" pref="61" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-              <Component id="jButton1" linkSize="2" min="-2" pref="61" max="-2" attributes="0"/>
+              <Component id="btnManageHospitals" linkSize="2" min="-2" pref="61" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-              <Component id="jButton3" min="-2" pref="61" max="-2" attributes="0"/>
-              <EmptySpace pref="442" max="32767" attributes="0"/>
+              <Component id="btnDonorManagement" linkSize="2" min="-2" pref="61" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+              <Component id="btnTransplantList" min="-2" pref="61" max="-2" attributes="0"/>
+              <EmptySpace pref="439" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -69,7 +77,7 @@
         <Property name="text" type="java.lang.String" value="MY WORK AREA -ADMINISTRATIVE ROLE"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="btnDonorManagement">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="92" green="93" red="6f" type="rgb"/>
@@ -80,13 +88,13 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="MANAGE DONOR"/>
+        <Property name="text" type="java.lang.String" value="DONOR MANAGEMENT"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDonorManagementActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="btnManageHospitals">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="92" green="93" red="6f" type="rgb"/>
@@ -100,10 +108,10 @@
         <Property name="text" type="java.lang.String" value="MANAGE HOSPITAL"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnManageHospitalsActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton3">
+    <Component class="javax.swing.JButton" name="btnTransplantList">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="92" green="93" red="6f" type="rgb"/>
@@ -114,10 +122,10 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="MANAGE RECIPIENT"/>
+        <Property name="text" type="java.lang.String" value="TransplantList"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTransplantListActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
