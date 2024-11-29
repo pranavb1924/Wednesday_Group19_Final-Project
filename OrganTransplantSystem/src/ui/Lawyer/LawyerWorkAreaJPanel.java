@@ -215,7 +215,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
             } 
         } catch (SQLException e) { 
             e.printStackTrace(); 
-            JOptionPane.showMessageDialog(this, "无法加载律师详情", "错误", JOptionPane.ERROR_MESSAGE); 
+            JOptionPane.showMessageDialog(this, "Error getting data", "Error", JOptionPane.ERROR_MESSAGE); 
         } 
          }
 }
