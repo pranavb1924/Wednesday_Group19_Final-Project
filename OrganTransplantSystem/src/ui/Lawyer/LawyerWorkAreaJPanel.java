@@ -5,12 +5,14 @@
 package ui.Lawyer;
 
 import DatabaseConn.DatabaseConnection;
+import java.awt.CardLayout;
 import java.sql.Connection;
 import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement; 
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import java.sql.SQLException;
+import javax.swing.JPanel;
 
 /**
  *
@@ -19,14 +21,17 @@ import java.sql.SQLException;
 public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
 
     private Connection connection;
+    JPanel userProcessContainer;
     /**
      * Creates new form LawyerWorkAreaJPanel
      */
-    public LawyerWorkAreaJPanel() {
+    public LawyerWorkAreaJPanel(JPanel userProcessContainer) {
         initComponents();
         
         connection = DatabaseConnection.getConnection();
+        this.userProcessContainer= userProcessContainer;
         populateLawyerTable();
+        populateCaseTable();
     }
 
     /**
@@ -46,6 +51,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         BtnDismiss = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblLawyerDetail = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(108, 172, 157));
 
@@ -59,20 +65,20 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
 
         tblCaseDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Hospital ID", "Category", "Donor ID", "Status", "Recipient ID", "Status"
+                "Category", "Donor ID", "Organ Condition", "Recipient ID", "Medical Urgency", "Transplant Date", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -124,60 +130,84 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tblLawyerDetail);
 
+        jButton1.setText("Refresh");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(btnBack))
+                        .addComponent(btnApprove)
+                        .addGap(27, 27, 27)
+                        .addComponent(BtnDismiss, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
+                        .addComponent(btnUpload)
+                        .addGap(32, 32, 32))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1))))
-                .addGap(110, 160, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(96, 96, 96)
-                .addComponent(btnApprove)
-                .addGap(18, 18, 18)
-                .addComponent(BtnDismiss, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnUpload)
-                .addGap(46, 46, 46))
+                        .addComponent(btnBack)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(btnBack)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(163, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnUpload)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnApprove)
-                                .addComponent(BtnDismiss)))
-                        .addGap(104, 104, 104))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBack)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnUpload)
+                    .addComponent(btnApprove)
+                    .addComponent(BtnDismiss))
+                .addGap(104, 104, 104))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
+        userProcessContainer.remove(this);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.previous(userProcessContainer);
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnApproveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApproveActionPerformed
         // TODO add your handling code here:
+        int selectedRow = tblCaseDetail.getSelectedRow();
+        
+        if (selectedRow < 0){
+            return;
+        }
+        
+        LawyerWorkRequest request = (LawyerWorkRequest)tblCaseDetail.getValueAt(selectedRow, 0);
+     
+        request.setStatus("Processing");
+        
+        ProcessWorkRequestJPanel processWorkRequestJPanel = new ProcessWorkRequestJPanel(userProcessContainer, request);
+        userProcessContainer.add("processWorkRequestJPanel", processWorkRequestJPanel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnApproveActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        populateLawyerTable();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -185,6 +215,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnApprove;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnUpload;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblCaseDetail;
@@ -215,8 +246,51 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
             } 
         } catch (SQLException e) { 
             e.printStackTrace(); 
-            JOptionPane.showMessageDialog(this, "Error getting data", "Error", JOptionPane.ERROR_MESSAGE); 
+            JOptionPane.showMessageDialog(this, "Error getting Lawyer data", "Error", JOptionPane.ERROR_MESSAGE); 
+        } 
+         }
+    }
+    
+    public void populateCaseTable(){
+        DefaultTableModel model = (DefaultTableModel) tblCaseDetail.getModel();
+        
+        model.setRowCount(0); 
+        if (connection != null) {
+             String query = "Select o.OrganType, t.DonorID, d.OrganCondition, t.RecipientID, r.MedicalUrgency, t.TransplantDate\n" +
+            "from Transplants t\n" +
+            "Join Organs o ON o.OrganID = t.OrganID\n" +
+            "Join Recipients r ON t.RecipientID= r.RecipientID\n" +
+            "Join DonorOrgans d ON t.DonorID= d.DonorID; "; 
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query); 
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) { 
+                String OrganType = resultSet.getString("OrganType"); 
+                String DonorID = resultSet.getString("DonorID"); 
+                String OrganCondition = resultSet.getString("OrganCondition");
+                String RecipientID = resultSet.getString("RecipientID"); 
+                String MedicalUrgency = resultSet.getString("MedicalUrgency"); 
+                String TransplantDate = resultSet.getString("TransplantDate"); 
+                
+                Object[] row = new Object[6];
+                row[0] = OrganType;
+                row[1] = DonorID;
+                row[2] = OrganCondition;
+                row[3] = RecipientID;
+                row[4] = MedicalUrgency;
+                row[5] = TransplantDate;
+                
+            
+            model.addRow(row);
+            } 
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            JOptionPane.showMessageDialog(this, "Error getting Case data", "Error", JOptionPane.ERROR_MESSAGE); 
         } 
          }
 }
+    
+    
+    
+    
 }
