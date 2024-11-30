@@ -18,7 +18,7 @@ public class DatabaseConnection {
     private static final String PASSWORD = ""; 
     private static Connection connection = null;
 
-    public Connection getConnection() { 
+    public static Connection getConnection() { 
         if (connection == null) { 
             try { 
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
