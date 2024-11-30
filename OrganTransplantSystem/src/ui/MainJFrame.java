@@ -355,10 +355,11 @@ public class MainJFrame extends javax.swing.JFrame {
                     HospitalAdminRoleJPanel hospitalAdminRoleJPanel = new HospitalAdminRoleJPanel(container, this.hospitalDirectory, this.doctorDirectory, this.currentConnection, currentHospital, this.currentUser);
                     return hospitalAdminRoleJPanel;
 
-                case "VIEWER":
-                    System.out.println("Welcome, Viewer! You have read-only access.");
-                    // Add logic for viewer role
-                    break;
+                case "COORDINATOR":
+                    Hospital currentCoordinatorHospital = this.hospitalDirectory.findHospitalByAdminId(this.currentUser.getId());
+                    TransplantCoordinatorJPanel transplantCoordinatorJPanel = new TransplantCoordinatorJPanel();
+                    return transplantCoordinatorJPanel;             
+                    
                 case "GUEST":
                     System.out.println("Welcome, Guest! Limited access granted.");
                     // Add logic for guest role

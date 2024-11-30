@@ -70,7 +70,7 @@ public class ViewHospitalJPanel extends javax.swing.JPanel {
         setMinimumSize(new java.awt.Dimension(1200, 830));
 
         tblHospital.setBackground(new java.awt.Color(22, 29, 29));
-        tblHospital.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        tblHospital.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         tblHospital.setForeground(new java.awt.Color(255, 255, 255));
         tblHospital.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
