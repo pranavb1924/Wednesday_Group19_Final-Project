@@ -43,6 +43,7 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         btnDonorManagement = new javax.swing.JButton();
         btnManageHospitals = new javax.swing.JButton();
         btnTransplantList = new javax.swing.JButton();
+        btnTransplantList1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(22, 29, 29));
         setForeground(new java.awt.Color(255, 255, 255));
@@ -83,6 +84,16 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnTransplantList1.setBackground(new java.awt.Color(111, 147, 146));
+        btnTransplantList1.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btnTransplantList1.setForeground(new java.awt.Color(255, 255, 255));
+        btnTransplantList1.setText("WORK QUEUE");
+        btnTransplantList1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTransplantList1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -97,7 +108,8 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnDonorManagement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnManageHospitals, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnTransplantList, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnTransplantList, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnTransplantList1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(373, 373, 373))))
         );
 
@@ -114,7 +126,9 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
                 .addComponent(btnDonorManagement, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(btnTransplantList, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(439, Short.MAX_VALUE))
+                .addGap(32, 32, 32)
+                .addComponent(btnTransplantList1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(346, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnDonorManagement, btnManageHospitals});
@@ -135,17 +149,22 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
 
     private void btnDonorManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDonorManagementActionPerformed
         // TODO add your handling code here:
-        DonorDetailJPanel donorDetailJPanel = new DonorDetailJPanel();
-        userProcessContainer.add("DonorDetailJPanel", donorDetailJPanel);
+        DonorRequestJPanel donorRequestJPanel = new DonorRequestJPanel();
+        userProcessContainer.add("DonorRequestJPanel", donorRequestJPanel);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
     }//GEN-LAST:event_btnDonorManagementActionPerformed
+
+    private void btnTransplantList1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransplantList1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnTransplantList1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDonorManagement;
     private javax.swing.JButton btnManageHospitals;
     private javax.swing.JButton btnTransplantList;
+    private javax.swing.JButton btnTransplantList1;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

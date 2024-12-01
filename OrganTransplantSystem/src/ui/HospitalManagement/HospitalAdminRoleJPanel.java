@@ -10,6 +10,7 @@ import javax.swing.*;
 import ui.DonorManagement.DonorRegistrationWorkArea;
 import ui.HospitalManagement.ViewHospitalJPanel;
 import model.HospitalManagement.*;
+import ui.HospitalManagement.TransplantCoordinatorJPanel;
 import java.sql.*;
 import model.users.User;
 
@@ -141,9 +142,9 @@ public class HospitalAdminRoleJPanel extends javax.swing.JPanel {
 
     private void btnCoordinatorManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCoordinatorManagementActionPerformed
         // TODO add your handling code here:
-                
-        DonorDetailJPanel donorDetailJPanel = new DonorDetailJPanel();
-        userProcessContainer.add("DonorDetailJPanel", donorDetailJPanel);
+       
+        TransplantCoordinatorJPanel coordinatorDetailJPanel = new TransplantCoordinatorJPanel();
+        userProcessContainer.add("TransplantCoordinatorJPanel", coordinatorDetailJPanel);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
         

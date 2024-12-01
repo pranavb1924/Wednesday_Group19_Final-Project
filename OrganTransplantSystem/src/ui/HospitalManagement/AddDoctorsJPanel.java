@@ -7,6 +7,21 @@ import java.util.*;
 import javax.swing.*;
 import model.HospitalManagement.*;
 import java.sql.*;
+import java.io.*;
+import java.io.File;
+import java.nio.file.Files;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.imageio.ImageIO;
+
 
 /**
  *
@@ -23,7 +38,7 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
     HospitalDirectory hospitalDirectory;
     Connection connection;
     Hospital hospital;
-    
+    private byte[] uploadedImage = null;
     public AddDoctorsJPanel(JPanel userProcessContainer, HospitalDirectory hospitalDirectory, DoctorDirectory doctorDirectory, Connection connection, Hospital hospital) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
@@ -57,6 +72,9 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
         btnUpdate = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         lblHospitalName = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        btnUpload = new javax.swing.JButton();
+        lblProfilePic = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(110, 146, 147));
         setMaximumSize(new java.awt.Dimension(1200, 830));
@@ -96,6 +114,11 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
         btnUpdate.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("UPDATE");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnSave.setBackground(new java.awt.Color(22, 29, 29));
         btnSave.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
@@ -110,6 +133,17 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
         lblHospitalName.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
         lblHospitalName.setForeground(new java.awt.Color(255, 255, 255));
         lblHospitalName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jLabel7.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("PASSWORD");
+
+        btnUpload.setText("UPLOAD");
+        btnUpload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUploadActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -139,15 +173,20 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
                                         .addComponent(jLabel4)
                                         .addGap(177, 177, 177)))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel6)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel5)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
+                                        .addComponent(jLabel7)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(btnUpload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                             .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 575, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(100, 100, 100)
@@ -156,6 +195,10 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
                         .addGap(292, 292, 292)
                         .addComponent(lblHospitalName, javax.swing.GroupLayout.PREFERRED_SIZE, 712, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(100, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lblProfilePic, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(632, 632, 632))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,7 +220,9 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel7)
+                            .addComponent(btnUpload, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -192,76 +237,165 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(446, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(lblProfilePic, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(181, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         try {
-    String doctorInsertSql = "INSERT INTO doctors (DoctorID, Name, Specialization, HospitalID, Phone) VALUES (?, ?, ?, ?, ?)";
-    PreparedStatement doctorStmt = this.connection.prepareStatement(doctorInsertSql);
+        // Insert doctor record
+        String doctorInsertSql = "INSERT INTO doctors (DoctorID, Name, Specialization, HospitalID, Phone) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement doctorStmt = this.connection.prepareStatement(doctorInsertSql);
 
-    String doctorId = java.util.UUID.randomUUID().toString();
+        String doctorId = java.util.UUID.randomUUID().toString();
 
-    doctorStmt.setString(1, doctorId);
-    doctorStmt.setString(2, txtDoctorName.getText());
-    doctorStmt.setString(3, txtSpecialization.getText());
-    doctorStmt.setString(4, this.hospital.getId());
-    doctorStmt.setString(5, txtPhone.getText());
+        doctorStmt.setString(1, doctorId);
+        doctorStmt.setString(2, txtDoctorName.getText());
+        doctorStmt.setString(3, txtSpecialization.getText());
+        doctorStmt.setString(4, this.hospital.getId());
+        doctorStmt.setString(5, txtPhone.getText());
 
-    int doctorRowsAffected = doctorStmt.executeUpdate();
+        int doctorRowsAffected = doctorStmt.executeUpdate();
 
-    if (doctorRowsAffected > 0) {
-        JOptionPane.showMessageDialog(null, "Doctor record inserted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        if (doctorRowsAffected > 0) {
+            JOptionPane.showMessageDialog(null, "Doctor record inserted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-        String userInsertSql = "INSERT INTO user (username, password, email, Role, ReferenceID) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement userStmt = this.connection.prepareStatement(userInsertSql);
+            // Insert user record with profile_image
+            String userInsertSql = "INSERT INTO user (username, password, email, Role, ReferenceID, profile_image) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement userStmt = this.connection.prepareStatement(userInsertSql);
 
-        userStmt.setString(1, txtUserName.getText());
-        userStmt.setString(2, txtPassword.getText());
-        userStmt.setString(3, txtDoctorName.getText() + "@hospital.com");
-        userStmt.setString(4, "2");
-        userStmt.setString(5, doctorId);
+            userStmt.setString(1, txtUserName.getText());
+            userStmt.setString(2, txtPassword.getText());
+            userStmt.setString(3, txtDoctorName.getText() + "@hospital.com");
+            userStmt.setString(4, "2"); // Role for doctor
+            userStmt.setString(5, doctorId); // Reference ID linking user to doctor
 
-        int userRowsAffected = userStmt.executeUpdate();
+            // Use the uploaded image or set NULL if no image was uploaded
+            if (uploadedImage != null) {
+                userStmt.setBytes(6, uploadedImage);
+                System.out.println("Using uploaded image for profile_image.");
+            } else {
+                userStmt.setNull(6, java.sql.Types.BLOB);
+                System.out.println("No image uploaded. Setting profile_image to NULL.");
+            }
 
-        if (userRowsAffected > 0) {
-            JOptionPane.showMessageDialog(null, "User record inserted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            int userRowsAffected = userStmt.executeUpdate();
+
+            if (userRowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "User record inserted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Failed to insert user record.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            userStmt.close();
         } else {
-            JOptionPane.showMessageDialog(null, "Failed to insert user record.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Failed to insert doctor record.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        userStmt.close();
-    } else {
-        JOptionPane.showMessageDialog(null, "Failed to insert doctor record.", "Error", JOptionPane.ERROR_MESSAGE);
+        doctorStmt.close();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "An unexpected error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
+    }//GEN-LAST:event_btnSaveActionPerformed
 
-    doctorStmt.close();
+    private void btnUploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadActionPerformed
+        // TODO add your handling code here:
+    JFileChooser fileChooser = new JFileChooser();
+    int returnValue = fileChooser.showOpenDialog(null);
 
-} catch (SQLException e) {
-    e.printStackTrace();
-    JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-} catch (Exception e) {
-    e.printStackTrace();
-    JOptionPane.showMessageDialog(null, "An unexpected error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    if (returnValue == JFileChooser.APPROVE_OPTION) {
+        File selectedFile = fileChooser.getSelectedFile();
+        System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+
+        try {
+            // Read the selected image into the byte array
+            uploadedImage = java.nio.file.Files.readAllBytes(selectedFile.toPath());
+            System.out.println("Image uploaded successfully. File size: " + uploadedImage.length + " bytes.");
+            JOptionPane.showMessageDialog(null, "Image uploaded successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error reading the image file.", "Error", JOptionPane.ERROR_MESSAGE);
+            uploadedImage = null; // Clear the image if an error occurs
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "No image selected.", "Info", JOptionPane.INFORMATION_MESSAGE);
+        uploadedImage = null; // Clear the image if no file is selected
+    }
+        
+    }//GEN-LAST:event_btnUploadActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+         try {
+        // SQL query to fetch the profile_image for the given username
+        String query = "SELECT profile_image FROM user WHERE username = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setString(1, txtUserName.getText());
+
+        // Execute the query
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            byte[] imageBytes = rs.getBytes("profile_image"); // Fetch the image as bytes
+
+if (imageBytes != null) {
+    try {
+        ByteArrayInputStream bais = new ByteArrayInputStream(imageBytes);
+        BufferedImage bufferedImage = ImageIO.read(bais);
+
+        if (bufferedImage != null) {
+            // Scale and set the image on lblProfilePic
+            ImageIcon icon = new ImageIcon(bufferedImage.getScaledInstance(
+                    lblProfilePic.getWidth(),
+                    lblProfilePic.getHeight(),
+                    Image.SCALE_SMOOTH
+            ));
+            lblProfilePic.setIcon(icon); // Set the icon to the label
+        } else {
+            System.err.println("BufferedImage is null. Image data may be invalid.");
+            lblProfilePic.setText("Invalid image data.");
+        }
+    } catch (Exception e) {
+        System.err.println("Error reading image data: " + e.getMessage());
+        lblProfilePic.setText("Invalid image data.");
+    }
+} else {
+    lblProfilePic.setText("No profile image available.");
 }
 
-      
-    }//GEN-LAST:event_btnSaveActionPerformed
+        } else {
+            lblProfilePic.setText("User not found.");
+        }
+        stmt.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+        lblProfilePic.setText("Error loading profile image.");
+    }
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnUpload;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblHospitalName;
+    private javax.swing.JLabel lblProfilePic;
     private javax.swing.JTextField txtDoctorName;
     private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtPhone;

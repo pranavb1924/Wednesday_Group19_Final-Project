@@ -12,7 +12,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-
+import DatabaseConn.DatabaseConnection;
+import java.sql.*;
+import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.UUID;
+import java.util.regex.Pattern;
 /**
  *
  * @author pranavb
@@ -26,9 +32,13 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
         
     private final JFileChooser fileChooser = new JFileChooser();
     ImageIcon logoImage;
+    DatabaseConnection databaseConnection = new DatabaseConnection();
+    Connection connection;
+    String consent;
     public DonorRegistrationWorkArea() {
         initComponents();
         this.setComponentsVisible(false);
+        this.connection = databaseConnection.getConnection();
     }
 
     /**
@@ -310,8 +320,116 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
         this.setComponentsVisible(true);
     }//GEN-LAST:event_btnUploadImageActionPerformed
 
+    
+    public void validateFields() {
+        // Retrieve inputs from text fields
+        String firstName = txtFirstName.getText();
+        String middleName = txtMiddleName.getText();
+        String lastName = txtLastName.getText();
+        String dateOfBirth = txtDateOfBirth.getText();
+        String city = txtCity.getText();
+        String state = txtState.getText();
+        String addressLine1 = txtAddressLine1.getText();
+        String addressLine2 = txtAddressLine2.getText();
+        //String consentText = consentArea.getText();
+
+        // Validate required fields
+        if (firstName.isEmpty() || lastName.isEmpty() || dateOfBirth.isEmpty() || city.isEmpty() ||
+            state.isEmpty() || addressLine1.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "All required fields must be filled.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            throw new IllegalArgumentException("Validation Error: Missing required fields.");
+        }
+
+        // Validate name fields (letters and spaces only)
+        if (!isValidName(firstName) || !isValidName(middleName) || !isValidName(lastName)) {
+            JOptionPane.showMessageDialog(null, "Names must contain only letters and spaces.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            throw new IllegalArgumentException("Validation Error: Invalid name format.");
+        }
+
+        // Validate date of birth (basic YYYY-MM-DD format check)
+        if (!isValidDate(dateOfBirth)) {
+            JOptionPane.showMessageDialog(null, "Date of birth must be in the format YYYY-MM-DD.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            throw new IllegalArgumentException("Validation Error: Invalid date format.");
+        }
+
+        // Validate city and state (letters, spaces, and hyphens only)
+        if (!isValidName(city) || !isValidName(state)) {
+            JOptionPane.showMessageDialog(null, "City and State must contain only letters, spaces, or hyphens.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            throw new IllegalArgumentException("Validation Error: Invalid city or state format.");
+        }
+    }
+
+    public void insertDonorRegistrationRequest() {
+        validateFields();
+
+        try {
+            // Generate a unique RequestID
+            String requestId = UUID.randomUUID().toString();
+
+            // Retrieve inputs from text fields
+            String firstName = txtFirstName.getText();
+            String middleName = txtMiddleName.getText();
+            String lastName = txtLastName.getText();
+            String dateOfBirth = txtDateOfBirth.getText();
+            String city = txtCity.getText();
+            String state = txtState.getText();
+            String addressLine1 = txtAddressLine1.getText();
+            String addressLine2 = txtAddressLine2.getText();
+            // Assuming the signature image is uploaded and stored in the 'signature' JLabel
+            //java.sql.Blob signatureBlob = null; // Add logic to retrieve and convert the signature if available
+
+            // Prepare the SQL insert statement
+            String sql = "INSERT INTO DonorRegistrationRequests " +
+                         "(RequestID, FirstName, MiddleName, LastName, DateOfBirth, AddressLine1, AddressLine2, " +
+                         "City, State, ConsentStatus, RegistrationApproved) " +
+                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, requestId);
+            stmt.setString(2, firstName);
+            stmt.setString(3, middleName);
+            stmt.setString(4, lastName);
+            stmt.setString(5, dateOfBirth);
+            stmt.setString(6, addressLine1);
+            stmt.setString(7, addressLine2);
+            stmt.setString(8, city);
+            stmt.setString(9, state);
+            //stmt.setBlob(10, signatureBlob); // Assuming the signature is handled as a BLOB
+            stmt.setString(10, this.consent); // ConsentStatus is set to 'Pending' by default
+            stmt.setNull(11, java.sql.Types.BOOLEAN); // RegistrationApproved is null by default
+
+            // Execute the insert query
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Donor Registration Request submitted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Failed to submit Donor Registration Request.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Utility method to validate name fields (letters, spaces, and optional hyphens)
+    private boolean isValidName(String name) {
+        if (name == null || name.isEmpty()) {
+            return true; // Allow empty fields like MiddleName
+        }
+        return Pattern.matches("^[a-zA-Z\\s\\-]+$", name);
+    }
+
+    // Utility method to validate date format (YYYY-MM-DD)
+    private boolean isValidDate(String date) {
+        return Pattern.matches("^\\d{4}-\\d{2}-\\d{2}$", date);
+    }
+    
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
+        this.insertDonorRegistrationRequest();
         
         
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -319,6 +437,7 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
     private void btnSignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignActionPerformed
         // TODO add your handling code here:
         imglogo.setIcon(logoImage);
+        this.consent = "Accepted";
     }//GEN-LAST:event_btnSignActionPerformed
 
     public void setComponentsVisible(boolean visible) {
