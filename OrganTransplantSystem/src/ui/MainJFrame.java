@@ -201,7 +201,7 @@ public class MainJFrame extends javax.swing.JFrame {
         String password = String.valueOf(passwordCharArray);
 
         if (authenticateUser(userName, password)){
-            JOptionPane.showMessageDialog(this, "Login Successful", "Error", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Login Successful", "Welcome!", JOptionPane.INFORMATION_MESSAGE);
         
         
         JPanel profilePanel = this.loadProfile();
