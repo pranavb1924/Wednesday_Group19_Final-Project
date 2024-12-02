@@ -4,11 +4,15 @@
  */
 package ui.AdministrativeRole;
 import DatabaseConn.DatabaseConnection;
+import java.awt.CardLayout;
 import java.sql.*;
 import model.donor.DonorRegistrationRequest;
 import java.util.*;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import model.HospitalManagement.Hospital;
+import model.donor.*;
 /**
  *
  * @author pranavb
@@ -20,12 +24,16 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
      */
     DatabaseConnection dbconnection = new DatabaseConnection();
     ArrayList<DonorRegistrationRequest> donorRequestDirectory = new ArrayList<DonorRegistrationRequest>();
+    JPanel userProcessContainer;
+    Donor donor = new Donor();
     Connection connection;
-    public DonorRequestJPanel() {
+    public DonorRequestJPanel(JPanel userProcessContainer) {
         initComponents();
+                this.userProcessContainer = userProcessContainer;
         this.connection = dbconnection.getConnection();
         this.fetchDonorRequests();
         this.populateHospitalTable();
+
     }
     
     public void fetchDonorRequests() {
@@ -75,6 +83,8 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
             model.addRow(row);
         }
     }
+     
+     
    
 
     /**
@@ -88,6 +98,7 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDonorRequests = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(1200, 830));
         setMinimumSize(new java.awt.Dimension(1200, 830));
@@ -105,13 +116,25 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tblDonorRequests);
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(224, 224, 224)
+                        .addComponent(jButton1)))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -119,12 +142,35 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(105, 105, 105)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(305, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addContainerGap(264, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        int selectedRowIndex = tblDonorRequests.getSelectedRow();
+        if (selectedRowIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Pls select a row!!", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+        
+        DonorRegistrationRequest rq  = (DonorRegistrationRequest) tblDonorRequests.getValueAt(selectedRowIndex, 0);
+        
+        this.donor.setFirstName(rq.getFirstName());
+        this.donor.setLastName(rq.getLastName());
+        this.donor.setCity(rq.getCity());
+        
+        ManageDonorRequestJPanel manageDonorRequestJPanel = new ManageDonorRequestJPanel(userProcessContainer, this.donor);
+        userProcessContainer.add("ManageDonorRequestJPanel", manageDonorRequestJPanel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblDonorRequests;
     // End of variables declaration//GEN-END:variables

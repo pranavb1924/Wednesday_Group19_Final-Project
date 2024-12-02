@@ -28,7 +28,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
     public LawyerWorkAreaJPanel(JPanel userProcessContainer) {
         initComponents();
         
-        connection = DatabaseConnection.getConnection();
+        this.connection = DatabaseConnection.getConnection();
         this.userProcessContainer= userProcessContainer;
         populateLawyerTable();
         populateCaseTable();

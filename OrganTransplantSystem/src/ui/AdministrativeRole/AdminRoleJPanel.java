@@ -20,7 +20,7 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
      * Creates new form AdminRoleJPanel
      */
     
-    JPanel userProcessContainer = new JPanel();
+    JPanel userProcessContainer;
     HospitalDirectory hospitalDirectory = new HospitalDirectory();
     Connection connection;
     public AdminRoleJPanel(JPanel userProcessContainer, HospitalDirectory hospitalDirectory, Connection connection) {
@@ -44,6 +44,7 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         btnManageHospitals = new javax.swing.JButton();
         btnTransplantList = new javax.swing.JButton();
         btnTransplantList1 = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(22, 29, 29));
         setForeground(new java.awt.Color(255, 255, 255));
@@ -94,23 +95,34 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnBack.setText("BACK");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(387, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(384, 384, 384))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnDonorManagement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnManageHospitals, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnTransplantList, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnTransplantList1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(373, 373, 373))))
+                        .addGap(373, 373, 373))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(384, 384, 384))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnDonorManagement, btnManageHospitals});
@@ -118,7 +130,9 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(101, 101, 101)
+                .addGap(38, 38, 38)
+                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addGap(78, 78, 78)
                 .addComponent(btnManageHospitals, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -149,7 +163,7 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
 
     private void btnDonorManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDonorManagementActionPerformed
         // TODO add your handling code here:
-        DonorRequestJPanel donorRequestJPanel = new DonorRequestJPanel();
+        DonorRequestJPanel donorRequestJPanel = new DonorRequestJPanel(this.userProcessContainer);
         userProcessContainer.add("DonorRequestJPanel", donorRequestJPanel);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
@@ -157,10 +171,19 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
 
     private void btnTransplantList1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransplantList1ActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnTransplantList1ActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        userProcessContainer.remove(this);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.previous(userProcessContainer);
+    }//GEN-LAST:event_btnBackActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnDonorManagement;
     private javax.swing.JButton btnManageHospitals;
     private javax.swing.JButton btnTransplantList;
