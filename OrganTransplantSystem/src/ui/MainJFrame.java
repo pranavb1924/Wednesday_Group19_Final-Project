@@ -17,7 +17,7 @@ import ui.DonorManagement.*;
 import ui.AdministrativeRole.*;
 import model.HospitalManagement.*;
 import ui.HospitalManagement.*;
-
+import ui.AdministrativeRole.HomePanel;
 /**
  *
  * @author Pranav
@@ -209,6 +209,10 @@ public class MainJFrame extends javax.swing.JFrame {
         CardLayout layout = (CardLayout) container.getLayout();
         layout.next(container);
         this.setComponentsVisibility(false);
+                loginJButton.setEnabled(false);
+        btnBack.setEnabled(true);
+        userNameJTextField.setEnabled(false);
+        passwordField.setEnabled(false);
             
 
         }
@@ -226,15 +230,19 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        
-        this.setComponentsVisibility(true);
-        
+        userNameJTextField.setEnabled(true);
+        passwordField.setEnabled(true);
+        loginJButton.setEnabled(true);
 
-        container.add("container", container);
-        CardLayout layout = (CardLayout) container.getLayout();
-        layout.next(container);
-        this.setComponentsVisibility(false);
-        
+        userNameJTextField.setText("");
+        passwordField.setText("");
+
+        container.removeAll();
+        JPanel blankJP = new JPanel();
+        container.add("blank", blankJP);
+        CardLayout crdLyt = (CardLayout) container.getLayout();
+        crdLyt.next(container);
+                this.setContainerBackground("src/images/bg.png");
     }//GEN-LAST:event_btnBackActionPerformed
 
     /**
@@ -357,13 +365,13 @@ public class MainJFrame extends javax.swing.JFrame {
 
                 case "COORDINATOR":
                     Hospital currentCoordinatorHospital = this.hospitalDirectory.findHospitalByAdminId(this.currentUser.getId());
-                    TransplantCoordinatorJPanel transplantCoordinatorJPanel = new TransplantCoordinatorJPanel();
+                    TransplantCoordinatorJPanel transplantCoordinatorJPanel = new TransplantCoordinatorJPanel(container, currentCoordinatorHospital);
                     return transplantCoordinatorJPanel;             
                     
-                case "GUEST":
-                    System.out.println("Welcome, Guest! Limited access granted.");
-                    // Add logic for guest role
-                    break;
+                case "DOCTOR":
+                    Hospital currentHospitalDetails = this.hospitalDirectory.findHospitalByAdminId(this.currentUser.getId());
+                    DoctorWorkAreaJPanel doctorWorkAreaJPanel = new DoctorWorkAreaJPanel(container, this.hospitalDirectory, this.doctorDirectory, this.currentConnection, currentHospitalDetails, this.currentUser);
+                    return doctorWorkAreaJPanel;
                 default:
                     System.out.println("Unrecognized role. Access denied.");
                     // Handle unrecognized role

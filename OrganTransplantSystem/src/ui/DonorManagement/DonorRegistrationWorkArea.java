@@ -37,7 +37,6 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
     String consent;
     public DonorRegistrationWorkArea() {
         initComponents();
-        this.setComponentsVisible(false);
         this.connection = databaseConnection.getConnection();
     }
 
