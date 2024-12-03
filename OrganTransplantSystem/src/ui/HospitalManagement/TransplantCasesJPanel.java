@@ -46,8 +46,6 @@ public class TransplantCasesJPanel extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tblSearchResult = new javax.swing.JTable();
         btnBack = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(110, 146, 147));
@@ -88,19 +86,6 @@ public class TransplantCasesJPanel extends javax.swing.JPanel {
 
         jTextField2.setText("jTextField2");
 
-        tblSearchResult.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Patient Name", "Patient Date of Birth", "Transplant Organ"
-            }
-        ));
-        jScrollPane2.setViewportView(tblSearchResult);
-
         btnBack.setText("BACK");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -125,9 +110,7 @@ public class TransplantCasesJPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(24, 24, 24)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1140, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
@@ -145,9 +128,7 @@ public class TransplantCasesJPanel extends javax.swing.JPanel {
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(230, Short.MAX_VALUE))
+                .addContainerGap(396, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -217,10 +198,8 @@ public class TransplantCasesJPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTable tblSearchResult;
     private javax.swing.JTable tblTransplantCase;
     // End of variables declaration//GEN-END:variables
 }

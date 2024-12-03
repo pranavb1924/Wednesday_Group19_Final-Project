@@ -147,6 +147,11 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
         });
 
         btnBack.setText("BACK");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -344,52 +349,15 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-         try {
-        // SQL query to fetch the profile_image for the given username
-        String query = "SELECT profile_image FROM user WHERE username = ?";
-        PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setString(1, txtUserName.getText());
-
-        // Execute the query
-        ResultSet rs = stmt.executeQuery();
-
-        if (rs.next()) {
-            byte[] imageBytes = rs.getBytes("profile_image"); // Fetch the image as bytes
-
-if (imageBytes != null) {
-    try {
-        ByteArrayInputStream bais = new ByteArrayInputStream(imageBytes);
-        BufferedImage bufferedImage = ImageIO.read(bais);
-
-        if (bufferedImage != null) {
-            // Scale and set the image on lblProfilePic
-            ImageIcon icon = new ImageIcon(bufferedImage.getScaledInstance(
-                    lblProfilePic.getWidth(),
-                    lblProfilePic.getHeight(),
-                    Image.SCALE_SMOOTH
-            ));
-            lblProfilePic.setIcon(icon); // Set the icon to the label
-        } else {
-            System.err.println("BufferedImage is null. Image data may be invalid.");
-            lblProfilePic.setText("Invalid image data.");
-        }
-    } catch (Exception e) {
-        System.err.println("Error reading image data: " + e.getMessage());
-        lblProfilePic.setText("Invalid image data.");
-    }
-} else {
-    lblProfilePic.setText("No profile image available.");
-}
-
-        } else {
-            lblProfilePic.setText("User not found.");
-        }
-        stmt.close();
-    } catch (Exception e) {
-        e.printStackTrace();
-        lblProfilePic.setText("Error loading profile image.");
-    }
+         
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+                userProcessContainer.remove(this);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.previous(userProcessContainer);
+    }//GEN-LAST:event_btnBackActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

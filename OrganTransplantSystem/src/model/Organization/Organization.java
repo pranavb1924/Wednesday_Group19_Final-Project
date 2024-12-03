@@ -4,10 +4,9 @@
  */
 package model.Organization;
 
-import model.Employee.EmployeeDirectory;
-import model.Role.Role;
-import model.UserAccount.UserAccountDirectory;
-import model.WorkQueue.WorkQueue;
+
+import model.users.UserDirectory;
+import model.WorkQueue.WorkRequest;
 import java.util.ArrayList;
 
 /**
@@ -17,9 +16,8 @@ import java.util.ArrayList;
 public abstract class Organization {
 
     private String name;
-    private WorkQueue workQueue;
-    private EmployeeDirectory employeeDirectory;
-    private UserAccountDirectory userAccountDirectory;
+    private WorkRequest workQueue;
+    private UserDirectory userAccountDirectory;
     private int organizationID;
     private static int counter=0;
     
@@ -37,7 +35,6 @@ public abstract class Organization {
     public Organization(String name) {
         this.name = name;
         workQueue = new WorkQueue();
-        employeeDirectory = new EmployeeDirectory();
         userAccountDirectory = new UserAccountDirectory();
         organizationID = counter;
         ++counter;

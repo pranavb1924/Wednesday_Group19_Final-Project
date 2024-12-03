@@ -13,12 +13,14 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import DatabaseConn.DatabaseConnection;
+import java.awt.CardLayout;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import javax.swing.*;
 /**
  *
  * @author pranavb
@@ -35,8 +37,10 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
     DatabaseConnection databaseConnection = new DatabaseConnection();
     Connection connection;
     String consent;
-    public DonorRegistrationWorkArea() {
+    JPanel userProcessContainer;
+    public DonorRegistrationWorkArea(JPanel userProcessContainer) {
         initComponents();
+        this.userProcessContainer = userProcessContainer;
         this.connection = databaseConnection.getConnection();
     }
 
@@ -73,6 +77,7 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
         signature = new javax.swing.JLabel();
         imglogo = new javax.swing.JLabel();
         btnSave = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(111, 147, 146));
         setMaximumSize(new java.awt.Dimension(1200, 830));
@@ -164,6 +169,13 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setText("BACK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -171,7 +183,9 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(397, 397, 397)
+                        .addGap(26, 26, 26)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(228, 228, 228)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(158, 158, 158)
@@ -238,7 +252,9 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -439,6 +455,13 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
         this.consent = "Accepted";
     }//GEN-LAST:event_btnSignActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        userProcessContainer.remove(this);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.previous(userProcessContainer);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     public void setComponentsVisible(boolean visible) {
     txtConsentArea.setVisible(visible);
     btnSign.setVisible(visible);
@@ -455,6 +478,7 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
     private javax.swing.JButton btnUploadImage;
     private javax.swing.JScrollPane consentArea;
     private javax.swing.JLabel imglogo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;

@@ -18,6 +18,15 @@ public class Hospital {
     private String phone;
     private String coordinatorId;
     private String adminId;
+
+    public DoctorDirectory getDoctorDirectory() {
+        return doctorDirectory;
+    }
+
+    public void setDoctorDirectory(DoctorDirectory doctorDirectory) {
+        this.doctorDirectory = doctorDirectory;
+    }
+    private DoctorDirectory doctorDirectory = new DoctorDirectory();
     
     public String getId() {
         return id;

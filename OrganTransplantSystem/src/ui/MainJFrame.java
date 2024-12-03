@@ -44,6 +44,7 @@ public class MainJFrame extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(1200, 900)); // Enforce minimum size
         setMaximumSize(new java.awt.Dimension(1200, 900)); // Enforce maximum size
         setPreferredSize(new java.awt.Dimension(1200, 900)); // Optional for layout managers
+        this.setComponentsVisibility(true);
         this.userProcessContainer.setLayout(new CardLayout());
         this.setContainerBackground("src/images/bg.png");
         this.currentConnection = connectToDatabase();
@@ -201,7 +202,7 @@ public class MainJFrame extends javax.swing.JFrame {
         String password = String.valueOf(passwordCharArray);
 
         if (authenticateUser(userName, password)){
-            JOptionPane.showMessageDialog(this, "Login Successful", "Error", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Login Successful", "Welcome!", JOptionPane.INFORMATION_MESSAGE);
         
         
         JPanel profilePanel = this.loadProfile();
@@ -219,13 +220,11 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_loginJButtonActionPerformed
 
     private void btnRegisterDonorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterDonorActionPerformed
-        // TODO add your handling code here:
-        
-        DonorRegistrationWorkArea donorRegistrationWorkArea = new DonorRegistrationWorkArea();
+        DonorRegistrationWorkArea donorRegistrationWorkArea = new DonorRegistrationWorkArea(container);
         container.add("DonorRegistrationWorkArea", donorRegistrationWorkArea);
         CardLayout layout = (CardLayout) container.getLayout();
         layout.next(container);
-        this.setComponentsVisibility(false);
+        this.setComponentsVisibility(false);        // TODO add your handling code here:
     }//GEN-LAST:event_btnRegisterDonorActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -243,6 +242,7 @@ public class MainJFrame extends javax.swing.JFrame {
         CardLayout crdLyt = (CardLayout) container.getLayout();
         crdLyt.next(container);
                 this.setContainerBackground("src/images/bg.png");
+                        this.setComponentsVisibility(true);
     }//GEN-LAST:event_btnBackActionPerformed
 
     /**

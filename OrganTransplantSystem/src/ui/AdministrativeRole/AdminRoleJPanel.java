@@ -7,7 +7,7 @@ package ui.AdministrativeRole;
 import java.awt.CardLayout;
 import javax.swing.*;
 import ui.DonorManagement.DonorRegistrationWorkArea;
-import ui.HospitalManagement.ViewHospitalJPanel;
+import ui.HospitalManagement.*;
 import model.HospitalManagement.*;
 import java.sql.*;
 /**
@@ -28,6 +28,7 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         this.userProcessContainer = userProcessContainer;
         this.hospitalDirectory = hospitalDirectory;
         this.connection = connection;
+        this.updateNotification();
     }
 
     /**
@@ -45,6 +46,7 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         btnTransplantList = new javax.swing.JButton();
         btnTransplantList1 = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
+        txtNotification = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(22, 29, 29));
         setForeground(new java.awt.Color(255, 255, 255));
@@ -78,7 +80,7 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         btnTransplantList.setBackground(new java.awt.Color(111, 147, 146));
         btnTransplantList.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         btnTransplantList.setForeground(new java.awt.Color(255, 255, 255));
-        btnTransplantList.setText("TransplantList");
+        btnTransplantList.setText("TRANSPLANT LIST");
         btnTransplantList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTransplantListActionPerformed(evt);
@@ -102,6 +104,13 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
             }
         });
 
+        txtNotification.setEditable(false);
+        txtNotification.setBackground(new java.awt.Color(255, 170, 92));
+        txtNotification.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        txtNotification.setForeground(new java.awt.Color(255, 255, 255));
+        txtNotification.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtNotification.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,7 +124,9 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
                             .addComponent(btnManageHospitals, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnTransplantList, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnTransplantList1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(373, 373, 373))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNotification, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(337, 337, 337))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(384, 384, 384))))
@@ -139,7 +150,9 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
                 .addGap(29, 29, 29)
                 .addComponent(btnDonorManagement, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
-                .addComponent(btnTransplantList, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTransplantList, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNotification, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addComponent(btnTransplantList1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(346, Short.MAX_VALUE))
@@ -151,6 +164,11 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
 
     private void btnTransplantListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransplantListActionPerformed
         // TODO add your handling code here:
+        ManageTransplantListJPanel manageTransplantListJPanel = new ManageTransplantListJPanel(this.userProcessContainer);
+        userProcessContainer.add("ManageTransplantListJPanel", manageTransplantListJPanel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
+        
     }//GEN-LAST:event_btnTransplantListActionPerformed
 
     private void btnManageHospitalsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageHospitalsActionPerformed
@@ -181,6 +199,28 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         layout.previous(userProcessContainer);
     }//GEN-LAST:event_btnBackActionPerformed
 
+    private void updateNotification() {
+    try {
+        // Query to count patients with "Under Review" approval status
+        String sql = "SELECT COUNT(*) AS UnderReviewCount FROM TransplantPatients WHERE ApprovalStatus = 'Under Review'";
+        PreparedStatement stmt = this.connection.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            int count = rs.getInt("UnderReviewCount"); // Get the count from the query result
+
+            if (count > 0) {
+                txtNotification.setText(String.valueOf(count)); // Set the count in the text field
+                txtNotification.setVisible(true); // Make the text field visible
+            } else {
+                txtNotification.setVisible(false); // Hide the text field if the count is zero
+            }
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error fetching notifications: " + e.getMessage());
+    }
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -189,5 +229,6 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnTransplantList;
     private javax.swing.JButton btnTransplantList1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField txtNotification;
     // End of variables declaration//GEN-END:variables
 }
