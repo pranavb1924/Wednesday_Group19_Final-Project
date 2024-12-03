@@ -15,6 +15,15 @@ public class User {
     private String email;
     private String id;
     private String role;
+    private String referenceId;
+
+    public String getReferenceId() {
+        return referenceId;
+    }
+
+    public void setReferenceId(String referenceId) {
+        this.referenceId = referenceId;
+    }
     
     public User(){
         
