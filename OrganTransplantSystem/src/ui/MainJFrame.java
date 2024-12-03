@@ -208,11 +208,11 @@ public class MainJFrame extends javax.swing.JFrame {
         container.add("profilePanel", profilePanel);
         CardLayout layout = (CardLayout) container.getLayout();
         layout.next(container);
-        this.setComponentsVisibility(false);
-                loginJButton.setEnabled(false);
+        this.setComponentsVisibility(true);
+                loginJButton.setEnabled(true);
         btnBack.setEnabled(true);
-        userNameJTextField.setEnabled(false);
-        passwordField.setEnabled(false);
+        userNameJTextField.setEnabled(true);
+        passwordField.setEnabled(true);
             
 
         }
@@ -287,7 +287,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private static Connection connectToDatabase() {
     final String URL = "jdbc:mysql://localhost:3306/OrganTransplantDb";
     final String USER = "root";
-    final String PASSWORD = ""; 
+    final String PASSWORD = "sql123456"; 
 
     try {
 
