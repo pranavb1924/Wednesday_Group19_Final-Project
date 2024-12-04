@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import java.sql.Timestamp;
 
 /**
  *
@@ -90,6 +91,7 @@ public class TransportationJPanel extends javax.swing.JPanel {
         btnBack = new javax.swing.JButton();
         btnCompleted1 = new javax.swing.JButton();
 
+        tblTransTasks.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         tblTransTasks.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
@@ -144,15 +146,17 @@ public class TransportationJPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jScrollPane1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
                         .addComponent(btnBack)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 442, Short.MAX_VALUE)
                         .addComponent(btnStart, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnCompleted1))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 728, Short.MAX_VALUE))
+                        .addComponent(btnCompleted1)))
                 .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
@@ -171,10 +175,12 @@ public class TransportationJPanel extends javax.swing.JPanel {
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
         int selectedRow = tblTransTasks.getSelectedRow();
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         
         if (selectedRow != -1) { 
             String ID = tblTransTasks.getValueAt(selectedRow, 0).toString();
-            updateStatus(ID, "Start Transportation"); 
+            updateStatus(ID, "Pending"); 
+            updateStartTime(ID, currentTime);
         } else { 
             JOptionPane.showMessageDialog(this, "Please select a row!"); 
         }
@@ -192,10 +198,12 @@ public class TransportationJPanel extends javax.swing.JPanel {
     private void btnCompleted1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompleted1ActionPerformed
         // TODO add your handling code here:
         int selectedRow = tblTransTasks.getSelectedRow();
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         
         if (selectedRow != -1) { 
             String ID = tblTransTasks.getValueAt(selectedRow, 0).toString();
             updateStatus(ID, "Completed"); 
+            updateEndTime(ID, currentTime);
         } else { 
             JOptionPane.showMessageDialog(this, "Please select a row!"); 
         }
@@ -210,20 +218,66 @@ public class TransportationJPanel extends javax.swing.JPanel {
     private javax.swing.JTable tblTransTasks;
     // End of variables declaration//GEN-END:variables
  private void updateStatus(String ID, String newStatus) { 
-        if (connection != null) {
-             String query = "UPDATE deliveryTasks SET Status = " +newStatus+"WHERE Id="+ID+";"; 
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query); 
-            ResultSet resultSet = preparedStatement.executeQuery();
-        } catch (SQLException e) { 
-            e.printStackTrace(); 
-            JOptionPane.showMessageDialog(this, "Error updating DeliveryTasks data", "Error", JOptionPane.ERROR_MESSAGE); 
-            return;
-        } 
-    }
+      if (connection != null) { 
+          String query = "UPDATE deliveryTasks SET Status = ? WHERE Id = ?"; 
+          try { 
+              PreparedStatement preparedStatement = connection.prepareStatement(query); 
+              preparedStatement.setString(1, newStatus); 
+              preparedStatement.setString(2, ID); 
+              int affectedRows = preparedStatement.executeUpdate(); 
+              if (affectedRows > 0) { 
+                  //JOptionPane.showMessageDialog(this, "DeliveryTasks Update Successfully!"); 
+              } else { 
+                  //JOptionPane.showMessageDialog(this, "Update Failed", "Error", JOptionPane.ERROR_MESSAGE); 
+              } 
+          } catch (SQLException e) { 
+              e.printStackTrace(); 
+              JOptionPane.showMessageDialog(this, "Error updating DeliveryTasks data", "Error", JOptionPane.ERROR_MESSAGE); 
+          } 
+      }
     
     }
 
+private void updateStartTime(String ID, Timestamp Time) { 
+      if (connection != null) { 
+          String query = "UPDATE deliveryTasks SET StartTime = ? WHERE Id = ?"; 
+          try { 
+              PreparedStatement preparedStatement = connection.prepareStatement(query); 
+              preparedStatement.setTimestamp(1, Time); 
+              preparedStatement.setString(2, ID); 
+              int affectedRows = preparedStatement.executeUpdate(); 
+              if (affectedRows > 0) { 
+                  //JOptionPane.showMessageDialog(this, "Delivery Start Time Update Successfully!"); 
+              } else { 
+                  //JOptionPane.showMessageDialog(this, "Update Time Failed", "Error", JOptionPane.ERROR_MESSAGE); 
+              } 
+          } catch (SQLException e) { 
+              e.printStackTrace(); 
+              JOptionPane.showMessageDialog(this, "Error updating Delivery StartTime data", "Error", JOptionPane.ERROR_MESSAGE); 
+          } 
+      }
+    
+    }
 
+private void updateEndTime(String ID, Timestamp Time) { 
+      if (connection != null) { 
+          String query = "UPDATE deliveryTasks SET EndTime = ? WHERE Id = ?"; 
+          try { 
+              PreparedStatement preparedStatement = connection.prepareStatement(query); 
+              preparedStatement.setTimestamp(1, Time); 
+              preparedStatement.setString(2, ID); 
+              int affectedRows = preparedStatement.executeUpdate(); 
+              if (affectedRows > 0) { 
+                  JOptionPane.showMessageDialog(this, "Delivery End Time Update Successfully!"); 
+              } else { 
+                  JOptionPane.showMessageDialog(this, "Update Time Failed", "Error", JOptionPane.ERROR_MESSAGE); 
+              } 
+          } catch (SQLException e) { 
+              e.printStackTrace(); 
+              JOptionPane.showMessageDialog(this, "Error updating Delivery EndTime data", "Error", JOptionPane.ERROR_MESSAGE); 
+          } 
+      }
+    
+    }
 
 }

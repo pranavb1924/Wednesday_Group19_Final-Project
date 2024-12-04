@@ -300,17 +300,23 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
 }
     
     private void updateStatus(String caseID, String newStatus) { 
-        if (connection != null) {
-             String query = "UPDATE work_request SET status = " +newStatus+"WHERE caseID="+caseID+";"; 
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query); 
-            ResultSet resultSet = preparedStatement.executeQuery();
-        } catch (SQLException e) { 
-            e.printStackTrace(); 
-            JOptionPane.showMessageDialog(this, "Error updating Request data", "Error", JOptionPane.ERROR_MESSAGE); 
-            return;
-        } 
-    }
+        if (connection != null) { 
+            String query = "UPDATE work_request SET status = ? WHERE caseID = ?"; 
+            try { 
+                PreparedStatement preparedStatement = connection.prepareStatement(query); 
+                preparedStatement.setString(1, newStatus); 
+                preparedStatement.setString(2, caseID); 
+                int affectedRows = preparedStatement.executeUpdate(); 
+                if (affectedRows > 0) { 
+                    JOptionPane.showMessageDialog(this, "Case Update Successfully!"); 
+                } else { 
+                    JOptionPane.showMessageDialog(this, "Update Failed", "Error", JOptionPane.ERROR_MESSAGE); 
+                } 
+            } catch (SQLException e) { 
+                e.printStackTrace(); 
+                JOptionPane.showMessageDialog(this, "Error updating Request data", "Error", JOptionPane.ERROR_MESSAGE); 
+            } 
+        }
     
     }
     
