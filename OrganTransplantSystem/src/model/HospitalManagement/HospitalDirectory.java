@@ -12,10 +12,10 @@ import java.util.*;
  */
 public class HospitalDirectory {
     
-    ArrayList<Hospital> hospitalDirectory = new ArrayList<Hospital>();
+    ArrayList<Hospital> hospitalDirectory;
 
     public HospitalDirectory(){
-        
+        this.hospitalDirectory = new ArrayList<Hospital>();
     }
         
     public ArrayList<Hospital> getHospitalDirectory() {
@@ -48,7 +48,15 @@ public class HospitalDirectory {
                     return h;
                 }
         }
+        if(this.hospitalDirectory != null){
+            for (Hospital h : this.hospitalDirectory){
+                if (h.getCoordinatorId().equals(id)){
+                    return h;
+                }
         }
+        }
+        
+    }
         return null;
     }
 }

@@ -355,7 +355,7 @@ public class MainJFrame extends javax.swing.JFrame {
         
             switch (this.currentUserRole.toUpperCase()) {
                 case "UNOS ADMIN":
-                    AdminRoleJPanel adminRoleJPanel = new AdminRoleJPanel(container, this.hospitalDirectory, this.currentConnection);
+                    AdminRoleJPanel adminRoleJPanel = new AdminRoleJPanel(container, this.hospitalDirectory, this.currentConnection, this.currentUser);
                     return adminRoleJPanel;
                     // Add logic for admin role
                 case "HOSPITAL ADMIN":
@@ -416,6 +416,35 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 }
     
+    private void loadDoctors(){
+        
+         try {
+                    Connection connection = connectToDatabase();
+                    String docquery = "SELECT * FROM doctors"; 
+                    PreparedStatement doctstmt = connection.prepareStatement(docquery); 
+                    ResultSet docresultSet = doctstmt.executeQuery();
+            
+                    while(docresultSet.next()){
+                        String docid = docresultSet.getString("DoctorID");
+                        String docname = docresultSet.getString("Name");
+                        String docspecialization = docresultSet.getString("Specialization");
+                        String docphone = docresultSet.getString("Phone");
+
+                        Doctor doctor = new Doctor();
+                        doctor.setDoctorId(docid);
+                        doctor.setName(docname);
+                        doctor.setSpecialization(docspecialization);
+                        doctor.setPhone(docphone);
+                        
+                        this.doctorDirectory.addNewDoctor(doctor);
+                    }
+                    //connection.close();
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error fetching user data1.", "Error", JOptionPane.ERROR_MESSAGE);
+        }        
+    }
+    
     private void loadHospitals(){
         Connection connection = connectToDatabase();
         
@@ -432,7 +461,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 String state = resultSet.getString("State");
                 String phone = resultSet.getString("Phone");
                 String adminId = resultSet.getString("AdminId") == null ? "" : resultSet.getString("AdminId");
-                
+                String coordinatorId = resultSet.getString("coordinatorId") == null ? "" : resultSet.getString("coordinatorId");
                 Hospital hospital = new Hospital();
                 hospital.setId(id);
                 hospital.setAddress(address);
@@ -441,6 +470,32 @@ public class MainJFrame extends javax.swing.JFrame {
                 hospital.setPhone(phone);
                 hospital.setState(state);
                 hospital.setAdminId(adminId);
+                hospital.setCoordinatorId(coordinatorId);
+                try {
+                    String docquery = "SELECT * FROM doctors where HospitalId = '"+id+"'"; 
+                    PreparedStatement doctstmt = connection.prepareStatement(docquery); 
+                    ResultSet docresultSet = doctstmt.executeQuery();
+            
+                    while(docresultSet.next()){
+                        String docid = docresultSet.getString("DoctorID");
+                        String docname = docresultSet.getString("Name");
+                        String docspecialization = docresultSet.getString("Specialization");
+                        String docphone = docresultSet.getString("Phone");
+
+                        Doctor doctor = new Doctor();
+                        doctor.setDoctorId(docid);
+                        doctor.setName(docname);
+                        doctor.setSpecialization(docspecialization);
+                        doctor.setPhone(docphone);
+
+                        hospital.getDoctorDirectory().addNewDoctor(doctor);      
+                    }
+                    //connection.close();
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error fetching user data1.", "Error", JOptionPane.ERROR_MESSAGE);
+        }        
+                
                 
                 
                 this.hospitalDirectory.addHospital(hospital);
@@ -449,44 +504,12 @@ public class MainJFrame extends javax.swing.JFrame {
             connection.close();
         } 
         catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error fetching user data.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error fetching user data2.", "Error", JOptionPane.ERROR_MESSAGE);
         }        
         
     }
     
-        private void loadDoctors(){
-        Connection connection = connectToDatabase();
         
-        try {
-            String query = "SELECT * FROM Doctors"; // Query to fetch all users
-            PreparedStatement stmt = connection.prepareStatement(query); 
-            ResultSet resultSet = stmt.executeQuery();
-            
-            while(resultSet.next()){
-                String id = resultSet.getString("DoctorID");
-                String name = resultSet.getString("Name");
-                String specialization = resultSet.getString("Specialization");
-                String hospitalId = resultSet.getString("HospitalID");
-                String phone = resultSet.getString("Phone");
-
-                
-                Doctor doctor = new Doctor();
-                doctor.setDoctorId(id);
-                doctor.setHospitalId(hospitalId);
-                doctor.setName(name);
-                doctor.setSpecialization(specialization);
-                doctor.setPhone(phone);
-                
-                this.doctorDirectory.addNewDoctor(doctor);
-                        
-            }
-            connection.close();
-        } 
-        catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error fetching user data.", "Error", JOptionPane.ERROR_MESSAGE);
-        }        
-        
-    }
 
 
 

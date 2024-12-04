@@ -19,6 +19,9 @@ import model.HospitalManagement.Hospital;
 import model.HospitalManagement.HospitalDirectory;
 import model.users.User;
 import model.HospitalManagement.Doctor;
+import ui.AdministrativeRole.DonorRequestJPanel;
+import ui.HospitalManagement.*;
+import ui.AdministrativeRole.*;
 
 /**
  *
@@ -38,6 +41,7 @@ public class DoctorWorkAreaJPanel extends javax.swing.JPanel {
     public DoctorWorkAreaJPanel(JPanel userProcessContainer, HospitalDirectory hospitalDirectory, DoctorDirectory doctorDirectory, Connection connection, Hospital hospital, User user) {
         initComponents();
         this.user = user;
+        this.userProcessContainer = userProcessContainer;
         this.doctorDirectory = doctorDirectory;
         this.hospitalDirectory = hospitalDirectory;
         this.connection = connection;
@@ -142,7 +146,7 @@ if (imageBytes != null) {
             }
         });
 
-        btnDonorRegistrationRequest.setText("NOTIFY ORGAN AVAILABILITY");
+        btnDonorRegistrationRequest.setText("REGISTER ORGAN DONOR");
         btnDonorRegistrationRequest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDonorRegistrationRequestActionPerformed(evt);
@@ -241,7 +245,11 @@ if (imageBytes != null) {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDonorRegistrationRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDonorRegistrationRequestActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:   
+        ManageDonorRequestJPanel manageDonorRequestJPanel = new ManageDonorRequestJPanel(this.userProcessContainer, this.user);
+        userProcessContainer.add("ManageDonorRequestJPanel", manageDonorRequestJPanel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
         
     }//GEN-LAST:event_btnDonorRegistrationRequestActionPerformed
 
