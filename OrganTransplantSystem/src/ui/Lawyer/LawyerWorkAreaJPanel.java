@@ -22,16 +22,18 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
 
     private Connection connection;
     JPanel userProcessContainer;
+    String LawyerID;
+    
     /**
      * Creates new form LawyerWorkAreaJPanel
      */
-    public LawyerWorkAreaJPanel(JPanel userProcessContainer) {
+    public LawyerWorkAreaJPanel(JPanel userProcessContainer, String LawyerID) {
         initComponents();
         
         this.connection = DatabaseConnection.getConnection();
         this.userProcessContainer= userProcessContainer;
         populateLawyerTable();
-        populateCaseTable();
+        populateRequestTable();
     }
 
     /**
@@ -46,9 +48,8 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         btnBack = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblCaseDetail = new javax.swing.JTable();
-        btnUpload = new javax.swing.JButton();
+        btnDetail = new javax.swing.JButton();
         btnApprove = new javax.swing.JButton();
-        BtnDismiss = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblLawyerDetail = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
@@ -65,20 +66,20 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
 
         tblCaseDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Category", "Donor ID", "Organ Condition", "Recipient ID", "Medical Urgency", "Transplant Date", "Status"
+                "CaseID", "Message", "Request Date", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -91,7 +92,12 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(tblCaseDetail);
 
-        btnUpload.setText("Upload Legal documents");
+        btnDetail.setText("See Case Detail");
+        btnDetail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDetailActionPerformed(evt);
+            }
+        });
 
         btnApprove.setText("Approve & Assign a Lawyer");
         btnApprove.addActionListener(new java.awt.event.ActionListener() {
@@ -99,8 +105,6 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
                 btnApproveActionPerformed(evt);
             }
         });
-
-        BtnDismiss.setText("Dismiss");
 
         tblLawyerDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -146,16 +150,14 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnApprove)
-                        .addGap(27, 27, 27)
-                        .addComponent(BtnDismiss, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
-                        .addComponent(btnUpload)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDetail)
                         .addGap(32, 32, 32))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnBack)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1))
-                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE)
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -172,9 +174,8 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnUpload)
-                    .addComponent(btnApprove)
-                    .addComponent(BtnDismiss))
+                    .addComponent(btnDetail)
+                    .addComponent(btnApprove))
                 .addGap(104, 104, 104))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -190,18 +191,13 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         int selectedRow = tblCaseDetail.getSelectedRow();
         
-        if (selectedRow < 0){
-            return;
+        if (selectedRow != -1) { 
+            String caseID = tblCaseDetail.getValueAt(selectedRow, 0).toString();
+            updateStatus(caseID, "approved"); 
+        } else { 
+            JOptionPane.showMessageDialog(this, "Please select a case!"); 
         }
         
-        LawyerWorkRequest request = (LawyerWorkRequest)tblCaseDetail.getValueAt(selectedRow, 0);
-     
-        request.setStatus("Processing");
-        
-        ProcessWorkRequestJPanel processWorkRequestJPanel = new ProcessWorkRequestJPanel(userProcessContainer, request);
-        userProcessContainer.add("processWorkRequestJPanel", processWorkRequestJPanel);
-        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnApproveActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -209,12 +205,28 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         populateLawyerTable();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = tblCaseDetail.getSelectedRow();
+        String caseID= null;
+        
+        if (selectedRow != -1) { 
+            caseID = tblCaseDetail.getValueAt(selectedRow, 0).toString();
+            updateStatus(caseID, "approved"); 
+        } else { 
+            JOptionPane.showMessageDialog(this, "Please select a case!"); 
+        }
+        
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        userProcessContainer.add("CaseDetailJPanel", new CaseDetailJPanel(userProcessContainer, connection, caseID ));
+        layout.next(userProcessContainer);
+    }//GEN-LAST:event_btnDetailActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnDismiss;
     private javax.swing.JButton btnApprove;
     private javax.swing.JButton btnBack;
-    private javax.swing.JButton btnUpload;
+    private javax.swing.JButton btnDetail;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -251,46 +263,50 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
          }
     }
     
-    public void populateCaseTable(){
+    public void populateRequestTable(){
         DefaultTableModel model = (DefaultTableModel) tblCaseDetail.getModel();
         
         model.setRowCount(0); 
         if (connection != null) {
-             String query = "Select o.OrganType, t.DonorID, d.OrganCondition, t.RecipientID, r.MedicalUrgency, t.TransplantDate\n" +
-            "from Transplants t\n" +
-            "Join Organs o ON o.OrganID = t.OrganID\n" +
-            "Join Recipients r ON t.RecipientID= r.RecipientID\n" +
-            "Join DonorOrgans d ON t.DonorID= d.DonorID; "; 
+             String query = "SELECT * FROM  work_request"; 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query); 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) { 
-                String OrganType = resultSet.getString("OrganType"); 
-                String DonorID = resultSet.getString("DonorID"); 
-                String OrganCondition = resultSet.getString("OrganCondition");
-                String RecipientID = resultSet.getString("RecipientID"); 
-                String MedicalUrgency = resultSet.getString("MedicalUrgency"); 
-                String TransplantDate = resultSet.getString("TransplantDate"); 
+                String CaseID = resultSet.getString("caseID"); 
+                String Message = resultSet.getString("message"); 
+                String RequestDate = resultSet.getString("request_date"); 
+                String status = resultSet.getString("status");
                 
-                Object[] row = new Object[6];
-                row[0] = OrganType;
-                row[1] = DonorID;
-                row[2] = OrganCondition;
-                row[3] = RecipientID;
-                row[4] = MedicalUrgency;
-                row[5] = TransplantDate;
+                Object[] row = new Object[4];
+                row[0]= CaseID;
+                row[1] = Message;
+                row[2] = RequestDate;
+                row[3] = status;
                 
             
             model.addRow(row);
             } 
         } catch (SQLException e) { 
             e.printStackTrace(); 
-            JOptionPane.showMessageDialog(this, "Error getting Case data", "Error", JOptionPane.ERROR_MESSAGE); 
+            JOptionPane.showMessageDialog(this, "Error getting Request data", "Error", JOptionPane.ERROR_MESSAGE); 
         } 
          }
 }
     
+    private void updateStatus(String caseID, String newStatus) { 
+        if (connection != null) {
+             String query = "UPDATE work_request SET status = " +newStatus+"WHERE caseID="+caseID+";"; 
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query); 
+            ResultSet resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            JOptionPane.showMessageDialog(this, "Error updating Request data", "Error", JOptionPane.ERROR_MESSAGE); 
+        } 
+    }
     
+    }
     
     
 }

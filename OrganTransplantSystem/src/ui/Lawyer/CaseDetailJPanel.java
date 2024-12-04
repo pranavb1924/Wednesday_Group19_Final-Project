@@ -4,17 +4,35 @@
  */
 package ui.Lawyer;
 
+import java.awt.CardLayout;
+import java.sql.Connection;
+import javax.swing.JPanel;
+import java.sql.PreparedStatement; 
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import java.sql.SQLException;
+
 /**
  *
  * @author Rina
  */
 public class CaseDetailJPanel extends javax.swing.JPanel {
 
+    Connection connection;
+    String CaseID;
+    JPanel userProcessContainer;
+    
     /**
      * Creates new form CaseDetailJPanel
      */
-    public CaseDetailJPanel() {
+    public CaseDetailJPanel(JPanel userProcessContainer, Connection connection, String CaseID) {
         initComponents();
+        
+        this.connection= connection;
+        this.CaseID=CaseID;
+        this.userProcessContainer=userProcessContainer;
+        
+        populateInfo();
     }
 
     /**
@@ -26,58 +44,192 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tblCaseDetail = new javax.swing.JTable();
+        txtRequiredTransplant = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        txtRecipID = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtOrganCondition = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtUrgencyLevel = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtDonorID = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
 
-        tblCaseDetail.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Category", "Donor ID", "Organ Condition", "Recipient ID", "Medical Urgency", "Transplant Date", "Status"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        txtRequiredTransplant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRequiredTransplantActionPerformed(evt);
             }
         });
-        jScrollPane2.setViewportView(tblCaseDetail);
+
+        jLabel1.setText("Required Transplant: ");
+
+        txtRecipID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRecipIDActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Recipient ID:");
+
+        txtOrganCondition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOrganConditionActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Organ Condition: ");
+
+        txtUrgencyLevel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUrgencyLevelActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Urgency Level:");
+
+        txtDonorID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDonorIDActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Donor ID:");
+
+        btnBack.setText("<<< BACK");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 833, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(183, 183, 183)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtRecipID, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtRequiredTransplant, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtOrganCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUrgencyLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDonorID, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addComponent(btnBack)))
+                .addContainerGap(384, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(230, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addComponent(btnBack)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRequiredTransplant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRecipID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtUrgencyLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDonorID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtOrganCondition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtRequiredTransplantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRequiredTransplantActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRequiredTransplantActionPerformed
+
+    private void txtRecipIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRecipIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRecipIDActionPerformed
+
+    private void txtOrganConditionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOrganConditionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOrganConditionActionPerformed
+
+    private void txtUrgencyLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUrgencyLevelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUrgencyLevelActionPerformed
+
+    private void txtDonorIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDonorIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDonorIDActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        userProcessContainer.remove(this);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.previous(userProcessContainer);
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tblCaseDetail;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField txtDonorID;
+    private javax.swing.JTextField txtOrganCondition;
+    private javax.swing.JTextField txtRecipID;
+    private javax.swing.JTextField txtRequiredTransplant;
+    private javax.swing.JTextField txtUrgencyLevel;
     // End of variables declaration//GEN-END:variables
+    public void populateInfo(){
+         
+        if (connection != null) {
+             String query = "SELECT t.RequiredTransplant, t.patientID, t.UrgencyLevel, d.DonorID, d.OrganCondition\n" +
+            "FROM transplantPatients t\n" +
+            "JOIN DonorOrgans d ON t.OrganID = d.OrganID\n" +
+            "WHERE patientID= " + RecipientID + "; "; 
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query); 
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) { 
+                String RequiredTransplant = resultSet.getString("RequiredTransplant"); 
+                String patientID = resultSet.getString("patientID"); 
+                String UrgencyLevel = resultSet.getString("UrgencyLevel");
+                String DonorID = resultSet.getString("DonorID"); 
+                String OrganCondition = resultSet.getString("OrganCondition"); 
+                
+                txtRequiredTransplant.setText(RequiredTransplant);
+                txtRecipID.setText(patientID);
+                txtDonorID.setText(DonorID);
+                txtUrgencyLevel.setText(UrgencyLevel);
+                txtOrganCondition.setText(OrganCondition);
+                
+            } 
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            JOptionPane.showMessageDialog(this, "Error getting Case data in LawyerCaseDetailJPanel", "Error", JOptionPane.ERROR_MESSAGE); 
+            } 
+        }
+    }
+    
+    
 }
+
