@@ -12,6 +12,31 @@ public class DonorRegistrationRequest {
     
     private String firstName;
     private String middleName;
+    private String lastName;
+    private String dateOfBirth;
+    private String address;
+    private String city;
+    private String requestDate;
+    private String registrationApproved;
+    private String zipCode;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    private String phone;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    private String id;
 
     public String getFirstName() {
         return firstName;
@@ -68,17 +93,43 @@ public class DonorRegistrationRequest {
     public void setRequestDate(String requestDate) {
         this.requestDate = requestDate;
     }
-    private String lastName;
-    private String dateOfBirth;
-    private String address;
-    private String city;
-    private String requestDate;
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+   
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+    private String state;
+
+    public String getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(String bloodType) {
+        this.bloodType = bloodType;
+    }
+    private String bloodType;
+
+    public String getRegistrationApproved() {
+        return registrationApproved;
+    }
+
+    public void setRegistrationApproved(String registrationApproved) {
+        this.registrationApproved = registrationApproved;
+    }
     
     @Override
-public String toString() {
-    return firstName + " " + lastName;
-}
-
-    
-   
+    public String toString() {
+        return firstName + " " + lastName;
+    }    
 }

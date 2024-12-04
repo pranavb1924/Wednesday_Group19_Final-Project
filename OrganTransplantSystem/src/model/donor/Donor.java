@@ -14,6 +14,25 @@ public class Donor extends Person {
     private String donorID;
     private String status;
     private String medicalHistory;
+    private String registrationStatus;
+
+    public String getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(String bloodType) {
+        this.bloodType = bloodType;
+    }
+    private String bloodType;
+
+    public String getRegistrationStatus() {
+        return registrationStatus;
+    }
+
+    public void setRegistrationStatus(String registrationStatus) {
+        this.registrationStatus = registrationStatus;
+    }
+    
     
     public String getDonorID() {
         return donorID;

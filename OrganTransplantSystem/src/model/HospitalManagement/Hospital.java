@@ -19,6 +19,10 @@ public class Hospital {
     private String coordinatorId;
     private String adminId;
 
+    public Hospital(){
+        
+        this.doctorDirectory = new DoctorDirectory();
+    }
     public DoctorDirectory getDoctorDirectory() {
         return doctorDirectory;
     }
@@ -26,7 +30,7 @@ public class Hospital {
     public void setDoctorDirectory(DoctorDirectory doctorDirectory) {
         this.doctorDirectory = doctorDirectory;
     }
-    private DoctorDirectory doctorDirectory = new DoctorDirectory();
+    private DoctorDirectory doctorDirectory;
     
     public String getId() {
         return id;
