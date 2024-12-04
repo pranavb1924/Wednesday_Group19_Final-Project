@@ -145,8 +145,9 @@ public class HospitalAdminRoleJPanel extends javax.swing.JPanel {
 
     private void btnDoctorManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoctorManagementActionPerformed
         // TODO add your handling code here:
-        AddDoctorsJPanel addDoctorsJPanel = new AddDoctorsJPanel(this.userProcessContainer, this.hospitalDirectory, this.doctorDirectory , this.connection, this.hospital);
-        userProcessContainer.add("AddDoctorsJPanel", addDoctorsJPanel);
+        
+        ViewDoctorsJPanel viewDoctorsJPanel = new ViewDoctorsJPanel(this.userProcessContainer, this.hospitalDirectory, this.doctorDirectory , this.hospital);
+        userProcessContainer.add("ViewDoctorsJPanel", viewDoctorsJPanel);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
     }//GEN-LAST:event_btnDoctorManagementActionPerformed

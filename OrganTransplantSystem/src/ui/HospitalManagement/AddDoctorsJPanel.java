@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.imageio.ImageIO;
+import ui.HospitalManagement.*;
 
 
 /**
@@ -265,13 +266,22 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
         String doctorInsertSql = "INSERT INTO doctors (DoctorID, Name, Specialization, HospitalID, Phone) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement doctorStmt = this.connection.prepareStatement(doctorInsertSql);
 
+        Doctor doctor = new Doctor();
+        
+        doctor.setName(txtDoctorName.getText());
+        doctor.setSpecialization(txtSpecialization.getText());
+        doctor.setHospitalId(this.hospital.getId());
+        doctor.setPhone(txtPhone.getText());
         String doctorId = java.util.UUID.randomUUID().toString();
+        doctor.setDoctorId(doctorId);
+        this.hospital.getDoctorDirectory().addNewDoctor(doctor);
 
         doctorStmt.setString(1, doctorId);
         doctorStmt.setString(2, txtDoctorName.getText());
         doctorStmt.setString(3, txtSpecialization.getText());
         doctorStmt.setString(4, this.hospital.getId());
         doctorStmt.setString(5, txtPhone.getText());
+        
 
         int doctorRowsAffected = doctorStmt.executeUpdate();
 
@@ -319,6 +329,7 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
         e.printStackTrace();
         JOptionPane.showMessageDialog(null, "An unexpected error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
+        
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnUploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadActionPerformed
@@ -354,9 +365,10 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-                userProcessContainer.remove(this);
+        userProcessContainer.remove(this);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.previous(userProcessContainer);
+        
     }//GEN-LAST:event_btnBackActionPerformed
 
 

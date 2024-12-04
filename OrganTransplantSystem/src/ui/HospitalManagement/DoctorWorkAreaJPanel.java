@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Locale;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -50,9 +51,10 @@ public class DoctorWorkAreaJPanel extends javax.swing.JPanel {
     
     public void loadDoctorProfile(){
         Doctor doctor = this.doctorDirectory.searchDoctor(this.user.getId());
-        txtTitle.setText("Welcome "+doctor.getName());
-        txtDoctorName.setText(doctor.getName());
+        txtTitle.setText("Welcome "+doctor.getName().toUpperCase());
+        txtDoctorName.setText(doctor.getName().toUpperCase());
         txtDoctorPhoneNumber.setText(doctor.getPhone());
+        txtDoctorSpecialization.setText(doctor.getSpecialization().toUpperCase());
         try {
         // SQL query to fetch the profile_image for the given username
         String query = "SELECT profile_image FROM user WHERE username = ?";
@@ -139,6 +141,9 @@ if (imageBytes != null) {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("PHONE NUMBER:");
 
+        btnViewCases.setBackground(new java.awt.Color(22, 29, 29));
+        btnViewCases.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btnViewCases.setForeground(new java.awt.Color(255, 255, 255));
         btnViewCases.setText("VIEW CASES");
         btnViewCases.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,6 +151,9 @@ if (imageBytes != null) {
             }
         });
 
+        btnDonorRegistrationRequest.setBackground(new java.awt.Color(22, 29, 29));
+        btnDonorRegistrationRequest.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btnDonorRegistrationRequest.setForeground(new java.awt.Color(255, 255, 255));
         btnDonorRegistrationRequest.setText("REGISTER ORGAN DONOR");
         btnDonorRegistrationRequest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,7 +161,10 @@ if (imageBytes != null) {
             }
         });
 
-        btnBack.setText("btn");
+        btnBack.setBackground(new java.awt.Color(22, 29, 29));
+        btnBack.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(255, 255, 255));
+        btnBack.setText("BACK");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBackActionPerformed(evt);
@@ -166,14 +177,17 @@ if (imageBytes != null) {
 
         txtDoctorName.setEditable(false);
         txtDoctorName.setBackground(new java.awt.Color(22, 29, 29));
+        txtDoctorName.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         txtDoctorName.setForeground(new java.awt.Color(255, 255, 255));
 
         txtDoctorPhoneNumber.setEditable(false);
         txtDoctorPhoneNumber.setBackground(new java.awt.Color(22, 29, 29));
+        txtDoctorPhoneNumber.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         txtDoctorPhoneNumber.setForeground(new java.awt.Color(255, 255, 255));
 
         txtDoctorSpecialization.setEditable(false);
         txtDoctorSpecialization.setBackground(new java.awt.Color(22, 29, 29));
+        txtDoctorSpecialization.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         txtDoctorSpecialization.setForeground(new java.awt.Color(255, 255, 255));
         txtDoctorSpecialization.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -191,9 +205,9 @@ if (imageBytes != null) {
                     .addComponent(txtTitle)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(imgProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel3)
@@ -203,14 +217,14 @@ if (imageBytes != null) {
                                     .addComponent(txtDoctorSpecialization, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtDoctorPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtDoctorName, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(btnDonorRegistrationRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnViewCases, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 404, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(188, 188, 188)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnDonorRegistrationRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnViewCases, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 222, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(224, 224, 224)
-                .addComponent(btnBack)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,22 +239,22 @@ if (imageBytes != null) {
                         .addGap(47, 47, 47)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(txtDoctorName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtDoctorName, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(txtDoctorPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtDoctorPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(txtDoctorSpecialization, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(173, 173, 173)
+                            .addComponent(txtDoctorSpecialization, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(47, 47, 47)
                         .addComponent(btnViewCases, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDonorRegistrationRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(139, 139, 139)
-                .addComponent(btnBack)
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(391, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

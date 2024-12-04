@@ -291,7 +291,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private static Connection connectToDatabase() {
     final String URL = "jdbc:mysql://localhost:3306/OrganTransplantDb";
     final String USER = "root";
-    final String PASSWORD = "sql123456"; 
+    final String PASSWORD = ""; 
 
     try {
 
