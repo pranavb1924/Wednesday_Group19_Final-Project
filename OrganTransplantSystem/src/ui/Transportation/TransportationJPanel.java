@@ -4,10 +4,17 @@
  */
 package ui.Transportation;
 
+import DatabaseConn.DatabaseConnection;
 import ui.AdministrativeRole.*;
 import java.awt.CardLayout;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import java.sql.Timestamp;
 
 /**
  *
@@ -16,28 +23,58 @@ import javax.swing.table.DefaultTableModel;
 public class TransportationJPanel extends javax.swing.JPanel {
 
     private JPanel userProcessContainer;
+    private Connection connection;
     
     /**
      * Creates new form ManageOrganizationJPanel
      */
-    public TransportationJPanel(JPanel userProcessContainer,OrganizationDirectory organizationDir) {
+    public TransportationJPanel(JPanel userProcessContainer) {
         initComponents();
-        this.userProcessContainer = userProcessContainer;
-        this.organizationDir = organizationDir;
         
+        this.userProcessContainer = userProcessContainer;
+        this.connection = DatabaseConnection.getConnection();
+        
+        populateTable();
     }
 
-    private void populateTable(Organization organization){
+    private void populateTable(){
         DefaultTableModel model = (DefaultTableModel) tblTransTasks.getModel();
         
-        model.setRowCount(0);
-        
-        for (WorkQueue workqueue : organization.getEmployeeDirectory().getEmployeeList()){
-            Object[] row = new Object[2];
-            row[0] = employee.getId();
-            row[1] = employee.getName();
+        model.setRowCount(0); 
+        if (connection != null) {
+             String query = "SELECT * FROM deliveryTasks; "; // Query to fetch all Lawyer
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query); 
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) { 
+                String ID = resultSet.getString("Id"); 
+                String StartAddress = resultSet.getString("StartAddress"); 
+                String EndAddress = resultSet.getString("EndAddress"); 
+                String Category = resultSet.getString("Category");
+                String TimeLimit = resultSet.getString("TimeLimit"); 
+                String StartTime = resultSet.getString("StartTime"); 
+                String EndTime = resultSet.getString("EndTime"); 
+                String Status = resultSet.getString("Status"); 
+                
+                Object[] row = new Object[8];
+                row[0] = ID;
+                row[1] = StartAddress;
+                row[2] = EndAddress;
+                row[3] = Category;
+                row[4] = TimeLimit;
+                row[5] = Status;
+                row[6] = StartTime;
+                row[7] = EndTime;
+
+                
+            
             model.addRow(row);
-        }
+            } 
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            JOptionPane.showMessageDialog(this, "Error getting deliveryTasks data", "Error", JOptionPane.ERROR_MESSAGE); 
+        } 
+         }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,22 +91,23 @@ public class TransportationJPanel extends javax.swing.JPanel {
         btnBack = new javax.swing.JButton();
         btnCompleted1 = new javax.swing.JButton();
 
+        tblTransTasks.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         tblTransTasks.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Start Address", "End Address", "Category", "Time Limit", "Status", "Start Time", "End Time"
+                "ID", "Start Address", "End Address", "Category", "Time Limit", "Status", "Start Time", "End Time"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -81,15 +119,6 @@ public class TransportationJPanel extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(tblTransTasks);
-        if (tblTransTasks.getColumnModel().getColumnCount() > 0) {
-            tblTransTasks.getColumnModel().getColumn(0).setResizable(false);
-            tblTransTasks.getColumnModel().getColumn(1).setResizable(false);
-            tblTransTasks.getColumnModel().getColumn(2).setResizable(false);
-            tblTransTasks.getColumnModel().getColumn(3).setResizable(false);
-            tblTransTasks.getColumnModel().getColumn(4).setResizable(false);
-            tblTransTasks.getColumnModel().getColumn(5).setResizable(false);
-            tblTransTasks.getColumnModel().getColumn(6).setResizable(false);
-        }
 
         btnStart.setText("Start");
         btnStart.addActionListener(new java.awt.event.ActionListener() {
@@ -116,42 +145,46 @@ public class TransportationJPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(66, 66, 66)
-                .addComponent(btnBack)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(41, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jScrollPane1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(btnBack)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 442, Short.MAX_VALUE)
                         .addComponent(btnStart, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnCompleted1))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+                        .addComponent(btnCompleted1)))
+                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(69, 69, 69)
+                .addGap(97, 97, 97)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addGap(95, 95, 95)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnStart)
-                    .addComponent(btnCompleted1))
-                .addGap(30, 30, 30)
-                .addComponent(btnBack)
-                .addGap(48, 48, 48))
+                    .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCompleted1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(133, 133, 133))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
+        int selectedRow = tblTransTasks.getSelectedRow();
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         
-        Organization organization = (Organization) organizationEmpJComboBox.getSelectedItem();
-        String name = nameJTextField.getText();
-        
-        organization.getEmployeeDirectory().createEmployee(name);
-        populateTable(organization);
+        if (selectedRow != -1) { 
+            String ID = tblTransTasks.getValueAt(selectedRow, 0).toString();
+            updateStatus(ID, "Pending"); 
+            updateStartTime(ID, currentTime);
+        } else { 
+            JOptionPane.showMessageDialog(this, "Please select a row!"); 
+        }
+        populateTable();
         
     }//GEN-LAST:event_btnStartActionPerformed
 
@@ -164,6 +197,17 @@ public class TransportationJPanel extends javax.swing.JPanel {
 
     private void btnCompleted1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompleted1ActionPerformed
         // TODO add your handling code here:
+        int selectedRow = tblTransTasks.getSelectedRow();
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        
+        if (selectedRow != -1) { 
+            String ID = tblTransTasks.getValueAt(selectedRow, 0).toString();
+            updateStatus(ID, "Completed"); 
+            updateEndTime(ID, currentTime);
+        } else { 
+            JOptionPane.showMessageDialog(this, "Please select a row!"); 
+        }
+        populateTable();
     }//GEN-LAST:event_btnCompleted1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -173,4 +217,67 @@ public class TransportationJPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblTransTasks;
     // End of variables declaration//GEN-END:variables
+ private void updateStatus(String ID, String newStatus) { 
+      if (connection != null) { 
+          String query = "UPDATE deliveryTasks SET Status = ? WHERE Id = ?"; 
+          try { 
+              PreparedStatement preparedStatement = connection.prepareStatement(query); 
+              preparedStatement.setString(1, newStatus); 
+              preparedStatement.setString(2, ID); 
+              int affectedRows = preparedStatement.executeUpdate(); 
+              if (affectedRows > 0) { 
+                  //JOptionPane.showMessageDialog(this, "DeliveryTasks Update Successfully!"); 
+              } else { 
+                  //JOptionPane.showMessageDialog(this, "Update Failed", "Error", JOptionPane.ERROR_MESSAGE); 
+              } 
+          } catch (SQLException e) { 
+              e.printStackTrace(); 
+              JOptionPane.showMessageDialog(this, "Error updating DeliveryTasks data", "Error", JOptionPane.ERROR_MESSAGE); 
+          } 
+      }
+    
+    }
+
+private void updateStartTime(String ID, Timestamp Time) { 
+      if (connection != null) { 
+          String query = "UPDATE deliveryTasks SET StartTime = ? WHERE Id = ?"; 
+          try { 
+              PreparedStatement preparedStatement = connection.prepareStatement(query); 
+              preparedStatement.setTimestamp(1, Time); 
+              preparedStatement.setString(2, ID); 
+              int affectedRows = preparedStatement.executeUpdate(); 
+              if (affectedRows > 0) { 
+                  //JOptionPane.showMessageDialog(this, "Delivery Start Time Update Successfully!"); 
+              } else { 
+                  //JOptionPane.showMessageDialog(this, "Update Time Failed", "Error", JOptionPane.ERROR_MESSAGE); 
+              } 
+          } catch (SQLException e) { 
+              e.printStackTrace(); 
+              JOptionPane.showMessageDialog(this, "Error updating Delivery StartTime data", "Error", JOptionPane.ERROR_MESSAGE); 
+          } 
+      }
+    
+    }
+
+private void updateEndTime(String ID, Timestamp Time) { 
+      if (connection != null) { 
+          String query = "UPDATE deliveryTasks SET EndTime = ? WHERE Id = ?"; 
+          try { 
+              PreparedStatement preparedStatement = connection.prepareStatement(query); 
+              preparedStatement.setTimestamp(1, Time); 
+              preparedStatement.setString(2, ID); 
+              int affectedRows = preparedStatement.executeUpdate(); 
+              if (affectedRows > 0) { 
+                  JOptionPane.showMessageDialog(this, "Delivery End Time Update Successfully!"); 
+              } else { 
+                  JOptionPane.showMessageDialog(this, "Update Time Failed", "Error", JOptionPane.ERROR_MESSAGE); 
+              } 
+          } catch (SQLException e) { 
+              e.printStackTrace(); 
+              JOptionPane.showMessageDialog(this, "Error updating Delivery EndTime data", "Error", JOptionPane.ERROR_MESSAGE); 
+          } 
+      }
+    
+    }
+
 }

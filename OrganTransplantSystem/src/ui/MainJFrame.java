@@ -21,6 +21,7 @@ import model.Lawyer.LawyerDirectory;
 import ui.HospitalManagement.*;
 import ui.AdministrativeRole.HomePanel;
 import ui.Lawyer.LawyerWorkAreaJPanel;
+import ui.Transportation.TransportationJPanel;
 /**
  *
  * @author Pranav
@@ -381,6 +382,12 @@ public class MainJFrame extends javax.swing.JFrame {
                     Lawyer currentLawyer = this.lawyerDirectory.findLawyerById(this.currentUser.getId());
                     LawyerWorkAreaJPanel lawyerWorkAreaJPanel = new LawyerWorkAreaJPanel(container, this.currentUser.getId());
                     return lawyerWorkAreaJPanel;
+                    
+                case "TRANSPORTATION":
+                    //Lawyer currentLawyer = this.lawyerDirectory.findLawyerById(this.currentUser.getId());
+                    TransportationJPanel transportationJPanel = new TransportationJPanel(container);
+                    return transportationJPanel;
+                    
                 default:
                     System.out.println("Unrecognized role. Access denied.");
                     // Handle unrecognized role
