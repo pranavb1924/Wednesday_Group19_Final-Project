@@ -201,7 +201,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         } else { 
             JOptionPane.showMessageDialog(this, "Please select a case!"); 
         }
-        
+        populateRequestTable();
     }//GEN-LAST:event_btnApproveActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -224,6 +224,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         userProcessContainer.add("CaseDetailJPanel", new CaseDetailJPanel(userProcessContainer, connection, patientID ));
         layout.next(userProcessContainer);
+        
     }//GEN-LAST:event_btnDetailActionPerformed
 
 
