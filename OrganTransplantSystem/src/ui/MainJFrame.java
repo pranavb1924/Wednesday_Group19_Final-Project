@@ -16,8 +16,11 @@ import javax.swing.JPanel;
 import ui.DonorManagement.*;
 import ui.AdministrativeRole.*;
 import model.HospitalManagement.*;
+import model.Lawyer.Lawyer;
+import model.Lawyer.LawyerDirectory;
 import ui.HospitalManagement.*;
 import ui.AdministrativeRole.HomePanel;
+import ui.Lawyer.LawyerWorkAreaJPanel;
 /**
  *
  * @author Pranav
@@ -33,6 +36,7 @@ public class MainJFrame extends javax.swing.JFrame {
     UserDirectory userDirectory = new UserDirectory();
     HospitalDirectory hospitalDirectory = new HospitalDirectory();
     DoctorDirectory doctorDirectory = new DoctorDirectory();
+    LawyerDirectory lawyerDirectory = new LawyerDirectory();
     JPanel userProcessContainer = new JPanel();
     String currentUserRole;
     Connection currentConnection;
@@ -334,7 +338,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 user.setEmail(email);
                 user.setPassword(passWord);
                 user.setId(id);
-                String getRoles = "SELECT * FROM Roles where RoleId = '"+role+"'";
+                String getRoles = "SELECT * FROM Roles where RoleID = '"+role+"'";
                 PreparedStatement stmt2 = connection.prepareCall(getRoles);
                 ResultSet roleResultSet = stmt2.executeQuery();
                 while (roleResultSet.next()){
@@ -372,6 +376,11 @@ public class MainJFrame extends javax.swing.JFrame {
                     Hospital currentHospitalDetails = this.hospitalDirectory.findHospitalByAdminId(this.currentUser.getId());
                     DoctorWorkAreaJPanel doctorWorkAreaJPanel = new DoctorWorkAreaJPanel(container, this.hospitalDirectory, this.doctorDirectory, this.currentConnection, currentHospitalDetails, this.currentUser);
                     return doctorWorkAreaJPanel;
+                    
+                case "LAWYER":
+                    Lawyer currentLawyer = this.lawyerDirectory.findLawyerById(this.currentUser.getId());
+                    LawyerWorkAreaJPanel lawyerWorkAreaJPanel = new LawyerWorkAreaJPanel(container, this.currentUser.getId());
+                    return lawyerWorkAreaJPanel;
                 default:
                     System.out.println("Unrecognized role. Access denied.");
                     // Handle unrecognized role

@@ -19,17 +19,17 @@ import java.sql.SQLException;
 public class CaseDetailJPanel extends javax.swing.JPanel {
 
     Connection connection;
-    String CaseID;
+    String patientID;
     JPanel userProcessContainer;
     
     /**
      * Creates new form CaseDetailJPanel
      */
-    public CaseDetailJPanel(JPanel userProcessContainer, Connection connection, String CaseID) {
+    public CaseDetailJPanel(JPanel userProcessContainer, Connection connection, String patientID) {
         initComponents();
         
         this.connection= connection;
-        this.CaseID=CaseID;
+        this.patientID=patientID;
         this.userProcessContainer=userProcessContainer;
         
         populateInfo();
@@ -203,9 +203,10 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
          
         if (connection != null) {
              String query = "SELECT t.RequiredTransplant, t.patientID, t.UrgencyLevel, d.DonorID, d.OrganCondition\n" +
-            "FROM transplantPatients t\n" +
-            "JOIN DonorOrgans d ON t.OrganID = d.OrganID\n" +
-            "WHERE patientID= " + RecipientID + "; "; 
+                "FROM work_request w\n" +
+                "WHERE patientID=" + patientID+
+                "JOIN transplantPatients t ON w.patientID= t.patientID\n" +
+                "JOIN DonorOrgans d ON t.OrganID = d.OrganID"; 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query); 
             ResultSet resultSet = preparedStatement.executeQuery();

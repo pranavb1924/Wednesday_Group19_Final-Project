@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author rexinshiminsutongxue
+ * @author Rina
  */
 public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
 
@@ -54,7 +54,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         tblLawyerDetail = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(108, 172, 157));
+        setBackground(new java.awt.Color(110, 146, 147));
 
         btnBack.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnBack.setText("<<< Back");
@@ -64,6 +64,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
+        tblCaseDetail.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         tblCaseDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -72,7 +73,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "CaseID", "Message", "Request Date", "Status"
+                "Message", "Request Date", "PatientID", "Status"
             }
         ) {
             Class[] types = new Class [] {
@@ -90,6 +91,8 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblCaseDetail.setGridColor(new java.awt.Color(0, 0, 0));
+        tblCaseDetail.setSelectionBackground(new java.awt.Color(204, 204, 204));
         jScrollPane2.setViewportView(tblCaseDetail);
 
         btnDetail.setText("See Case Detail");
@@ -106,6 +109,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
+        tblLawyerDetail.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         tblLawyerDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -168,14 +172,14 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBack)
                     .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
                 .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDetail)
-                    .addComponent(btnApprove))
+                    .addComponent(btnDetail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnApprove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(104, 104, 104))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -208,17 +212,17 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
     private void btnDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailActionPerformed
         // TODO add your handling code here:
         int selectedRow = tblCaseDetail.getSelectedRow();
-        String caseID= null;
-        
+        String patientID= null;
+     
         if (selectedRow != -1) { 
-            caseID = tblCaseDetail.getValueAt(selectedRow, 0).toString();
-            updateStatus(caseID, "approved"); 
+            patientID = tblCaseDetail.getValueAt(selectedRow, 2).toString();
+            updateStatus(patientID, "approved"); 
         } else { 
             JOptionPane.showMessageDialog(this, "Please select a case!"); 
         }
         
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        userProcessContainer.add("CaseDetailJPanel", new CaseDetailJPanel(userProcessContainer, connection, caseID ));
+        userProcessContainer.add("CaseDetailJPanel", new CaseDetailJPanel(userProcessContainer, connection, patientID ));
         layout.next(userProcessContainer);
     }//GEN-LAST:event_btnDetailActionPerformed
 
@@ -238,21 +242,21 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         
         model.setRowCount(0); 
         if (connection != null) {
-             String query = "SELECT * FROM Lawyer "; // Query to fetch all Lawyer
+             String query = "SELECT * FROM Lawyers; "; // Query to fetch all Lawyer
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query); 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) { 
-                String id = resultSet.getString("LawyerId"); 
+                String id = resultSet.getString("LawyerID"); 
                 String name = resultSet.getString("Name"); 
                 String phone = resultSet.getString("Phone");
-                String specialzation = resultSet.getString("Specialzation"); 
+                String specialization = resultSet.getString("Specialization"); 
                 
                 Object[] row = new Object[4];
                 row[0] = id;
                 row[1] = name;
                 row[2] = phone;
-                row[3] = specialzation;
+                row[3] = specialization;
             
             model.addRow(row);
             } 
@@ -273,15 +277,15 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
             PreparedStatement preparedStatement = connection.prepareStatement(query); 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) { 
-                String CaseID = resultSet.getString("caseID"); 
                 String Message = resultSet.getString("message"); 
                 String RequestDate = resultSet.getString("request_date"); 
                 String status = resultSet.getString("status");
+                String patientID = resultSet.getString("patientID");
                 
                 Object[] row = new Object[4];
-                row[0]= CaseID;
-                row[1] = Message;
-                row[2] = RequestDate;
+                row[0] = Message;
+                row[1] = RequestDate;
+                row[2] = patientID;
                 row[3] = status;
                 
             
@@ -303,6 +307,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         } catch (SQLException e) { 
             e.printStackTrace(); 
             JOptionPane.showMessageDialog(this, "Error updating Request data", "Error", JOptionPane.ERROR_MESSAGE); 
+            return;
         } 
     }
     
