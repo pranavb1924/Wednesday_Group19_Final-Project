@@ -269,6 +269,11 @@ if (imageBytes != null) {
 
     private void btnViewCasesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewCasesActionPerformed
         // TODO add your handling code here:
+        DoctorTransplantCaseJPanel doctorTransplantCaseJPanel = new DoctorTransplantCaseJPanel(this.userProcessContainer, this.hospitalDirectory, this.doctorDirectory, this.connection, this.hospital, this.user);
+        userProcessContainer.add("DoctorTransplantCaseJPanel", doctorTransplantCaseJPanel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
+        
     }//GEN-LAST:event_btnViewCasesActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed

@@ -4,6 +4,8 @@
  */
 package model.HospitalManagement;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author pranavb
@@ -15,6 +17,19 @@ public class Doctor {
     private String hospitalId;
     private String DoctorId;
     private String phone;
+
+    public TransplantCaseDirectory getTransplantCaseDirectory() {
+        return transplantCaseDirectory;
+    }
+
+    public void setTransplantCaseDirectory(TransplantCaseDirectory transplantCaseDirectory) {
+        this.transplantCaseDirectory = transplantCaseDirectory;
+    }
+    private TransplantCaseDirectory transplantCaseDirectory;
+    
+    public Doctor(){
+        this.transplantCaseDirectory = new TransplantCaseDirectory();
+    }
     
     public String getName() {
         return name;

@@ -503,7 +503,7 @@ public class MainJFrame extends javax.swing.JFrame {
                         doctor.setName(docname);
                         doctor.setSpecialization(docspecialization);
                         doctor.setPhone(docphone);
-
+                                
                         hospital.getDoctorDirectory().addNewDoctor(doctor);      
                     }
                     //connection.close();

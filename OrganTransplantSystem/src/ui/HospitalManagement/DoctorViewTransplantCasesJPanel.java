@@ -4,6 +4,14 @@
  */
 package ui.HospitalManagement;
 
+import java.sql.Connection;
+import javax.swing.JPanel;
+import model.HospitalManagement.Doctor;
+import model.HospitalManagement.DoctorDirectory;
+import model.HospitalManagement.Hospital;
+import model.HospitalManagement.HospitalDirectory;
+import model.users.User;
+
 /**
  *
  * @author pranavb
@@ -13,8 +21,21 @@ public class DoctorViewTransplantCasesJPanel extends javax.swing.JPanel {
     /**
      * Creates new form DoctorViewTransplantCasesJPanel
      */
-    public DoctorViewTransplantCasesJPanel() {
+    JPanel userProcessContainer;
+    HospitalDirectory hospitalDirectory;
+    DoctorDirectory doctorDirectory;
+    Connection connection;
+    Hospital hospital;
+    User user;
+    Doctor currentDoctor;
+    public DoctorViewTransplantCasesJPanel(JPanel userProcessContainer, HospitalDirectory hospitalDirectory, DoctorDirectory doctorDirectory, Connection connection, Hospital hospital, User user) {
         initComponents();
+        this.user = user;
+        this.userProcessContainer = userProcessContainer;
+        this.doctorDirectory = doctorDirectory;
+        this.hospitalDirectory = hospitalDirectory;
+        this.connection = connection;
+        this.currentDoctor = this.doctorDirectory.searchDoctor(this.user.getReferenceId());
     }
 
     /**
