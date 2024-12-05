@@ -19,17 +19,17 @@ import java.sql.SQLException;
 public class CaseDetailJPanel extends javax.swing.JPanel {
 
     Connection connection;
-    String patientID;
+    String caseID;
     JPanel userProcessContainer;
     
     /**
      * Creates new form CaseDetailJPanel
      */
-    public CaseDetailJPanel(JPanel userProcessContainer, Connection connection, String patientID) {
+    public CaseDetailJPanel(JPanel userProcessContainer, Connection connection, String caseID) {
         initComponents();
         
         this.connection= connection;
-        this.patientID=patientID;
+        this.caseID=caseID;
         this.userProcessContainer=userProcessContainer;
         
         populateInfo();
@@ -52,7 +52,7 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         txtUrgencyLevel = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtDonorID = new javax.swing.JTextField();
+        txtOrganID = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
 
@@ -88,13 +88,13 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
 
         jLabel4.setText("Urgency Level:");
 
-        txtDonorID.addActionListener(new java.awt.event.ActionListener() {
+        txtOrganID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDonorIDActionPerformed(evt);
+                txtOrganIDActionPerformed(evt);
             }
         });
 
-        jLabel5.setText("Donor ID:");
+        jLabel5.setText("Organ ID:");
 
         btnBack.setText("<<< BACK");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
@@ -123,7 +123,7 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
                             .addComponent(txtRequiredTransplant, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtOrganCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtUrgencyLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDonorID, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtOrganID, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(71, 71, 71)
                         .addComponent(btnBack)))
@@ -148,7 +148,7 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDonorID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtOrganID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -174,9 +174,9 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUrgencyLevelActionPerformed
 
-    private void txtDonorIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDonorIDActionPerformed
+    private void txtOrganIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOrganIDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtDonorIDActionPerformed
+    }//GEN-LAST:event_txtOrganIDActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
@@ -193,8 +193,8 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField txtDonorID;
     private javax.swing.JTextField txtOrganCondition;
+    private javax.swing.JTextField txtOrganID;
     private javax.swing.JTextField txtRecipID;
     private javax.swing.JTextField txtRequiredTransplant;
     private javax.swing.JTextField txtUrgencyLevel;
@@ -202,11 +202,11 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
     public void populateInfo(){
          
         if (connection != null) {
-             String query = "SELECT t.RequiredTransplant, t.patientID, t.UrgencyLevel, d.DonorID, d.OrganCondition\n" +
+             String query = "SELECT t.RequiredTransplant, t.patientID, t.UrgencyLevel, w.OrganID, d.OrganCondition\n" +
                 "FROM work_request w\n" +
-                "WHERE patientID=" + patientID+
+                "WHERE caseID=" + caseID+
                 "JOIN transplantPatients t ON w.patientID= t.patientID\n" +
-                "JOIN DonorOrgans d ON t.OrganID = d.OrganID"; 
+                "JOIN DonorOrgans d ON w.OrganID = d.OrganID"; 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query); 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -214,12 +214,12 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
                 String RequiredTransplant = resultSet.getString("RequiredTransplant"); 
                 String patientID = resultSet.getString("patientID"); 
                 String UrgencyLevel = resultSet.getString("UrgencyLevel");
-                String DonorID = resultSet.getString("DonorID"); 
+                String OrganID = resultSet.getString("OrganID"); 
                 String OrganCondition = resultSet.getString("OrganCondition"); 
                 
                 txtRequiredTransplant.setText(RequiredTransplant);
                 txtRecipID.setText(patientID);
-                txtDonorID.setText(DonorID);
+                txtOrganID.setText(OrganID);
                 txtUrgencyLevel.setText(UrgencyLevel);
                 txtOrganCondition.setText(OrganCondition);
                 

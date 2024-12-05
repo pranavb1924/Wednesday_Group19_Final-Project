@@ -33,7 +33,7 @@
                           <Component id="txtRequiredTransplant" min="-2" pref="134" max="-2" attributes="0"/>
                           <Component id="txtOrganCondition" min="-2" pref="134" max="-2" attributes="0"/>
                           <Component id="txtUrgencyLevel" min="-2" pref="134" max="-2" attributes="0"/>
-                          <Component id="txtDonorID" min="-2" pref="134" max="-2" attributes="0"/>
+                          <Component id="txtOrganID" min="-2" pref="134" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -67,7 +67,7 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtDonorID" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtOrganID" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -121,14 +121,14 @@
         <Property name="text" type="java.lang.String" value="Urgency Level:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtDonorID">
+    <Component class="javax.swing.JTextField" name="txtOrganID">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDonorIDActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtOrganIDActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Donor ID:"/>
+        <Property name="text" type="java.lang.String" value="Organ ID:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnBack">

@@ -52,7 +52,12 @@ public class TransplantCoordinatorJPanel extends javax.swing.JPanel {
 
         jButton2.setText("jButton1");
 
-        jButton3.setText("jButton1");
+        jButton3.setText("Notification to lawyers");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         btnBack.setText("BACK");
 
@@ -95,6 +100,14 @@ public class TransplantCoordinatorJPanel extends javax.swing.JPanel {
         layout.next(userProcessContainer);
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        CoordinatorToLawyerRequest coordinatorToLawyerRequest = new CoordinatorToLawyerRequest(this.userProcessContainer);
+        userProcessContainer.add("CoordinatorToLawyerRequest", coordinatorToLawyerRequest);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -67,20 +67,20 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         tblCaseDetail.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         tblCaseDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Message", "Request Date", "PatientID", "Status"
+                "caseID", "Request Date", "PatientID", "Message", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -215,7 +215,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         String patientID= null;
      
         if (selectedRow != -1) { 
-            patientID = tblCaseDetail.getValueAt(selectedRow, 2).toString();
+            patientID = tblCaseDetail.getValueAt(selectedRow, 0).toString();
             updateStatus(patientID, "approved"); 
         } else { 
             JOptionPane.showMessageDialog(this, "Please select a case!"); 
@@ -273,7 +273,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         
         model.setRowCount(0); 
         if (connection != null) {
-             String query = "SELECT * FROM  work_request"; 
+             String query = "SELECT * FROM  work_request WHERE receiver_id= 6;"; 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query); 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -282,12 +282,14 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
                 String RequestDate = resultSet.getString("request_date"); 
                 String status = resultSet.getString("status");
                 String patientID = resultSet.getString("patientID");
+                String caseID = resultSet.getString("caseID");
                 
-                Object[] row = new Object[4];
-                row[0] = Message;
+                Object[] row = new Object[5];
+                row[0] = caseID;
                 row[1] = RequestDate;
                 row[2] = patientID;
-                row[3] = status;
+                row[3] = Message;
+                row[4] = status;
                 
             
             model.addRow(row);
@@ -308,9 +310,9 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
                 preparedStatement.setString(2, caseID); 
                 int affectedRows = preparedStatement.executeUpdate(); 
                 if (affectedRows > 0) { 
-                    JOptionPane.showMessageDialog(this, "Case Update Successfully!"); 
+                    //JOptionPane.showMessageDialog(this, "Case Update Successfully!"); 
                 } else { 
-                    JOptionPane.showMessageDialog(this, "Update Failed", "Error", JOptionPane.ERROR_MESSAGE); 
+                    //JOptionPane.showMessageDialog(this, "Update Failed", "Error", JOptionPane.ERROR_MESSAGE); 
                 } 
             } catch (SQLException e) { 
                 e.printStackTrace(); 
