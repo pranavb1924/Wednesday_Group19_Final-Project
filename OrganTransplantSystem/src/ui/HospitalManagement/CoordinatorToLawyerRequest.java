@@ -278,6 +278,8 @@ public class CoordinatorToLawyerRequest extends javax.swing.JPanel {
         if (connection != null) { 
             String query = "INSERT INTO work_request (Message, sender_id, receiver_id, status,request_date, caseID,patientID, OrganID) VALUES (?, ?,?,?,?,?,?,?)";
         try { 
+            System.out.println("Inserting data with:"); System.out.println("Message = " + Message); System.out.println("CaseID = " + CaseID); System.out.println("PatientID = " + PatientID); System.out.println("OrganID = " + OrganID); System.out.println("Time = " + Time);
+            
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, Message); 
             preparedStatement.setString(2, "3"); 

@@ -212,17 +212,17 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
     private void btnDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailActionPerformed
         // TODO add your handling code here:
         int selectedRow = tblCaseDetail.getSelectedRow();
-        String patientID= null;
+        String caseID= null;
      
         if (selectedRow != -1) { 
-            patientID = tblCaseDetail.getValueAt(selectedRow, 0).toString();
-            updateStatus(patientID, "approved"); 
+            caseID = tblCaseDetail.getValueAt(selectedRow, 0).toString();
+            
         } else { 
             JOptionPane.showMessageDialog(this, "Please select a case!"); 
         }
         
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        userProcessContainer.add("CaseDetailJPanel", new CaseDetailJPanel(userProcessContainer, connection, patientID ));
+        userProcessContainer.add("CaseDetailJPanel", new CaseDetailJPanel(userProcessContainer, connection, caseID ));
         layout.next(userProcessContainer);
         
     }//GEN-LAST:event_btnDetailActionPerformed
@@ -264,6 +264,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         } catch (SQLException e) { 
             e.printStackTrace(); 
             JOptionPane.showMessageDialog(this, "Error getting Lawyer data", "Error", JOptionPane.ERROR_MESSAGE); 
+            return;
         } 
          }
     }
@@ -297,6 +298,7 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         } catch (SQLException e) { 
             e.printStackTrace(); 
             JOptionPane.showMessageDialog(this, "Error getting Request data", "Error", JOptionPane.ERROR_MESSAGE); 
+            return;
         } 
          }
 }
@@ -316,7 +318,8 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
                 } 
             } catch (SQLException e) { 
                 e.printStackTrace(); 
-                JOptionPane.showMessageDialog(this, "Error updating Request data", "Error", JOptionPane.ERROR_MESSAGE); 
+                JOptionPane.showMessageDialog(this, "Error updating Status", "Error", JOptionPane.ERROR_MESSAGE); 
+                return;
             } 
         }
     

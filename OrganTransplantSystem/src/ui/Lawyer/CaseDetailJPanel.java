@@ -48,7 +48,7 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         txtRecipID = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtOrganCondition = new javax.swing.JTextField();
+        txtOrganType = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtUrgencyLevel = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -72,13 +72,13 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
 
         jLabel2.setText("Recipient ID:");
 
-        txtOrganCondition.addActionListener(new java.awt.event.ActionListener() {
+        txtOrganType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtOrganConditionActionPerformed(evt);
+                txtOrganTypeActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Organ Condition: ");
+        jLabel3.setText("Organ Type: ");
 
         txtUrgencyLevel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,7 +121,7 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtRecipID, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtRequiredTransplant, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtOrganCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtOrganType, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtUrgencyLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtOrganID, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
@@ -152,7 +152,7 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtOrganCondition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtOrganType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addContainerGap(186, Short.MAX_VALUE))
         );
@@ -166,9 +166,9 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRecipIDActionPerformed
 
-    private void txtOrganConditionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOrganConditionActionPerformed
+    private void txtOrganTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOrganTypeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtOrganConditionActionPerformed
+    }//GEN-LAST:event_txtOrganTypeActionPerformed
 
     private void txtUrgencyLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUrgencyLevelActionPerformed
         // TODO add your handling code here:
@@ -193,8 +193,8 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField txtOrganCondition;
     private javax.swing.JTextField txtOrganID;
+    private javax.swing.JTextField txtOrganType;
     private javax.swing.JTextField txtRecipID;
     private javax.swing.JTextField txtRequiredTransplant;
     private javax.swing.JTextField txtUrgencyLevel;
@@ -202,31 +202,33 @@ public class CaseDetailJPanel extends javax.swing.JPanel {
     public void populateInfo(){
          
         if (connection != null) {
-             String query = "SELECT t.RequiredTransplant, t.patientID, t.UrgencyLevel, w.OrganID, d.OrganCondition\n" +
-                "FROM work_request w\n" +
-                "WHERE caseID=" + caseID+
-                "JOIN transplantPatients t ON w.patientID= t.patientID\n" +
-                "JOIN DonorOrgans d ON w.OrganID = d.OrganID"; 
+             String query = "SELECT t.RequiredTransplant, t.patientID, t.UrgencyLevel, w.OrganID, d.OrganType " +
+                "FROM work_request w " +
+                "JOIN transplantPatients t ON w.patientID = t.PatientID " +
+                "JOIN Organs d ON w.OrganID = d.OrganID " +
+                "WHERE caseID = ?"; 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query); 
+            preparedStatement.setString(1, caseID);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) { 
                 String RequiredTransplant = resultSet.getString("RequiredTransplant"); 
                 String patientID = resultSet.getString("patientID"); 
                 String UrgencyLevel = resultSet.getString("UrgencyLevel");
                 String OrganID = resultSet.getString("OrganID"); 
-                String OrganCondition = resultSet.getString("OrganCondition"); 
+                String OrganType = resultSet.getString("OrganType"); 
                 
                 txtRequiredTransplant.setText(RequiredTransplant);
                 txtRecipID.setText(patientID);
                 txtOrganID.setText(OrganID);
                 txtUrgencyLevel.setText(UrgencyLevel);
-                txtOrganCondition.setText(OrganCondition);
+                txtOrganType.setText(OrganType);
                 
             } 
         } catch (SQLException e) { 
             e.printStackTrace(); 
             JOptionPane.showMessageDialog(this, "Error getting Case data in LawyerCaseDetailJPanel", "Error", JOptionPane.ERROR_MESSAGE); 
+            return;
             } 
         }
     }

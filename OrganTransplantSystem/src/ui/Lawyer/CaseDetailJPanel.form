@@ -31,7 +31,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="txtRecipID" min="-2" pref="134" max="-2" attributes="0"/>
                           <Component id="txtRequiredTransplant" min="-2" pref="134" max="-2" attributes="0"/>
-                          <Component id="txtOrganCondition" min="-2" pref="134" max="-2" attributes="0"/>
+                          <Component id="txtOrganType" min="-2" pref="134" max="-2" attributes="0"/>
                           <Component id="txtUrgencyLevel" min="-2" pref="134" max="-2" attributes="0"/>
                           <Component id="txtOrganID" min="-2" pref="134" max="-2" attributes="0"/>
                       </Group>
@@ -72,7 +72,7 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtOrganCondition" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtOrganType" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="186" max="32767" attributes="0"/>
@@ -101,14 +101,14 @@
         <Property name="text" type="java.lang.String" value="Recipient ID:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtOrganCondition">
+    <Component class="javax.swing.JTextField" name="txtOrganType">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtOrganConditionActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtOrganTypeActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Organ Condition: "/>
+        <Property name="text" type="java.lang.String" value="Organ Type: "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtUrgencyLevel">
