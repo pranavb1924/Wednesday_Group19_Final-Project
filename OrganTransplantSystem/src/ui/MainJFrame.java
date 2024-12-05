@@ -292,7 +292,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private static Connection connectToDatabase() {
     final String URL = "jdbc:mysql://localhost:3306/OrganTransplantDb";
     final String USER = "root";
-    final String PASSWORD = "sql123456"; 
+    final String PASSWORD = ""; 
 
     try {
 
@@ -503,7 +503,7 @@ public class MainJFrame extends javax.swing.JFrame {
                         doctor.setName(docname);
                         doctor.setSpecialization(docspecialization);
                         doctor.setPhone(docphone);
-
+                                
                         hospital.getDoctorDirectory().addNewDoctor(doctor);      
                     }
                     //connection.close();

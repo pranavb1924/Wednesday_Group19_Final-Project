@@ -26,6 +26,9 @@ import javax.swing.JPanel;
 import model.donor.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import model.HospitalManagement.DoctorDirectory;
+import model.HospitalManagement.Hospital;
+import model.HospitalManagement.HospitalDirectory;
 import model.users.*;
 /**
  *
@@ -68,6 +71,11 @@ public class ManageDonorRequestJPanel extends javax.swing.JPanel {
         this.loadBloodTypes();
         
     }
+        public ManageDonorRequestJPanel(JPanel userProcessContainer, HospitalDirectory hospitalDirectory, DoctorDirectory doctorDirectory, Connection connection, Hospital hospital, User user){
+            
+            
+            
+        }
         
     
         

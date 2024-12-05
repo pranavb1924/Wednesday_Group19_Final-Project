@@ -24,6 +24,15 @@ public class TransplantCase {
     private int sizeRequirement;
     private String reasonForRemoval;
 
+    public String getAssignedDoctor() {
+        return assignedDoctor;
+    }
+
+    public void setAssignedDoctor(String assignedDoctor) {
+        this.assignedDoctor = assignedDoctor;
+    }
+    private String assignedDoctor;
+
     // Getters and Setters for all fields
     public String getPatientID() {
         return patientID;
