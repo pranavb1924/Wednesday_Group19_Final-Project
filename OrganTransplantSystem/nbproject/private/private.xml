@@ -7,6 +7,7 @@
             <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/model/WorkQueue/WorkRequest.java</file>
             <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/model/Organization/Organization.java</file>
             <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/model/Organization/OrganizationDirectory.java</file>
+            <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/ui/HospitalManagement/CoordinatorToLawyerRequest.java</file>
             <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/ui/HospitalManagement/ViewHospitalJPanel.java</file>
             <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/ui/HospitalManagement/ViewDoctorsJPanel.java</file>
             <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/ui/HospitalManagement/ViewTransplantCaseJPanel.java</file>
@@ -26,6 +27,7 @@
             <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/ui/AdministrativeRole/ManageRecipientJPanel.java</file>
             <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/ui/Lawyer/CaseDetailJPanel.java</file>
             <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/ui/Transportation/TransportationJPanel.java</file>
+            <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/ui/HospitalManagement/CoordinatorToTransport.java</file>
             <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/ui/AdministrativeRole/ManageHospitalJPanel.java</file>
             <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/ui/Lawyer/LawyerWorkAreaJPanel.java</file>
             <file>file:/Users/rexinshiminsutongxue/Documents/GitHub/Wednesday_Group19_Final-Project/OrganTransplantSystem/src/model/Lawyer/Lawyer.java</file>

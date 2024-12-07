@@ -22,12 +22,11 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
 
     private Connection connection;
     JPanel userProcessContainer;
-    String LawyerID;
     
     /**
      * Creates new form LawyerWorkAreaJPanel
      */
-    public LawyerWorkAreaJPanel(JPanel userProcessContainer, String LawyerID) {
+    public LawyerWorkAreaJPanel(JPanel userProcessContainer) {
         initComponents();
         
         this.connection = DatabaseConnection.getConnection();
