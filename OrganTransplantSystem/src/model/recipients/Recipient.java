@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package model.receipients;
+package model.recipients;
 
 import model.Person.Person;
 
@@ -10,9 +10,9 @@ import model.Person.Person;
  *
  * @author ivyju
  */
-public class Receipient extends Person{
+public class Recipient extends Person{
 
-    private String donorID;
+    private String recipientID;
     private String status;
     private String medicalHistory;
     private String registrationStatus;
@@ -35,12 +35,12 @@ public class Receipient extends Person{
     }
     
     
-    public String getDonorID() {
-        return donorID;
+    public String getRecipientID() {
+        return recipientID;
     }
 
-    public void setDonorID(String donorID) {
-        this.donorID = donorID;
+    public void setDonorID(String recipientID) {
+        this.recipientID = recipientID;
     }
 
     public String getStatus() {
