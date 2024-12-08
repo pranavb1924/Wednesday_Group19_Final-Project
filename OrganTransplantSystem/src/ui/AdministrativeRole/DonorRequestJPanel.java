@@ -157,16 +157,16 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
             }
         });
 
-        btnApproveCase.setText("APPROVE CASE");
+        btnApproveCase.setText("APPROVE REQUEST");
         btnApproveCase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnApproveCaseActionPerformed(evt);
             }
         });
 
-        jButton3.setText("REMOVE CASE");
+        jButton3.setText("REMOVE REQUEST");
 
-        btnNewCasesOnly.setText("SHOW ONLY NEW CASES");
+        btnNewCasesOnly.setText("SHOW ONLY NEW REQUESTS");
         btnNewCasesOnly.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNewCasesOnlyActionPerformed(evt);
@@ -183,7 +183,7 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnNewCasesOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnNewCasesOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -200,14 +200,16 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
                 .addGap(39, 39, 39)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnApproveCase, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnNewCasesOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(241, Short.MAX_VALUE))
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(btnApproveCase, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(240, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -239,36 +241,36 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
 
     private void btnApproveCaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApproveCaseActionPerformed
         // TODO add your handling code here:
-//        int selectedRow = tblTransplantList.getSelectedRow();
-//        if (selectedRow < 0) {
-//            JOptionPane.showMessageDialog(this, "Please select a case to approve.");
-//            return;
-//        }
-//
-//        TransplantCase selectedCase = (TransplantCase) tblTransplantList.getValueAt(selectedRow, 0);
-//        String patientID = selectedCase.getPatientID();
-//
-//        try {
-//            DatabaseConnection databaseConnection = new DatabaseConnection();
-//            Connection connection = databaseConnection.getConnection();
-//
-//            String updateQuery = "UPDATE transplantPatients SET ApprovalStatus = 'Approved' WHERE PatientID = ?";
-//            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
-//            preparedStatement.setString(1, patientID);
-//
-//            int rowsUpdated = preparedStatement.executeUpdate();
-//            if (rowsUpdated > 0) {
-//                JOptionPane.showMessageDialog(this, "Case approved successfully!");
-//                selectedCase.setApprovalStatus("Approved");
-//                populateTransplantCasesTable();
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Failed to approve the case.");
-//            }
-//        } catch (SQLException e) {
-//            JOptionPane.showMessageDialog(this, "Error updating approval status: " + e.getMessage());
-//        }
-//        this.transplantCaseDirectory = new TransplantCaseDirectory();
-//        this.populateTransplantCasesTable();
+        int selectedRow = tblDonorRequests.getSelectedRow();
+    if (selectedRow < 0) {
+        JOptionPane.showMessageDialog(this, "Please select a donor request to approve.");
+        return;
+    }
+
+    DonorRegistrationRequest selectedRequest = (DonorRegistrationRequest) tblDonorRequests.getValueAt(selectedRow, 0);
+    String requestID = selectedRequest.getId();
+
+    try {
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = databaseConnection.getConnection();
+
+        String updateQuery = "UPDATE donorRegistrationRequests SET RegistrationApproved = 'UNOS APPROVED' WHERE RequestID = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+        preparedStatement.setString(1, requestID);
+
+        int rowsUpdated = preparedStatement.executeUpdate();
+        if (rowsUpdated > 0) {
+            JOptionPane.showMessageDialog(this, "Donor registration status updated to UNOS APPROVED successfully!");
+            selectedRequest.setRegistrationApproved("UNOS APPROVED");
+            this.populateHospitalTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to update the donor registration status.");
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error updating donor registration status: " + e.getMessage());
+    }
+
+    this.populateHospitalTable();
     }//GEN-LAST:event_btnApproveCaseActionPerformed
 
     private void btnNewCasesOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewCasesOnlyActionPerformed

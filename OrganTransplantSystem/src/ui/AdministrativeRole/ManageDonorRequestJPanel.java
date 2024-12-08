@@ -55,6 +55,10 @@ public class ManageDonorRequestJPanel extends javax.swing.JPanel {
         this.userProcessContainer = userProcessContainer;
         this.donor = donor;
         this.user = user;
+        if (this.user.getRole().toUpperCase().equals("DOCTOR")){
+            btnSign.setVisible(false);
+            btnSave.setVisible(false);
+        }
         this.donorRegistrationRquest = rq;
         this.LoadData();
         this.loadBloodTypes();
@@ -650,17 +654,18 @@ public class ManageDonorRequestJPanel extends javax.swing.JPanel {
             cmbStatus.addItem(status);
         }
         
-        if (!this.user.getRole().toUpperCase().equals("DOCTOR")){
+        if (!this.user.getRole().toUpperCase().equals("DOCTOR") || this.donorRegistrationRquest != null){
             
         txtFirstName.setText(this.donorRegistrationRquest.getFirstName());
         txtLastName.setText(this.donorRegistrationRquest.getLastName());
         txtCity.setText(this.donorRegistrationRquest.getCity());
         txtState.setText(this.donorRegistrationRquest.getState());
         txtDateOfBirth.setText(this.donorRegistrationRquest.getDateOfBirth());
-        cmbOrgan.setSelectedItem(this.donor.getBloodType());
+        cmbOrgan.setSelectedItem(this.donorRegistrationRquest.getBloodType());
         txtAddressLine.setText(this.donorRegistrationRquest.getAddress());
         txtZipCode.setText(this.donorRegistrationRquest.getZipCode());
         txtPhone.setText(this.donorRegistrationRquest.getPhone());
+        txtOrganSize.setText(this.donorRegistrationRquest.getOrganSize());
 
         }
         

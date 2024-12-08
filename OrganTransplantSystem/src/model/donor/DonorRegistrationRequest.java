@@ -29,7 +29,8 @@ public class DonorRegistrationRequest {
     }
 
     public String getOrganSize() {
-        return organSize;
+ 
+        return this.organSize != null ? this.organSize : "";
     }
 
     public void setOrganSize(String organSize) {
