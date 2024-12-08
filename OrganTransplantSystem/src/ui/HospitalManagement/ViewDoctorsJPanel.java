@@ -139,6 +139,11 @@ public class ViewDoctorsJPanel extends javax.swing.JPanel {
         jButton2.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("REMOVE DOCTOR");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(22, 29, 29));
         jButton3.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
@@ -220,6 +225,10 @@ public class ViewDoctorsJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         this.populateDoctorTable();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

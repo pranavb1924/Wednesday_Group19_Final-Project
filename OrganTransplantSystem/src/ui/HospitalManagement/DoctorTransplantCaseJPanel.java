@@ -5,6 +5,7 @@
 package ui.HospitalManagement;
 
 import DatabaseConn.DatabaseConnection;
+import java.awt.CardLayout;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +18,7 @@ import model.HospitalManagement.Hospital;
 import model.HospitalManagement.HospitalDirectory;
 import model.HospitalManagement.TransplantCase;
 import model.HospitalManagement.TransplantCaseDirectory;
+import model.donor.DonorDirectory;
 import model.users.User;
 
 /**
@@ -34,7 +36,7 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
     Connection connection;
     Hospital hospital;
     User user;
-    
+    DonorDirectory donorDirectory;
     public DoctorTransplantCaseJPanel(JPanel userProcessContainer, HospitalDirectory hospitalDirectory, DoctorDirectory doctorDirectory, Connection connection, Hospital hospital, User user) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
@@ -67,7 +69,60 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
             transplantCase.setScanImage(resultSet.getBytes("ScanImage"));
             transplantCase.setPatientInfo(resultSet.getString("PatientInfo"));
             transplantCase.setRequiredTransplant(resultSet.getString("RequiredTransplant"));
+            transplantCase.setOrganID(resultSet.getString("OrganID"));
+            transplantCase.setBloodType(resultSet.getString("BloodType"));
+            transplantCase.setPriorityScore(resultSet.getDouble("PriorityScore"));
+            transplantCase.setUrgencyLevel(resultSet.getString("UrgencyLevel"));
+            transplantCase.setAddedDate(resultSet.getDate("AddedDate").toString());
             transplantCase.setApprovalStatus(resultSet.getString("ApprovalStatus"));
+            transplantCase.setSizeRequirement(resultSet.getInt("SizeRequirement"));
+            transplantCase.setReasonForRemoval(resultSet.getString("ReasonForRemoval"));
+            transplantCase.setAssignedDoctor(resultSet.getString("DoctorID"));
+            transplantCaseDirectory.addNewCase(transplantCase);
+        }
+
+        for (TransplantCase transplantCase : transplantCaseDirectory.getTransplantCases()) {
+            Object[] row = new Object[4];
+            row[0] = transplantCase;
+            row[1] = transplantCase.getDateOfBirth();
+            row[2] = transplantCase.getRequiredTransplant().toUpperCase();
+            row[3] = transplantCase.getPriorityScore();
+            model.insertRow(model.getRowCount(), row);
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error loading transplant cases: " + e.getMessage());
+    }
+}
+    private void populateTransplantCasesTable() {
+
+    DefaultTableModel model = (DefaultTableModel) tblTransplantCase.getModel();
+    model.setRowCount(0);
+    TransplantCaseDirectory transplantCaseDirectory = new TransplantCaseDirectory();
+
+    try {
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = databaseConnection.getConnection();
+        String query = "SELECT * FROM transplantPatients where DoctorId = '"+this.user.getId()+"'";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            TransplantCase transplantCase = new TransplantCase();
+            transplantCase.setPatientID(resultSet.getString("PatientID"));
+            transplantCase.setPatientName(resultSet.getString("PatientName"));
+            transplantCase.setDateOfBirth(resultSet.getDate("DateOfBirth").toString());
+            transplantCase.setScanImage(resultSet.getBytes("ScanImage"));
+            transplantCase.setPatientInfo(resultSet.getString("PatientInfo"));
+            transplantCase.setRequiredTransplant(resultSet.getString("RequiredTransplant"));
+            transplantCase.setOrganID(resultSet.getString("OrganID"));
+            transplantCase.setBloodType(resultSet.getString("BloodType"));
+            transplantCase.setPriorityScore(resultSet.getDouble("PriorityScore"));
+            transplantCase.setUrgencyLevel(resultSet.getString("UrgencyLevel"));
+            transplantCase.setAddedDate(resultSet.getDate("AddedDate").toString());
+            transplantCase.setApprovalStatus(resultSet.getString("ApprovalStatus"));
+            transplantCase.setSizeRequirement(resultSet.getInt("SizeRequirement"));
+            transplantCase.setReasonForRemoval(resultSet.getString("ReasonForRemoval"));
+            transplantCase.setAssignedDoctor(resultSet.getString("DoctorID"));
             transplantCaseDirectory.addNewCase(transplantCase);
         }
 
@@ -101,9 +156,9 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblDonorRequests = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblRecepient = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tblDonor = new javax.swing.JTable();
         jTextField2 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -133,8 +188,18 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tblTransplantCase);
 
         jButton1.setText("VIEW CASE");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("FIND A MATCH");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         tblDonorRequests.setBackground(new java.awt.Color(22, 29, 29));
         tblDonorRequests.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
@@ -150,10 +215,14 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
                 "DONOR NAME", "DONOR DATE OF BIRTH", "DONOR ZIP CODE", "APPROVAL STATUS", "BLOOD TYPE"
             }
         ));
+        tblDonorRequests.setRowHeight(20);
         tblDonorRequests.setSelectionBackground(new java.awt.Color(110, 146, 147));
         jScrollPane2.setViewportView(tblDonorRequests);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblRecepient.setBackground(new java.awt.Color(22, 29, 29));
+        tblRecepient.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        tblRecepient.setForeground(new java.awt.Color(255, 255, 255));
+        tblRecepient.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -164,9 +233,11 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
                 "", ""
             }
         ));
-        jScrollPane3.setViewportView(jTable2);
+        tblRecepient.setRowHeight(20);
+        tblRecepient.setSelectionBackground(new java.awt.Color(110, 146, 147));
+        jScrollPane3.setViewportView(tblRecepient);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tblDonor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -177,11 +248,16 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
                 "", ""
             }
         ));
-        jScrollPane4.setViewportView(jTable3);
+        jScrollPane4.setViewportView(tblDonor);
 
         jButton3.setText("SEARCH");
 
         jButton4.setText("ADD TO REQUEST");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Patient Name");
 
@@ -232,7 +308,7 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField2)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
                         .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -244,6 +320,69 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        int selectedRowIndex = tblTransplantCase.getSelectedRow();
+        if (selectedRowIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Pls select a row!!", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+       TransplantCase transplantCase = (TransplantCase) tblTransplantCase.getValueAt(selectedRowIndex, 0);
+       this.addPatient(transplantCase);
+       
+        
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int selectedRowIndex = tblTransplantCase.getSelectedRow();
+        if (selectedRowIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Pls select a row!!", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+        
+       TransplantCase transplantCase = (TransplantCase) tblTransplantCase.getValueAt(selectedRowIndex, 0);
+        
+        ViewTransplantCaseJPanel viewTransplantCaseJPanel = new ViewTransplantCaseJPanel(this.userProcessContainer, transplantCase.getPatientID().toString());
+        userProcessContainer.add("ViewTransplantCaseJPanel", viewTransplantCaseJPanel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void addPatient(TransplantCase tc){
+      DefaultTableModel model = (DefaultTableModel) tblRecepient.getModel();
+      model.setRowCount(0);
+Object[][] rows = {
+    {"Transplant Case", tc != null ? tc : "N/A"},
+    {"Patient ID", tc.getPatientID() != null ? tc.getPatientID() : "N/A"},
+    {"Patient Name", tc.getPatientName() != null ? tc.getPatientName() : "N/A"},
+    {"Date of Birth", tc.getDateOfBirth() != null ? tc.getDateOfBirth() : "N/A"},
+    {"Scan Image", tc.getScanImage() != null ? "[Binary Data]" : "N/A"},
+    {"Patient Info", tc.getPatientInfo() != null ? tc.getPatientInfo() : "N/A"},
+    {"Required Transplant", tc.getRequiredTransplant() != null ? tc.getRequiredTransplant().toUpperCase() : "N/A"},
+    {"Organ ID", tc.getOrganID() != null ? tc.getOrganID() : "N/A"},
+    {"Blood Type", tc.getBloodType() != null ? tc.getBloodType() : "N/A"},
+    {"Priority Score", tc.getPriorityScore() != 0.0 ? tc.getPriorityScore() : "N/A"},
+    {"Urgency Level", tc.getUrgencyLevel() != null ? tc.getUrgencyLevel() : "N/A"},
+    {"Added Date", tc.getAddedDate() != null ? tc.getAddedDate() : "N/A"},
+    {"Approval Status", tc.getApprovalStatus() != null ? tc.getApprovalStatus() : "N/A"},
+    {"Size Requirement", tc.getSizeRequirement() != 0 ? tc.getSizeRequirement() : "N/A"},
+    {"Reason for Removal", tc.getReasonForRemoval() != null ? tc.getReasonForRemoval() : "N/A"},
+    {"Assigned Doctor", tc.getAssignedDoctor() != null ? tc.getAssignedDoctor() : "N/A"}
+};
+
+
+    // Add each row to the table
+    for (Object[] row : rows) {
+        model.insertRow(model.getRowCount(), row);
+    }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -255,11 +394,11 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTable tblDonor;
     private javax.swing.JTable tblDonorRequests;
+    private javax.swing.JTable tblRecepient;
     private javax.swing.JTable tblTransplantCase;
     // End of variables declaration//GEN-END:variables
 }

@@ -50,14 +50,14 @@ public class TransplantCoordinatorJPanel extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setText("jButton1");
+        jButton2.setText("REQUEST FOR ORGAN TRANSPORTATION");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jButton3.setText("NEW TRANSPLANT WORK REQUEST");
+        jButton3.setText("REQUEST FOR LAWYER'S APPROVAL");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -119,6 +119,10 @@ public class TransplantCoordinatorJPanel extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        CoordinatorToTransport coordinatorToTransport = new CoordinatorToTransport(this.userProcessContainer);
+        userProcessContainer.add("CoordinatorToTransport", coordinatorToTransport);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_jButton2ActionPerformed
 
 

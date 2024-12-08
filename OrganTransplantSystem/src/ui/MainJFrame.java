@@ -292,7 +292,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private static Connection connectToDatabase() {
     final String URL = "jdbc:mysql://localhost:3306/OrganTransplantDb";
     final String USER = "root";
-    final String PASSWORD = "jl30473353"; 
+    final String PASSWORD = ""; 
 
     try {
 
@@ -380,7 +380,7 @@ public class MainJFrame extends javax.swing.JFrame {
                     
                 case "LAWYER":
                     Lawyer currentLawyer = this.lawyerDirectory.findLawyerById(this.currentUser.getId());
-                    LawyerWorkAreaJPanel lawyerWorkAreaJPanel = new LawyerWorkAreaJPanel(container, this.currentUser.getId());
+                    LawyerWorkAreaJPanel lawyerWorkAreaJPanel = new LawyerWorkAreaJPanel(container);
                     return lawyerWorkAreaJPanel;
                     
                 case "TRANSPORTATION":

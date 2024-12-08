@@ -166,6 +166,7 @@ public class TransplantCasesJPanel extends javax.swing.JPanel {
             transplantCase.setRequiredTransplant(resultSet.getString("RequiredTransplant"));
             transplantCase.setAssignedDoctor(resultSet.getString("DoctorID"));
             transplantCaseDirectory.addNewCase(transplantCase);
+            
         }
 
         for (TransplantCase transplantCase : transplantCaseDirectory.getTransplantCases()) {

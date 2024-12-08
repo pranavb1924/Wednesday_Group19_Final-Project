@@ -30,6 +30,7 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
     /**
      * Creates new form DonorRegistrationWorkArea
      */
+    
         
     private final JFileChooser fileChooser = new JFileChooser();
     ImageIcon logoImage;
@@ -37,7 +38,6 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
     Connection connection;
     String consent;
     JPanel userProcessContainer;
-    
     public DonorRegistrationWorkArea(JPanel userProcessContainer) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
@@ -85,7 +85,9 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         cmbBloodType = new javax.swing.JComboBox<>();
         jLabel24 = new javax.swing.JLabel();
-        txtPhone = new javax.swing.JTextField();
+        txtSsn = new javax.swing.JTextField();
+        jLabel25 = new javax.swing.JLabel();
+        txtPhone1 = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(111, 147, 146));
         setMaximumSize(new java.awt.Dimension(1200, 830));
@@ -205,6 +207,10 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
         jLabel24.setForeground(new java.awt.Color(255, 255, 255));
         jLabel24.setText("PHONE");
 
+        jLabel25.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel25.setText("SSN");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -286,9 +292,15 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
                                     .addComponent(cmbBloodType, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtSsn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtPhone1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(201, Short.MAX_VALUE))
         );
 
@@ -337,15 +349,17 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPhone1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtCity, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txtState, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtSsn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -415,6 +429,7 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
         String state = txtState.getText();
         String addressLine1 = txtAddressLine.getText();
         String addressLine2 = txtZipCode.getText();
+        String ssn = txtSsn.getText();
         //String consentText = consentArea.getText();
 
         // Validate required fields
@@ -443,7 +458,7 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
         }
     }
     
-    public void loadBloodTypes() {
+        public void loadBloodTypes() {
     String[] bloodTypes = {"A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"};
     cmbBloodType.removeAllItems();
     for (String bloodType : bloodTypes) {
@@ -466,7 +481,7 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
             String state = txtState.getText();
             String addressLine = txtAddressLine.getText();
             String zipCode = txtZipCode.getText();
-            String phone = txtPhone.getText();
+            String phone = txtPhotxtSsnxt();
             String bloodType = cmbBloodType.getSelectedItem().toString();
             // Assuming the signature image is uploaded and stored in the 'signature' JLabel
             //java.sql.Blob signatureBlob = null; // Add logic to retrieve and convert the signature if available
@@ -574,6 +589,7 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel signature;
@@ -584,7 +600,8 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtMiddleName;
-    private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtPhone1;
+    private javax.swing.JTextField txtSsn;
     private javax.swing.JTextField txtState;
     private javax.swing.JTextField txtZipCode;
     // End of variables declaration//GEN-END:variables
