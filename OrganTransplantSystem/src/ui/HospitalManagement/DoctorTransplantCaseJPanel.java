@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -19,6 +20,7 @@ import model.HospitalManagement.HospitalDirectory;
 import model.HospitalManagement.TransplantCase;
 import model.HospitalManagement.TransplantCaseDirectory;
 import model.donor.DonorDirectory;
+import model.donor.DonorRegistrationRequest;
 import model.users.User;
 
 /**
@@ -93,51 +95,8 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Error loading transplant cases: " + e.getMessage());
     }
 }
-    private void populateTransplantCasesTable() {
-
-    DefaultTableModel model = (DefaultTableModel) tblTransplantCase.getModel();
-    model.setRowCount(0);
-    TransplantCaseDirectory transplantCaseDirectory = new TransplantCaseDirectory();
-
-    try {
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection connection = databaseConnection.getConnection();
-        String query = "SELECT * FROM transplantPatients where DoctorId = '"+this.user.getId()+"'";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        while (resultSet.next()) {
-            TransplantCase transplantCase = new TransplantCase();
-            transplantCase.setPatientID(resultSet.getString("PatientID"));
-            transplantCase.setPatientName(resultSet.getString("PatientName"));
-            transplantCase.setDateOfBirth(resultSet.getDate("DateOfBirth").toString());
-            transplantCase.setScanImage(resultSet.getBytes("ScanImage"));
-            transplantCase.setPatientInfo(resultSet.getString("PatientInfo"));
-            transplantCase.setRequiredTransplant(resultSet.getString("RequiredTransplant"));
-            transplantCase.setOrganID(resultSet.getString("OrganID"));
-            transplantCase.setBloodType(resultSet.getString("BloodType"));
-            transplantCase.setPriorityScore(resultSet.getDouble("PriorityScore"));
-            transplantCase.setUrgencyLevel(resultSet.getString("UrgencyLevel"));
-            transplantCase.setAddedDate(resultSet.getDate("AddedDate").toString());
-            transplantCase.setApprovalStatus(resultSet.getString("ApprovalStatus"));
-            transplantCase.setSizeRequirement(resultSet.getInt("SizeRequirement"));
-            transplantCase.setReasonForRemoval(resultSet.getString("ReasonForRemoval"));
-            transplantCase.setAssignedDoctor(resultSet.getString("DoctorID"));
-            transplantCaseDirectory.addNewCase(transplantCase);
-        }
-
-        for (TransplantCase transplantCase : transplantCaseDirectory.getTransplantCases()) {
-            Object[] row = new Object[4];
-            row[0] = transplantCase;
-            row[1] = transplantCase.getDateOfBirth();
-            row[2] = transplantCase.getRequiredTransplant().toUpperCase();
-            row[3] = transplantCase.getPriorityScore();
-            model.insertRow(model.getRowCount(), row);
-        }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Error loading transplant cases: " + e.getMessage());
-    }
-}
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -163,7 +122,9 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(22, 29, 29));
         setMaximumSize(new java.awt.Dimension(1200, 830));
         setMinimumSize(new java.awt.Dimension(1200, 830));
 
@@ -187,6 +148,7 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
         tblTransplantCase.setSelectionBackground(new java.awt.Color(110, 146, 147));
         jScrollPane1.setViewportView(tblTransplantCase);
 
+        jButton1.setBackground(new java.awt.Color(110, 146, 147));
         jButton1.setText("VIEW CASE");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,6 +156,7 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(110, 146, 147));
         jButton2.setText("FIND A MATCH");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -250,8 +213,10 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
         ));
         jScrollPane4.setViewportView(tblDonor);
 
+        jButton3.setBackground(new java.awt.Color(110, 146, 147));
         jButton3.setText("SEARCH");
 
+        jButton4.setBackground(new java.awt.Color(110, 146, 147));
         jButton4.setText("ADD TO REQUEST");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -260,6 +225,14 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
         });
 
         jLabel1.setText("Patient Name");
+
+        jButton5.setBackground(new java.awt.Color(110, 146, 147));
+        jButton5.setText("ADD TO REQUEST");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -272,25 +245,27 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
                         .addComponent(jTextField1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(141, 141, 141)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton3))
-                            .addComponent(jScrollPane2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane1)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(141, 141, 141)
+                                    .addComponent(jLabel1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jButton3))
+                                .addComponent(jScrollPane2)))
                         .addGap(0, 55, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -307,12 +282,14 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
-                        .addComponent(jLabel1)))
+                        .addComponent(jLabel1)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(84, 84, 84)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -330,15 +307,51 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
         
        TransplantCase transplantCase = (TransplantCase) tblTransplantCase.getValueAt(selectedRowIndex, 0);
        this.addPatient(transplantCase);
-       
-        
-        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        this.populateDonorRegistrationRequestsTable();
         
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void populateDonorRegistrationRequestsTable() {
+    DefaultTableModel model = (DefaultTableModel) tblDonorRequests.getModel();
+    model.setRowCount(0);
+    ArrayList<DonorRegistrationRequest> dr = new ArrayList<DonorRegistrationRequest>();
+
+    try {
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = databaseConnection.getConnection();
+        String query = "SELECT * FROM donorRegistrationRequests";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            DonorRegistrationRequest donorRequest = new DonorRegistrationRequest();
+            donorRequest.setId(resultSet.getString("RequestID"));
+            donorRequest.setFirstName(resultSet.getString("FirstName"));
+            donorRequest.setMiddleName(resultSet.getString("MiddleName"));
+            donorRequest.setLastName(resultSet.getString("LastName"));
+            donorRequest.setDateOfBirth(resultSet.getDate("DateOfBirth").toString());
+            donorRequest.setAddress(resultSet.getString("AddressLine2"));
+            donorRequest.setCity(resultSet.getString("City"));
+            donorRequest.setState(resultSet.getString("State"));
+            donorRequest.setRequestDate(resultSet.getTimestamp("RequestDate").toString());
+            donorRequest.setBloodType(resultSet.getString("BloodType"));
+            donorRequest.setPhone(resultSet.getString("Phone"));
+            donorRequest.setZipCode(resultSet.getString("ZIP"));
+            donorRequest.setRegistrationApproved(resultSet.getString("RegistrationApproved"));
+            donorRequest.setOrgan(resultSet.getString(("organ")));
+            donorRequest.setOrganSize(resultSet.getString(("organSize")));
+            donorRequest.setSsn(resultSet.getString("ssn"));
+            dr.add(donorRequest);
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error loading donor registration requests: " + e.getMessage());
+    }
+}
+
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -354,6 +367,10 @@ public class DoctorTransplantCaseJPanel extends javax.swing.JPanel {
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     private void addPatient(TransplantCase tc){
       DefaultTableModel model = (DefaultTableModel) tblRecepient.getModel();
@@ -377,7 +394,6 @@ Object[][] rows = {
     {"Assigned Doctor", tc.getAssignedDoctor() != null ? tc.getAssignedDoctor() : "N/A"}
 };
 
-
     // Add each row to the table
     for (Object[] row : rows) {
         model.insertRow(model.getRowCount(), row);
@@ -389,6 +405,7 @@ Object[][] rows = {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
