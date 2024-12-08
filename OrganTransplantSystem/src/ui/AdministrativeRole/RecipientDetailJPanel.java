@@ -4,12 +4,20 @@
  */
 package ui.AdministrativeRole;
 
+import DatabaseConn.DatabaseConnection;
 import model.Organization.Organization;
 import model.Organization.Organization.Type;
 import model.Organization.OrganizationDirectory;
 import java.awt.CardLayout;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import model.HospitalManagement.TransplantCase;
+import model.HospitalManagement.TransplantCaseDirectory;
 
 /**
  *
@@ -33,25 +41,48 @@ public class RecipientDetailJPanel extends javax.swing.JPanel {
     }
     
     private void populateCombo(){
-        organizationJComboBox.removeAllItems();
+        cmbCategory.removeAllItems();
         for (Type type : Organization.Type.values()){
             if (!type.getValue().equals(Type.Admin.getValue()))
-                organizationJComboBox.addItem(type);
+                cmbCategory.addItem(type);
         }
     }
 
     private void populateTable(){
-        DefaultTableModel model = (DefaultTableModel) organizationJTable.getModel();
-        
+        DefaultTableModel model = (DefaultTableModel) tblRecipientDetail.getModel();
         model.setRowCount(0);
+        TransplantCaseDirectory transplantCaseDirectory = new TransplantCaseDirectory();
         
-        for (Organization organization : directory.getOrganizationList()){
-            Object[] row = new Object[2];
-            row[0] = organization.getOrganizationID();
-            row[1] = organization.getName();
+        try {
+            DatabaseConnection databaseConnection = new DatabaseConnection();
+            Connection connection = databaseConnection.getConnection();
+            String query = "SELECT * FROM transplantPatients";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
             
-            model.addRow(row);
+            while (resultSet.next()) {
+            TransplantCase transplantCase = new TransplantCase();
+            transplantCase.setPatientID(resultSet.getString("PatientID"));
+            transplantCase.setPatientName(resultSet.getString("PatientName"));
+            transplantCase.setDateOfBirth(resultSet.getDate("DateOfBirth").toString());
+            transplantCase.setScanImage(resultSet.getBytes("ScanImage"));
+            transplantCase.setPatientInfo(resultSet.getString("PatientInfo"));
+            transplantCase.setRequiredTransplant(resultSet.getString("RequiredTransplant"));
+            transplantCase.setApprovalStatus(resultSet.getString("ApprovalStatus"));
+            transplantCaseDirectory.addNewCase(transplantCase);
         }
+
+        for (TransplantCase transplantCase : transplantCaseDirectory.getTransplantCases()) {
+            Object[] row = new Object[4];
+            row[0] = transplantCase;
+            row[1] = transplantCase.getDateOfBirth();
+            row[2] = transplantCase.getRequiredTransplant().toUpperCase();
+            row[3] = transplantCase.getPriorityScore();
+            model.insertRow(model.getRowCount(), row);
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error loading transplant cases: " + e.getMessage());
+    }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,13 +93,13 @@ public class RecipientDetailJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        organizationJComboBox = new javax.swing.JComboBox();
+        cmbCategory = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         backJButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        organizationJTable1 = new javax.swing.JTable();
+        tblRecipientDetail = new javax.swing.JTable();
 
-        organizationJComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCategory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel1.setText("Category");
 
@@ -79,7 +110,7 @@ public class RecipientDetailJPanel extends javax.swing.JPanel {
             }
         });
 
-        organizationJTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblRecipientDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -105,14 +136,14 @@ public class RecipientDetailJPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(organizationJTable1);
-        if (organizationJTable1.getColumnModel().getColumnCount() > 0) {
-            organizationJTable1.getColumnModel().getColumn(0).setResizable(false);
-            organizationJTable1.getColumnModel().getColumn(1).setResizable(false);
-            organizationJTable1.getColumnModel().getColumn(2).setResizable(false);
-            organizationJTable1.getColumnModel().getColumn(3).setResizable(false);
-            organizationJTable1.getColumnModel().getColumn(4).setResizable(false);
-            organizationJTable1.getColumnModel().getColumn(5).setResizable(false);
+        jScrollPane2.setViewportView(tblRecipientDetail);
+        if (tblRecipientDetail.getColumnModel().getColumnCount() > 0) {
+            tblRecipientDetail.getColumnModel().getColumn(0).setResizable(false);
+            tblRecipientDetail.getColumnModel().getColumn(1).setResizable(false);
+            tblRecipientDetail.getColumnModel().getColumn(2).setResizable(false);
+            tblRecipientDetail.getColumnModel().getColumn(3).setResizable(false);
+            tblRecipientDetail.getColumnModel().getColumn(4).setResizable(false);
+            tblRecipientDetail.getColumnModel().getColumn(5).setResizable(false);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -129,7 +160,7 @@ public class RecipientDetailJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(32, 32, 32)
-                        .addComponent(organizationJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(329, 329, 329))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 693, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40))
@@ -141,7 +172,7 @@ public class RecipientDetailJPanel extends javax.swing.JPanel {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(organizationJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addComponent(backJButton)
@@ -158,9 +189,9 @@ public class RecipientDetailJPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backJButton;
+    private javax.swing.JComboBox cmbCategory;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JComboBox organizationJComboBox;
-    private javax.swing.JTable organizationJTable1;
+    private javax.swing.JTable tblRecipientDetail;
     // End of variables declaration//GEN-END:variables
 }
