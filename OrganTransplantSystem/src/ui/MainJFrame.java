@@ -21,6 +21,7 @@ import model.Lawyer.LawyerDirectory;
 import ui.HospitalManagement.*;
 import ui.AdministrativeRole.HomePanel;
 import ui.Lawyer.LawyerWorkAreaJPanel;
+import ui.Lawyer.ViewLawyerJPanel;
 import ui.Transportation.TransportationJPanel;
 /**
  *
@@ -382,6 +383,10 @@ public class MainJFrame extends javax.swing.JFrame {
                     Lawyer currentLawyer = this.lawyerDirectory.findLawyerById(this.currentUser.getId());
                     LawyerWorkAreaJPanel lawyerWorkAreaJPanel = new LawyerWorkAreaJPanel(container);
                     return lawyerWorkAreaJPanel;
+                    
+                case "LAWYER ADMIN":
+                    ViewLawyerJPanel viewLawyerJPanel = new ViewLawyerJPanel(container,this.lawyerDirectory, this.currentConnection);
+                    return viewLawyerJPanel;
                     
                 case "TRANSPORTATION":
                     //Lawyer currentLawyer = this.lawyerDirectory.findLawyerById(this.currentUser.getId());
