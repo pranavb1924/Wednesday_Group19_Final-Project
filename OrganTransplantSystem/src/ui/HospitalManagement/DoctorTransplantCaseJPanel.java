@@ -161,6 +161,7 @@ private String getOrganNameByID(String organID) {
         btnBack = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         btnInitiateRequest = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(22, 29, 29));
         setMaximumSize(new java.awt.Dimension(1200, 830));
@@ -308,6 +309,14 @@ private String getOrganNameByID(String organID) {
             }
         });
 
+        jButton7.setBackground(new java.awt.Color(110, 146, 147));
+        jButton7.setText("REFRESH");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -334,12 +343,14 @@ private String getOrganNameByID(String organID) {
                                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(141, 141, 141)
+                                    .addGap(61, 61, 61)
                                     .addComponent(jLabel1)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(txtSearchCriteria, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jButton3))
+                                    .addComponent(jButton3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jButton7))
                                 .addComponent(jScrollPane2))
                             .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
@@ -358,13 +369,17 @@ private String getOrganNameByID(String organID) {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtSearchCriteria, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButton7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -495,8 +510,14 @@ private String getOrganNameByID(String organID) {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        searchDonorRegistrationRequests(txtSearchCriteria.getText());
+  
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        this.refreshDonorRegistrationRequestsTable();
+        
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     public void insertTransplantRecord(String donorID, String recipientID, String organID) {
     String insertQuery = "INSERT INTO transplant (TransplantID, DonorID, RecipientID, OrganID, legalApproval, transportStatus) "
@@ -568,30 +589,7 @@ private String getOrganNameByID(String organID) {
         model.insertRow(model.getRowCount(), row);
     }
     }
-            
-            public void searchDonorRegistrationRequests(String searchQuery) {
-    String query = "SELECT * FROM donorRegistrationRequests WHERE FirstName LIKE ? OR LastName LIKE ? OR City LIKE ?";
-    try (PreparedStatement preparedStatement = this.connection.prepareStatement(query)) {
-        preparedStatement.setString(1, "%" + searchQuery + "%");
-        preparedStatement.setString(2, "%" + searchQuery + "%");
-        preparedStatement.setString(3, "%" + searchQuery + "%");
-        ResultSet resultSet = preparedStatement.executeQuery();
-        DefaultTableModel model = (DefaultTableModel) tblDonorRequests.getModel();
-        model.setRowCount(0);
-        while (resultSet.next()) {
-            model.addRow(new Object[]{
-                resultSet.getString("RequestID"),
-                resultSet.getString("FirstName"),
-                resultSet.getString("LastName"),
-                resultSet.getString("City"),
-                resultSet.getString("State"),
-                resultSet.getString("RegistrationApproved")
-            });
-        }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Error searching donor registration requests: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
-    }
-}
+          
 
 public void refreshDonorRegistrationRequestsTable() {
     populateDonorRegistrationRequestsTable();
@@ -607,6 +605,7 @@ public void refreshDonorRegistrationRequestsTable() {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

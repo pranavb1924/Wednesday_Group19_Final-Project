@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import DatabaseConn.DatabaseConnection;
+import model.users.*;
 /**
  *
  * @author pranavb
@@ -24,11 +25,13 @@ public class TransplantRequest extends javax.swing.JPanel {
     TransplantRequest tr;
     DatabaseConnection dbConn = new DatabaseConnection();
     Connection connection = dbConn.getConnection();
+    User user;
     ArrayList<TransplantRequest> TransplantRequestDirectory = new ArrayList<TransplantRequest>();
-    public TransplantRequest() {
+    public TransplantRequest(User user) {
         initComponents();
+        this.user = user;
         this.populateTransplantTable();
-        
+
     }
     public void populateTransplantTable() {
     String query = "SELECT * FROM transplant";

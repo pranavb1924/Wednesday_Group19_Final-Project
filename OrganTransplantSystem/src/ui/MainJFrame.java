@@ -370,7 +370,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
                 case "COORDINATOR":
                     Hospital currentCoordinatorHospital = this.hospitalDirectory.findHospitalByAdminId(this.currentUser.getId());
-                    TransplantCoordinatorJPanel transplantCoordinatorJPanel = new TransplantCoordinatorJPanel(container, currentCoordinatorHospital);
+                    TransplantCoordinatorJPanel transplantCoordinatorJPanel = new TransplantCoordinatorJPanel(container, currentCoordinatorHospital, this.currentUser);
                     return transplantCoordinatorJPanel;             
                     
                 case "DOCTOR":
