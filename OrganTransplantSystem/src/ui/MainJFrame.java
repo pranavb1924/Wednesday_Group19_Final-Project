@@ -370,11 +370,11 @@ public class MainJFrame extends javax.swing.JFrame {
 
                 case "COORDINATOR":
                     Hospital currentCoordinatorHospital = this.hospitalDirectory.findHospitalByAdminId(this.currentUser.getId());
-                    TransplantCoordinatorJPanel transplantCoordinatorJPanel = new TransplantCoordinatorJPanel(container, currentCoordinatorHospital);
+                    TransplantCoordinatorJPanel transplantCoordinatorJPanel = new TransplantCoordinatorJPanel(container, currentCoordinatorHospital, this.currentUser);
                     return transplantCoordinatorJPanel;             
                     
                 case "DOCTOR":
-                    Hospital currentHospitalDetails = this.hospitalDirectory.findHospitalByAdminId(this.currentUser.getId());
+                    Hospital currentHospitalDetails = this.hospitalDirectory.findHospital(this.doctorDirectory.searchDoctor(this.currentUser.getId()).getHospitalId());
                     DoctorWorkAreaJPanel doctorWorkAreaJPanel = new DoctorWorkAreaJPanel(container, this.hospitalDirectory, this.doctorDirectory, this.currentConnection, currentHospitalDetails, this.currentUser);
                     return doctorWorkAreaJPanel;
                     
@@ -445,12 +445,14 @@ public class MainJFrame extends javax.swing.JFrame {
                         String docname = docresultSet.getString("Name");
                         String docspecialization = docresultSet.getString("Specialization");
                         String docphone = docresultSet.getString("Phone");
+                        String hospitalId = docresultSet.getString("HospitalId");
 
                         Doctor doctor = new Doctor();
                         doctor.setDoctorId(docid);
                         doctor.setName(docname);
                         doctor.setSpecialization(docspecialization);
                         doctor.setPhone(docphone);
+                        doctor.setHospitalId(hospitalId);
                         
                         this.doctorDirectory.addNewDoctor(doctor);
                     }

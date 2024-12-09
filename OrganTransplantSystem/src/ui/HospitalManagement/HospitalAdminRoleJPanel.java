@@ -13,7 +13,7 @@ import model.HospitalManagement.*;
 import ui.HospitalManagement.TransplantCoordinatorJPanel;
 import java.sql.*;
 import model.users.User;
-
+import ui.HospitalManagement.*;
 /**
  *
  * @author pranavb
@@ -154,9 +154,9 @@ public class HospitalAdminRoleJPanel extends javax.swing.JPanel {
 
     private void btnCoordinatorManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCoordinatorManagementActionPerformed
         // TODO add your handling code here:
-       
-        TransplantCoordinatorJPanel coordinatorDetailJPanel = new TransplantCoordinatorJPanel(this.userProcessContainer, this.hospital);
-        userProcessContainer.add("TransplantCoordinatorJPanel", coordinatorDetailJPanel);
+
+        AddTransplantCoordinators addTransplantCoordinators = new AddTransplantCoordinators(this.userProcessContainer, this.hospitalDirectory, this.doctorDirectory, this.connection, this.hospital);
+        userProcessContainer.add("AddTransplantCoordinators", addTransplantCoordinators);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
         

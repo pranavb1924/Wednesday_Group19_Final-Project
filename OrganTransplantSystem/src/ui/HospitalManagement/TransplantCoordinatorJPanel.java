@@ -7,6 +7,7 @@ package ui.HospitalManagement;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 import model.HospitalManagement.*;
+import model.users.*;
 
 /**
  *
@@ -20,10 +21,12 @@ public class TransplantCoordinatorJPanel extends javax.swing.JPanel {
     
     JPanel userProcessContainer;
     Hospital hospital;
-    public TransplantCoordinatorJPanel(JPanel userProcessContainer, Hospital hospital) {
+    User user;
+    public TransplantCoordinatorJPanel(JPanel userProcessContainer, Hospital hospital, User user) {
         initComponents();
         this.userProcessContainer = userProcessContainer; 
         this.hospital = hospital;
+        this.user = user;
     }
 
     /**
@@ -41,6 +44,7 @@ public class TransplantCoordinatorJPanel extends javax.swing.JPanel {
         btnBack = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(22, 29, 29));
         setMaximumSize(new java.awt.Dimension(1200, 830));
         setMinimumSize(new java.awt.Dimension(1200, 830));
 
@@ -138,7 +142,7 @@ public class TransplantCoordinatorJPanel extends javax.swing.JPanel {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-                TransplantRequest tc = new TransplantRequest();
+                TransplantRequest tc = new TransplantRequest(this.user, this.hospital);
         userProcessContainer.add("TransplantRequest", tc);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);

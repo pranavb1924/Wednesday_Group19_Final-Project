@@ -152,7 +152,7 @@ public class TransplantCasesJPanel extends javax.swing.JPanel {
     try {
         DatabaseConnection databaseConnection = new DatabaseConnection();
         Connection connection = databaseConnection.getConnection();
-        String query = "SELECT * FROM transplantPatients";
+        String query = "SELECT * FROM transplantPatients WHERE hospitalID = '"+this.hospital.getId()+"'";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -175,7 +175,7 @@ public class TransplantCasesJPanel extends javax.swing.JPanel {
             row[0] = transplantCase;
             row[1] = transplantCase.getDateOfBirth();
             row[2] = transplantCase.getRequiredTransplant();
-            row[3] = doctor.getName();
+            row[3] = doctor != null ? doctor.getName() : "";
             model.insertRow(model.getRowCount(), row);
         }
     } catch (SQLException e) {
