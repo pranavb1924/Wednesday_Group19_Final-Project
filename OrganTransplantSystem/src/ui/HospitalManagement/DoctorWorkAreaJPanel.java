@@ -45,6 +45,7 @@ public class DoctorWorkAreaJPanel extends javax.swing.JPanel {
         this.userProcessContainer = userProcessContainer;
         this.doctorDirectory = doctorDirectory;
         this.hospitalDirectory = hospitalDirectory;
+        this.hospital = hospital;
         this.connection = connection;
         this.loadDoctorProfile();
     }
@@ -301,6 +302,11 @@ if (imageBytes != null) {
 
     private void btnTrackTransplantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackTransplantActionPerformed
         // TODO add your handling code here:
+   
+                TransplantRequest tc = new TransplantRequest(this.user, this.hospital);
+        userProcessContainer.add("TransplantRequest", tc);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
         
     }//GEN-LAST:event_btnTrackTransplantActionPerformed
 

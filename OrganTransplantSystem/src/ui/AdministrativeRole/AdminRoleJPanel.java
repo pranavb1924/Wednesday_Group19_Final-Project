@@ -96,7 +96,7 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         btnTransplantList1.setBackground(new java.awt.Color(111, 147, 146));
         btnTransplantList1.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         btnTransplantList1.setForeground(new java.awt.Color(255, 255, 255));
-        btnTransplantList1.setText("WORK QUEUE");
+        btnTransplantList1.setText("TRANSPLANT QUEUE");
         btnTransplantList1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTransplantList1ActionPerformed(evt);
@@ -221,6 +221,10 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
 
     private void btnTransplantList1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransplantList1ActionPerformed
         // TODO add your handling code here:
+        ui.HospitalManagement.TransplantRequest tc = new ui.HospitalManagement.TransplantRequest(this.user, null);
+        userProcessContainer.add("TransplantRequest", tc);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
         
     }//GEN-LAST:event_btnTransplantList1ActionPerformed
 

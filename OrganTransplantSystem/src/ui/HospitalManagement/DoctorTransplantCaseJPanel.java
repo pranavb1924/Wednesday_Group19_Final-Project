@@ -520,8 +520,8 @@ private String getOrganNameByID(String organID) {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     public void insertTransplantRecord(String donorID, String recipientID, String organID) {
-    String insertQuery = "INSERT INTO transplant (TransplantID, DonorID, RecipientID, OrganID, legalApproval, transportStatus) "
-                       + "VALUES (?, ?, ?, ?, ?, ?)";
+    String insertQuery = "INSERT INTO transplant (TransplantID, DonorID, RecipientID, OrganID, legalApproval, transportStatus,DoctorID,hospitalId) "
+                       + "VALUES (?, ?, ?, ?, ?, ?,?,?)";
 
     try (PreparedStatement preparedStatement = this.connection.prepareStatement(insertQuery)) {
         String transplantID = java.util.UUID.randomUUID().toString();
@@ -531,6 +531,8 @@ private String getOrganNameByID(String organID) {
         preparedStatement.setString(4, organID);
         preparedStatement.setString(5, "Pending");
         preparedStatement.setString(6, "Yet to Begin");
+        preparedStatement.setString(7, this.user.getId());
+        preparedStatement.setString(8, this.hospital.getId());
 
         int rowsInserted = preparedStatement.executeUpdate();
         if (rowsInserted > 0) {

@@ -550,8 +550,8 @@ public class AddTransplantCaseJPanel extends javax.swing.JPanel {
 
     try {
         // SQL query to insert the data into the database
-        String insertSQL = "INSERT INTO TransplantPatients (PatientID, PatientName, DateOfBirth, ScanImage, PatientInfo, RequiredTransplant, OrganID, BloodType, SizeRequirement, PriorityScore, UrgencyLevel, ApprovalStatus, doctorID) " +
-                           "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO TransplantPatients (PatientID, PatientName, DateOfBirth, ScanImage, PatientInfo, RequiredTransplant, OrganID, BloodType, SizeRequirement, PriorityScore, UrgencyLevel, ApprovalStatus, doctorID, hospitalID) " +
+                           "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
         PreparedStatement insertStmt = conn.prepareStatement(insertSQL);
 
         // Setting the parameters for the SQL query
@@ -568,6 +568,7 @@ public class AddTransplantCaseJPanel extends javax.swing.JPanel {
         insertStmt.setString(11, urgencyLevel); // Urgency Level
         insertStmt.setString(12, status); // Status
         insertStmt.setString(13, assignedDoctor.getDoctorId());
+        insertStmt.setString(14, this.hospital.getId());
 
         // Execute the query
         int rowsInserted = insertStmt.executeUpdate();

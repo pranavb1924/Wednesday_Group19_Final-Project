@@ -142,7 +142,7 @@ public class TransplantCoordinatorJPanel extends javax.swing.JPanel {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-                TransplantRequest tc = new TransplantRequest(this.user);
+                TransplantRequest tc = new TransplantRequest(this.user, this.hospital);
         userProcessContainer.add("TransplantRequest", tc);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
