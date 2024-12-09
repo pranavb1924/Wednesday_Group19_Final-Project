@@ -57,12 +57,12 @@ public class ViewTransplantCaseJPanel extends javax.swing.JPanel {
         lblImage = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtPatientInfo = new javax.swing.JTextArea();
-        txtPatientDateOfBirth1 = new javax.swing.JTextField();
+        txtPriorityScore = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtPatientDateOfBirth2 = new javax.swing.JTextField();
+        txtBloodType = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        txtPatientDateOfBirth3 = new javax.swing.JTextField();
+        txtOrganRequired = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(22, 29, 29));
@@ -72,7 +72,7 @@ public class ViewTransplantCaseJPanel extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("PATIENT NAME");
+        jLabel1.setText("PRIORITY SCORE");
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -133,15 +133,15 @@ public class ViewTransplantCaseJPanel extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPatientDateOfBirth1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtPriorityScore, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPatientDateOfBirth3, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtOrganRequired, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPatientDateOfBirth2, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtBloodType, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(188, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,18 +158,18 @@ public class ViewTransplantCaseJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtPatientDateOfBirth3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtOrganRequired, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtPatientName, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtPatientDateOfBirth1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtPriorityScore, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPatientDateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPatientDateOfBirth2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBloodType, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(96, 96, 96)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -179,7 +179,7 @@ public class ViewTransplantCaseJPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel6, txtPatientDateOfBirth3});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel6, txtOrganRequired});
 
     }// </editor-fold>//GEN-END:initComponents
 
@@ -204,10 +204,16 @@ public class ViewTransplantCaseJPanel extends javax.swing.JPanel {
             String dateOfBirth = resultSet.getDate("DateOfBirth").toString();
             String patientInfo = resultSet.getString("PatientInfo");
             byte[] imageBytes = resultSet.getBytes("ScanImage");
+            String bloodType = resultSet.getString("BloodType");
+            String priorityScore = resultSet.getString("PriorityScore");
+            String organRequired = resultSet.getString("RequiredTransplant");
 
             txtPatientName.setText(patientName);
             txtPatientDateOfBirth.setText(dateOfBirth);
             txtPatientInfo.setText(patientInfo);
+            txtOrganRequired.setText(organRequired);
+            txtBloodType.setText(bloodType);
+            txtPriorityScore.setText(priorityScore);
 
             if (imageBytes != null && imageBytes.length > 0) {
                 ImageIcon imageIcon = new ImageIcon(imageBytes);
@@ -237,11 +243,11 @@ public class ViewTransplantCaseJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblImage;
+    private javax.swing.JTextField txtBloodType;
+    private javax.swing.JTextField txtOrganRequired;
     private javax.swing.JTextField txtPatientDateOfBirth;
-    private javax.swing.JTextField txtPatientDateOfBirth1;
-    private javax.swing.JTextField txtPatientDateOfBirth2;
-    private javax.swing.JTextField txtPatientDateOfBirth3;
     private javax.swing.JTextArea txtPatientInfo;
     private javax.swing.JTextField txtPatientName;
+    private javax.swing.JTextField txtPriorityScore;
     // End of variables declaration//GEN-END:variables
 }

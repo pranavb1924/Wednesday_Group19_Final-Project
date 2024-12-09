@@ -118,7 +118,6 @@ if (imageBytes != null) {
         jLabel3 = new javax.swing.JLabel();
         btnViewCases = new javax.swing.JButton();
         btnDonorRegistrationRequest = new javax.swing.JButton();
-        btnBack = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         txtDoctorName = new javax.swing.JTextField();
         txtDoctorPhoneNumber = new javax.swing.JTextField();
@@ -160,16 +159,6 @@ if (imageBytes != null) {
         btnDonorRegistrationRequest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDonorRegistrationRequestActionPerformed(evt);
-            }
-        });
-
-        btnBack.setBackground(new java.awt.Color(22, 29, 29));
-        btnBack.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        btnBack.setForeground(new java.awt.Color(255, 255, 255));
-        btnBack.setText("BACK");
-        btnBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBackActionPerformed(evt);
             }
         });
 
@@ -233,7 +222,6 @@ if (imageBytes != null) {
                                 .addGap(209, 209, 209)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnViewCases, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnTrackTransplant, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnDonorRegistrationRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(484, 484, 484)))
@@ -265,9 +253,7 @@ if (imageBytes != null) {
                 .addComponent(btnDonorRegistrationRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(13, 13, 13)
                 .addComponent(btnTrackTransplant, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(351, Short.MAX_VALUE))
+                .addContainerGap(397, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -289,13 +275,6 @@ if (imageBytes != null) {
         
     }//GEN-LAST:event_btnViewCasesActionPerformed
 
-    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        // TODO add your handling code here:
-        userProcessContainer.remove(this);
-        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        layout.previous(userProcessContainer);
-    }//GEN-LAST:event_btnBackActionPerformed
-
     private void txtDoctorSpecializationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDoctorSpecializationActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDoctorSpecializationActionPerformed
@@ -303,7 +282,7 @@ if (imageBytes != null) {
     private void btnTrackTransplantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrackTransplantActionPerformed
         // TODO add your handling code here:
    
-                TransplantRequest tc = new TransplantRequest(this.user, this.hospital);
+                TransplantRequest tc = new TransplantRequest(this.userProcessContainer, this.user, this.hospital);
         userProcessContainer.add("TransplantRequest", tc);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
@@ -312,7 +291,6 @@ if (imageBytes != null) {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnDonorRegistrationRequest;
     private javax.swing.JButton btnTrackTransplant;
     private javax.swing.JButton btnViewCases;

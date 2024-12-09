@@ -448,6 +448,7 @@ private String getOrganNameByID(String organID) {
             donorRequest.setOrganSize(resultSet.getString(("organSize")));
             donorRequest.setSsn(resultSet.getString("ssn"));
             dr.add(donorRequest);
+            //|| req.getOrganSize().equals(transplantCase.getSizeRequirement())
             
  
         }
@@ -457,8 +458,8 @@ private String getOrganNameByID(String organID) {
     }
     
             for (DonorRegistrationRequest req : dr) {
-                
-                if (req.getOrganSize() != null && this.getOrganNameByID(transplantCase.getOrganID()).equals(req.getOrgan()) && req.getBloodType().equals(transplantCase.getBloodType()) || req.getOrganSize().equals(transplantCase.getSizeRequirement())){
+
+                if (req.getOrganSize() != null && this.getOrganNameByID(transplantCase.getOrganID()).equals(req.getOrgan()) && req.getBloodType().equals(transplantCase.getBloodType())){
             Object[] row = new Object[5];
             row[0] = req;
             row[1] = req.getDateOfBirth();

@@ -22,18 +22,18 @@ public class LawyerDirectory {
         return lawyerDirectory;
     }
 
-    public void setDoctorDirectory(ArrayList<Lawyer> doctorDirectory) {
-        this.lawyerDirectory = doctorDirectory;
+    public void setLawyerDirectory(ArrayList<Lawyer> lawyerDirectory) {
+        this.lawyerDirectory = lawyerDirectory;
     }
     
-    public void addNewDoctor(Lawyer doctor){
+    public void addNewLawyer(Lawyer lawyer){
         if(this.lawyerDirectory == null){
             this.lawyerDirectory = new ArrayList<Lawyer>();
         }
-        this.lawyerDirectory.add(doctor);
+        this.lawyerDirectory.add(lawyer);
     }
     
-    public Lawyer searchDoctor(String id){
+    public Lawyer searchLawyer(String id){
         for (Lawyer d: this.lawyerDirectory){
             if (d.getLawyerID().equals(id)){
                 return d;
@@ -42,7 +42,16 @@ public class LawyerDirectory {
         return null;
     }
     
-    public void removeDoctor(Lawyer lawyer){
+    public Lawyer searchLawyerName(String name){
+        for (Lawyer d: this.lawyerDirectory){
+            if (d.getName().equals(name)){
+                return d;
+            }
+        }
+        return null;
+    }
+    
+    public void removeLawyer(Lawyer lawyer){
         this.lawyerDirectory.remove(lawyer);
     }
     public Lawyer findLawyerById(String id){

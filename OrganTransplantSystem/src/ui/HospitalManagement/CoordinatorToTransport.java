@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import java.sql.Statement;
 
 /**
  *
@@ -34,6 +35,8 @@ public class CoordinatorToTransport extends javax.swing.JPanel {
         
         this.loadCategory();
         populateTable();
+        this.loadStartHospital();
+        this.loadEndHospital();
     }
 
     /**
@@ -48,17 +51,17 @@ public class CoordinatorToTransport extends javax.swing.JPanel {
         btnSubmit = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
-        txtEndHosID = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblRequest = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        txtStartHosID = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         cmbCategory = new javax.swing.JComboBox<>();
         txtTimeLimit = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        cmbStartHos = new javax.swing.JComboBox<>();
+        cmbEndHos = new javax.swing.JComboBox<>();
 
         btnSubmit.setText("Sumit");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
@@ -78,7 +81,7 @@ public class CoordinatorToTransport extends javax.swing.JPanel {
             }
         });
 
-        jLabel5.setText("End Hospital ID:");
+        jLabel5.setText("End Hospital:");
 
         jLabel6.setText("Category:");
 
@@ -116,7 +119,7 @@ public class CoordinatorToTransport extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 15)); // NOI18N
         jLabel1.setText("Make a Request");
 
-        jLabel2.setText("Start Hospital ID:");
+        jLabel2.setText("Start Hospital:");
 
         cmbCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbCategory.addActionListener(new java.awt.event.ActionListener() {
@@ -129,47 +132,52 @@ public class CoordinatorToTransport extends javax.swing.JPanel {
 
         jLabel3.setText("Time Limit:");
 
+        cmbStartHos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cmbEndHos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnBack)
-                                        .addGap(45, 45, 45)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtStartHosID, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtEndHosID, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(cmbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtTimeLimit, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(326, 445, Short.MAX_VALUE)))
+                                .addComponent(btnBack)
+                                .addGap(45, 45, 45)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbStartHos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTimeLimit, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbEndHos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(cmbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,45 +189,42 @@ public class CoordinatorToTransport extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 9, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(14, 14, 14))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtStartHosID, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtEndHosID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbStartHos, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbEndHos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbCategory)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
                         .addGap(288, 288, 288))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtTimeLimit, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtTimeLimit, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
                         .addGap(60, 60, 60)
-                        .addComponent(btnSubmit)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(btnSubmit, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                        .addGap(202, 202, 202))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
-        String StartID = txtStartHosID.getText();
-        String EndID = txtEndHosID.getText();
+        String StartHos = cmbStartHos.getSelectedItem().toString();
+        String EndHos = cmbEndHos.getSelectedItem().toString();
         String Category = cmbCategory.getSelectedItem().toString();
         String TimeLimit = getTimeLimit(Category);
         String Status = "Pending";
         
-        String StartHosAdd = checkHospitalAddress(StartID);
-        String EndHosAdd = checkHospitalAddress(EndID);
+        String StartHosAdd = checkHospitalAddress(StartHos);
+        String EndHosAdd = checkHospitalAddress(EndHos);
 
         insertData(StartHosAdd, EndHosAdd, Category, TimeLimit, Status);
         populateTable();
@@ -241,6 +246,8 @@ public class CoordinatorToTransport extends javax.swing.JPanel {
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnSubmit;
     private javax.swing.JComboBox<String> cmbCategory;
+    private javax.swing.JComboBox<String> cmbEndHos;
+    private javax.swing.JComboBox<String> cmbStartHos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -249,8 +256,6 @@ public class CoordinatorToTransport extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblRequest;
-    private javax.swing.JTextField txtEndHosID;
-    private javax.swing.JTextField txtStartHosID;
     private javax.swing.JTextField txtTimeLimit;
     // End of variables declaration//GEN-END:variables
 public void loadCategory() {
@@ -260,6 +265,46 @@ public void loadCategory() {
         cmbCategory.addItem(organCategory);
     }
 }
+
+public void loadStartHospital() {
+    cmbStartHos.removeAllItems();
+    try{
+
+    //Statement stmt = connection.createStatement();
+    String query = "SELECT Name FROM hospitals;"; 
+    PreparedStatement preparedStatement = connection.prepareStatement(query); 
+    ResultSet resultSet = preparedStatement.executeQuery(); 
+    while (resultSet.next()) { 
+        cmbStartHos.addItem(resultSet.getString("Name")); 
+    }
+    resultSet.close(); 
+    preparedStatement.close();
+    }catch (SQLException e) { 
+        e.printStackTrace(); 
+    }
+    
+}
+
+public void loadEndHospital() {
+    cmbEndHos.removeAllItems();
+    try{
+
+    //Statement stmt = connection.createStatement();
+    String query = "SELECT Name FROM hospitals;"; 
+    PreparedStatement preparedStatement = connection.prepareStatement(query); 
+    ResultSet resultSet = preparedStatement.executeQuery(); 
+    while (resultSet.next()) { 
+        cmbEndHos.addItem(resultSet.getString("Name")); 
+    }
+    
+    resultSet.close(); 
+    preparedStatement.close();
+    }catch (SQLException e) { 
+        e.printStackTrace(); 
+    }
+    
+}
+
 private String getTimeLimit(String category) { 
     switch (category) { 
         case "Heart": 
@@ -274,15 +319,17 @@ private String getTimeLimit(String category) {
     } 
 }
 
-private String checkHospitalAddress(String ID){
+private String checkHospitalAddress(String Name){
     String Address =null;
     if (connection != null) {
-             String query = "Select Address FROM hospitals WHERE HospitalID = ?"; 
+             String query = "Select Address FROM hospitals WHERE Name = ?; "; 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query); 
-              preparedStatement.setString(1, ID);  
+              preparedStatement.setString(1, Name);  
             ResultSet resultSet = preparedStatement.executeQuery();
-            Address = resultSet.getString("Address"); 
+            if (resultSet.next()) { 
+                Address = resultSet.getString("Address"); 
+            } 
             return Address;
         } catch (SQLException e) { 
             e.printStackTrace(); 
@@ -341,8 +388,8 @@ private void populateTable(){
             preparedStatement.setString(3, Category); 
             preparedStatement.setString(4, TimeLimit); 
             preparedStatement.setString(5, Status); 
-            preparedStatement.setString(6, "0:00:00"); 
-            preparedStatement.setString(7, "0:00:00"); 
+            preparedStatement.setString(6, null); 
+            preparedStatement.setString(7, null); 
             
             int affectedRows = preparedStatement.executeUpdate(); 
             if (affectedRows > 0) { 

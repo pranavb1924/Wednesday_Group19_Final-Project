@@ -23,14 +23,17 @@ public class CoordinatorToLawyerRequest extends javax.swing.JPanel {
 
     JPanel userProcessContainer;
     private Connection connection;
+    private String patientName;
 
-    public CoordinatorToLawyerRequest(JPanel userProcessContainer) {
+    public CoordinatorToLawyerRequest(JPanel userProcessContainer, String patientName) {
         initComponents();
         
         this.userProcessContainer= userProcessContainer;
         this.connection = DatabaseConnection.getConnection();
+        this.patientName= patientName;
         
         populateRequestTable();
+        displayPatientID(patientName);
     }
 
     /**
@@ -302,6 +305,29 @@ public class CoordinatorToLawyerRequest extends javax.swing.JPanel {
                     }   
          
         }
+    }
+    
+    private void displayPatientID(String patientName){
+        String patientID =null;
+        String organID = null;
+    if (connection != null) {
+             String query = "SELECT * FROM transplantPatients WHERE PatientName = ?; "; 
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query); 
+              preparedStatement.setString(1, patientName);  
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) { 
+                patientID = resultSet.getString("PatientID"); 
+                txtPatientID.setText(patientID);
+                organID = resultSet.getString("OrganID"); 
+                txtOrganID.setText(organID);
+            } 
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+            JOptionPane.showMessageDialog(this, "Error getting PatientID", "Error", JOptionPane.ERROR_MESSAGE); 
+        } 
+    } 
+    
     }
 
 }

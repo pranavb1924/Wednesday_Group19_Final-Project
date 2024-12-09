@@ -40,6 +40,7 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
     }
     
     public void fetchDonorRequests() {
+        btnApproveCase.setVisible(false);
     String query = "SELECT RequestID, FirstName, MiddleName, LastName, DateOfBirth, " +
                    "AddressLine2, City, RequestDate, BloodType, State, ZIP, Phone, RegistrationApproved FROM DonorRegistrationRequests";
 
@@ -47,7 +48,7 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
         PreparedStatement stmt = this.connection.prepareStatement(query);
         ResultSet rs = stmt.executeQuery();
 
-        donorRequestDirectory.clear();
+        this.donorRequestDirectory.clear();
 
         while (rs.next()) {
             DonorRegistrationRequest request = new DonorRegistrationRequest();
@@ -85,13 +86,10 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
         for (DonorRegistrationRequest hospital  : this.donorRequestDirectory){
             Object[] row = new Object[5];
             row[0] = hospital;
-            row[1] = hospital.getAddress();
-            row[2] = hospital.getCity();
-            row[3] = hospital.getRegistrationApproved();
-            row[4] = hospital.getBloodType();
-           
-
-            
+            row[1] = hospital.getAddress().toUpperCase();
+            row[2] = hospital.getCity().toUpperCase();
+            row[3] = hospital.getRegistrationApproved().toUpperCase();
+            row[4] = hospital.getBloodType().toUpperCase();
             model.addRow(row);
         }
     }
@@ -113,7 +111,6 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         btnApproveCase = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         btnNewCasesOnly = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(110, 146, 147));
@@ -121,6 +118,7 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
         setMinimumSize(new java.awt.Dimension(1200, 830));
 
         tblDonorRequests.setBackground(new java.awt.Color(22, 29, 29));
+        tblDonorRequests.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         tblDonorRequests.setForeground(new java.awt.Color(255, 255, 255));
         tblDonorRequests.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -164,8 +162,6 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
             }
         });
 
-        jButton3.setText("REMOVE REQUEST");
-
         btnNewCasesOnly.setText("SHOW ONLY NEW REQUESTS");
         btnNewCasesOnly.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,8 +181,6 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnNewCasesOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnApproveCase))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1106, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -199,17 +193,12 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnNewCasesOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnNewCasesOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnApproveCase, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(240, Short.MAX_VALUE))
+                .addContainerGap(259, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -276,47 +265,49 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
     private void btnNewCasesOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewCasesOnlyActionPerformed
         // TODO add your handling code here:
 
-//        if (btnNewCasesOnly.getText() == "SHOW ALL CASES"){
-//            btnNewCasesOnly.setText("SHOW ONLY NEW CASES");
-//            t
-//            return;
-//        }
-//
-//        this.transplantCaseDirectory = new TransplantCaseDirectory();
-//        DefaultTableModel model = (DefaultTableModel) tblTransplantList.getModel();
-//        model.setRowCount(0);
-//
-//        try {
-//            DatabaseConnection databaseConnection = new DatabaseConnection();
-//            Connection connection = databaseConnection.getConnection();
-//            String query = "SELECT * FROM transplantPatients where ApprovalStatus = 'Under Review'";
-//            PreparedStatement preparedStatement = connection.prepareStatement(query);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//
-//            while (resultSet.next()) {
-//                TransplantCase transplantCase = new TransplantCase();
-//                transplantCase.setPatientID(resultSet.getString("PatientID"));
-//                transplantCase.setPatientName(resultSet.getString("PatientName"));
-//                transplantCase.setDateOfBirth(resultSet.getDate("DateOfBirth").toString());
-//                transplantCase.setScanImage(resultSet.getBytes("ScanImage"));
-//                transplantCase.setPatientInfo(resultSet.getString("PatientInfo"));
-//                transplantCase.setRequiredTransplant(resultSet.getString("RequiredTransplant"));
-//                transplantCase.setApprovalStatus(resultSet.getString("ApprovalStatus"));
-//                transplantCaseDirectory.addNewCase(transplantCase);
-//            }
-//
-//            for (TransplantCase transplantCase : transplantCaseDirectory.getTransplantCases()) {
-//                Object[] row = new Object[3];
-//                row[0] = transplantCase;
-//                row[1] = transplantCase.getRequiredTransplant();
-//                row[2] = transplantCase.getApprovalStatus();
-//                model.insertRow(model.getRowCount(), row);
-//            }
-//        } catch (SQLException e) {
-//            JOptionPane.showMessageDialog(this, "Error loading transplant cases: " + e.getMessage());
-//        }
-//
-//        btnNewCasesOnly.setText("SHOW ALL CASES");
+        if (btnNewCasesOnly.getText().equals("SHOW ALL CASES")){
+            this.fetchDonorRequests();
+            this.populateHospitalTable();
+            btnNewCasesOnly.setText("SHOW PENDING CASES");
+            return;
+        }
+        
+        btnApproveCase.setVisible(true);
+        this.donorRequestDirectory = new ArrayList<DonorRegistrationRequest>();
+        DefaultTableModel model = (DefaultTableModel) tblDonorRequests.getModel();
+        model.setRowCount(0);
+
+        try {
+            DatabaseConnection databaseConnection = new DatabaseConnection();
+            Connection connection = databaseConnection.getConnection();
+            String query = "SELECT * FROM donorRegistrationRequests where RegistrationApproved = 'Pending'";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                DonorRegistrationRequest request = new DonorRegistrationRequest();
+                request.setId(rs.getString("RequestId"));
+            request.setFirstName(rs.getString("FirstName"));
+            request.setMiddleName(rs.getString("MiddleName"));
+            request.setLastName(rs.getString("LastName"));
+            request.setDateOfBirth(rs.getString("DateOfBirth"));
+            request.setAddress(rs.getString("AddressLine2"));
+            request.setCity(rs.getString("City"));
+            request.setRequestDate(rs.getString("RequestDate"));
+            request.setBloodType(rs.getString("BloodType"));
+            request.setState(rs.getString("State"));
+            request.setZipCode(rs.getString("ZIP"));
+            request.setPhone(rs.getString("Phone"));
+            request.setRegistrationApproved(rs.getString(("RegistrationApproved")));
+            this.donorRequestDirectory.add(request);
+            }
+
+            this.populateHospitalTable();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error loading transplant cases: " + e.getMessage());
+        }
+
+        btnNewCasesOnly.setText("SHOW ALL CASES");
     }//GEN-LAST:event_btnNewCasesOnlyActionPerformed
 
 
@@ -325,7 +316,6 @@ public class DonorRequestJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnNewCasesOnly;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblDonorRequests;
     // End of variables declaration//GEN-END:variables

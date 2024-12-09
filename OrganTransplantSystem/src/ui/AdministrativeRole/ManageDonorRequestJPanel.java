@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import DatabaseConn.DatabaseConnection;
+import java.awt.CardLayout;
 import java.awt.Toolkit;
 import java.sql.*;
 import javax.swing.JOptionPane;
@@ -55,15 +56,23 @@ public class ManageDonorRequestJPanel extends javax.swing.JPanel {
         this.userProcessContainer = userProcessContainer;
         this.donor = donor;
         this.user = user;
-        if (this.user.getRole().toUpperCase().equals("DOCTOR")){
+        if (this.user.getRole().toUpperCase().equals("DOCTOR") || rq.getRegistrationApproved().equals("UNOS APPROVED")){
             btnSign.setVisible(false);
             btnSave.setVisible(false);
         }
+     
         this.donorRegistrationRquest = rq;
         this.LoadData();
         this.loadBloodTypes();
         this.loadOrgans();
-        
+        if (rq.getRegistrationApproved().toUpperCase().equals("UNOS APPROVED")){
+            
+                    ImageIcon logoImage = new ImageIcon(getClass().getResource("/images/unosadmin.png"));
+        logoImage = new ImageIcon(logoImage.getImage().getScaledInstance(230, 210, Image.SCALE_SMOOTH));
+
+        imglogo.setIcon(logoImage);
+        imglogo.setVisible(true);
+        }
     }
     
         public ManageDonorRequestJPanel(JPanel userProcessContainer, User user) {
@@ -131,6 +140,7 @@ public class ManageDonorRequestJPanel extends javax.swing.JPanel {
         cmbBloodType = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         cmbOrgan = new javax.swing.JComboBox();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(111, 147, 146));
         setMaximumSize(new java.awt.Dimension(1200, 830));
@@ -252,6 +262,16 @@ public class ManageDonorRequestJPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setBackground(new java.awt.Color(22, 29, 29));
+        jButton1.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("BACK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -321,6 +341,10 @@ public class ManageDonorRequestJPanel extends javax.swing.JPanel {
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(234, 234, 234)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -330,10 +354,6 @@ public class ManageDonorRequestJPanel extends javax.swing.JPanel {
                             .addComponent(btnSign, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(439, 439, 439)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel18, jLabel19, jLabel2, jLabel20, jLabel21, jLabel23});
@@ -346,7 +366,9 @@ public class ManageDonorRequestJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -549,7 +571,7 @@ public class ManageDonorRequestJPanel extends javax.swing.JPanel {
         String city = txtCity.getText();
         String state = txtState.getText();
         String addressLine = txtAddressLine.getText();
-        String bloodType = cmbOrgan.getSelectedItem().toString();
+        String bloodType = cmbBloodType.getSelectedItem().toString();
         String status = cmbStatus.getSelectedItem().toString();
         String phone = txtPhone.getText();
         String zipcode = txtZipCode.getText();
@@ -638,6 +660,13 @@ public class ManageDonorRequestJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_cmbOrganActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+         // TODO add your handling code here:
+                userProcessContainer.remove(this);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.previous(userProcessContainer);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public void loadBloodTypes() {
     String[] bloodTypes = {"A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"};
@@ -822,11 +851,9 @@ private boolean validateInputs(String firstName, String lastName, String city, S
     private javax.swing.JComboBox<String> cmbBloodType;
     private javax.swing.JComboBox cmbOrgan;
     private javax.swing.JComboBox<String> cmbStatus;
-    private javax.swing.JComboBox cmbSupplier;
-    private javax.swing.JComboBox cmbSupplier1;
-    private javax.swing.JComboBox cmbSupplier2;
     private javax.swing.JScrollPane consentArea;
     private javax.swing.JLabel imglogo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;

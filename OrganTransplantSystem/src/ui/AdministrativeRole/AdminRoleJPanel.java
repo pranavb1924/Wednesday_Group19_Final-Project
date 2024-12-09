@@ -32,6 +32,7 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         this.connection = connection;
         this.updateNotification();
         this.updateDonorNotification();
+        this.updateTransplantRequestNotification();
         this.user = user;
     }
 
@@ -49,10 +50,10 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         btnManageHospitals = new javax.swing.JButton();
         btnTransplantList = new javax.swing.JButton();
         btnTransplantList1 = new javax.swing.JButton();
-        btnBack = new javax.swing.JButton();
         txtNotification = new javax.swing.JTextField();
         txtNewDonorNotification = new javax.swing.JTextField();
         txtNotification2 = new javax.swing.JTextField();
+        btnReport = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(22, 29, 29));
         setForeground(new java.awt.Color(255, 255, 255));
@@ -103,13 +104,6 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
             }
         });
 
-        btnBack.setText("BACK");
-        btnBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBackActionPerformed(evt);
-            }
-        });
-
         txtNotification.setEditable(false);
         txtNotification.setBackground(new java.awt.Color(255, 170, 92));
         txtNotification.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
@@ -136,6 +130,16 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         txtNotification2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNotification2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        btnReport.setBackground(new java.awt.Color(110, 146, 147));
+        btnReport.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btnReport.setForeground(new java.awt.Color(255, 255, 255));
+        btnReport.setText("REPORTS");
+        btnReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -144,34 +148,31 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
                 .addContainerGap(387, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(384, 384, 384))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnDonorManagement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnManageHospitals, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnTransplantList, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnTransplantList1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnTransplantList1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNotification, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtNewDonorNotification, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtNotification2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(337, 337, 337))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(384, 384, 384))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(337, 337, 337))))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnDonorManagement, btnManageHospitals});
 
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnReport, btnTransplantList1});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(101, 101, 101)
                 .addComponent(jLabel1)
                 .addGap(78, 78, 78)
                 .addComponent(btnManageHospitals, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -187,10 +188,14 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTransplantList1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNotification2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(346, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(267, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnDonorManagement, btnManageHospitals});
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnReport, btnTransplantList1});
 
     }// </editor-fold>//GEN-END:initComponents
 
@@ -221,23 +226,24 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
 
     private void btnTransplantList1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransplantList1ActionPerformed
         // TODO add your handling code here:
-        ui.HospitalManagement.TransplantRequest tc = new ui.HospitalManagement.TransplantRequest(this.user, null);
+        ui.HospitalManagement.TransplantRequest tc = new ui.HospitalManagement.TransplantRequest(this.userProcessContainer, this.user, null);
         userProcessContainer.add("TransplantRequest", tc);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
         
     }//GEN-LAST:event_btnTransplantList1ActionPerformed
 
-    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        // TODO add your handling code here:
-        userProcessContainer.remove(this);
-        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
-        layout.previous(userProcessContainer);
-    }//GEN-LAST:event_btnBackActionPerformed
-
     private void txtNewDonorNotificationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNewDonorNotificationActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNewDonorNotificationActionPerformed
+
+    private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
+        // TODO add your handling code here:
+        ReportModuleJPanel reportModuleJPanel = new ReportModuleJPanel(this.userProcessContainer);
+        userProcessContainer.add("ReportModuleJPanel", reportModuleJPanel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
+    }//GEN-LAST:event_btnReportActionPerformed
 
     private void updateNotification() {
     try {
@@ -281,12 +287,33 @@ public class AdminRoleJPanel extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Error fetching notifications: " + e.getMessage());
     }
 }
+        private void updateTransplantRequestNotification(){
+            try {
+        // Query to count patients with "Under Review" approval status
+        String sql = "SELECT COUNT(*) AS UnderReviewCount FROM transplant WHERE UNOS_APPROVAL_REQUEST = 1 AND UNOS_APPROVAL = 'Pending'";
+        PreparedStatement stmt = this.connection.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            int count = rs.getInt("UnderReviewCount"); // Get the count from the query result
+
+            if (count > 0) {
+                txtNotification2.setText(String.valueOf(count)); // Set the count in the text field
+                txtNotification2.setVisible(true); // Make the text field visible
+            } else {
+                txtNotification2.setVisible(false); // Hide the text field if the count is zero
+            }
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error fetching notifications: " + e.getMessage());
+    }
+        }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnDonorManagement;
     private javax.swing.JButton btnManageHospitals;
+    private javax.swing.JButton btnReport;
     private javax.swing.JButton btnTransplantList;
     private javax.swing.JButton btnTransplantList1;
     private javax.swing.JLabel jLabel1;

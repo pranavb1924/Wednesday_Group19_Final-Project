@@ -39,14 +39,17 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
     HospitalDirectory hospitalDirectory;
     Connection connection;
     Hospital hospital;
+    Doctor doctor;
     private byte[] uploadedImage = null;
-    public AddDoctorsJPanel(JPanel userProcessContainer, HospitalDirectory hospitalDirectory, DoctorDirectory doctorDirectory, Connection connection, Hospital hospital) {
+    public AddDoctorsJPanel(JPanel userProcessContainer, HospitalDirectory hospitalDirectory, DoctorDirectory doctorDirectory, Connection connection, Hospital hospital, Doctor doctor) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
         this.doctorDirectory = doctorDirectory;
         this.hospitalDirectory = hospitalDirectory;
         this.connection = connection;
         this.hospital = hospital;
+        this.doctor = doctor;
+        this.setDoctorDetailsToFields();
     }
 
     /**
@@ -67,9 +70,9 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtUserName = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        l = new javax.swing.JLabel();
         txtPassword = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
+        p = new javax.swing.JLabel();
         btnUpdate = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         lblHospitalName = new javax.swing.JLabel();
@@ -104,18 +107,18 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabel5.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("USER NAME");
+        l.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        l.setForeground(new java.awt.Color(255, 255, 255));
+        l.setText("USER NAME");
 
-        jLabel6.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("PASSWORD");
+        p.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        p.setForeground(new java.awt.Color(255, 255, 255));
+        p.setText("PASSWORD");
 
         btnUpdate.setBackground(new java.awt.Color(22, 29, 29));
         btnUpdate.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
-        btnUpdate.setText("UPDATE");
+        btnUpdate.setText("UPDATE AND SAVE");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -138,7 +141,7 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
 
         jLabel7.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("PASSWORD");
+        jLabel7.setText("PROFILE PHOTO");
 
         btnUpload.setText("UPLOAD");
         btnUpload.addActionListener(new java.awt.event.ActionListener() {
@@ -147,6 +150,9 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnBack.setBackground(new java.awt.Color(22, 29, 29));
+        btnBack.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(255, 255, 255));
         btnBack.setText("BACK");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,11 +191,11 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel6)
+                                            .addComponent(p)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel5)
+                                            .addComponent(l)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(layout.createSequentialGroup()
@@ -209,7 +215,7 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(lblProfilePic, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(632, 632, 632))
+                .addGap(600, 600, 600))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -220,8 +226,8 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
                         .addComponent(lblHospitalName))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnBack)))
-                .addGap(21, 21, 21)
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,11 +248,11 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
+                            .addComponent(l))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))))
+                            .addComponent(p))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addGap(25, 25, 25)
@@ -360,8 +366,62 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
+        try {
+    // Update doctor record
+    String doctorUpdateSql = "UPDATE doctors SET Name = ?, Specialization = ?, HospitalID = ?, Phone = ? WHERE DoctorID = ?";
+    PreparedStatement doctorStmt = this.connection.prepareStatement(doctorUpdateSql);
+
+    Doctor doctor = this.doctor; // Assuming `this.doctor` is the object being updated
+
+    doctor.setName(txtDoctorName.getText());
+    doctor.setSpecialization(txtSpecialization.getText());
+    doctor.setHospitalId(this.hospital.getId());
+    doctor.setPhone(txtPhone.getText());
+
+    doctorStmt.setString(1, txtDoctorName.getText());
+    doctorStmt.setString(2, txtSpecialization.getText());
+    doctorStmt.setString(3, this.hospital.getId());
+    doctorStmt.setString(4, txtPhone.getText());
+    doctorStmt.setString(5, doctor.getDoctorId());
+
+    int doctorRowsAffected = doctorStmt.executeUpdate();
+
+    if (doctorRowsAffected > 0) {
+        JOptionPane.showMessageDialog(null, "Doctor record updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+    } else {
+        JOptionPane.showMessageDialog(null, "Failed to update doctor record.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    doctorStmt.close();
+
+} catch (SQLException e) {
+    e.printStackTrace();
+    JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+} catch (Exception e) {
+    e.printStackTrace();
+    JOptionPane.showMessageDialog(null, "An unexpected error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+}
+
          
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void setDoctorDetailsToFields() {
+    if (this.doctor != null) {
+        txtDoctorName.setText(this.doctor.getName());
+        txtSpecialization.setText(this.doctor.getSpecialization());
+        txtPhone.setText(this.doctor.getPhone());
+        btnSave.setVisible(false);
+        btnUpdate.setVisible(true);
+        txtUserName.setVisible(false);
+        txtPassword.setVisible(false);
+        l.setVisible(false);
+        p.setVisible(false);
+    } else {
+        btnUpdate.setVisible(false);
+        return;
+        //JOptionPane.showMessageDialog(null, "Doctor object is null.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
@@ -381,12 +441,12 @@ public class AddDoctorsJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel l;
     private javax.swing.JLabel lblHospitalName;
     private javax.swing.JLabel lblProfilePic;
+    private javax.swing.JLabel p;
     private javax.swing.JTextField txtDoctorName;
     private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtPhone;

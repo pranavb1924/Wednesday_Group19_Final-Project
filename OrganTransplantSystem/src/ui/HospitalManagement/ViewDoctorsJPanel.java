@@ -62,8 +62,8 @@ public class ViewDoctorsJPanel extends javax.swing.JPanel {
         for (Doctor doctor : this.hospital.getDoctorDirectory().getDoctorDirectory()){
             Object[] row = new Object[3];
             row[0] = doctor;
-            row[1] = doctor.getSpecialization();
-            row[2] = doctor.getPhone();
+            row[1] = doctor.getSpecialization().toUpperCase();
+            row[2] = doctor.getPhone().toUpperCase();
             model.addRow(row);
         }
         
@@ -84,6 +84,7 @@ public class ViewDoctorsJPanel extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(111, 147, 146));
         setMaximumSize(new java.awt.Dimension(1200, 830));
@@ -138,7 +139,7 @@ public class ViewDoctorsJPanel extends javax.swing.JPanel {
         jButton2.setBackground(new java.awt.Color(22, 29, 29));
         jButton2.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("REMOVE DOCTOR");
+        jButton2.setText("VIEW");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -165,6 +166,16 @@ public class ViewDoctorsJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnRemove.setBackground(new java.awt.Color(22, 29, 29));
+        btnRemove.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        btnRemove.setForeground(new java.awt.Color(255, 255, 255));
+        btnRemove.setText("REMOVE DOCTOR");
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -178,13 +189,15 @@ public class ViewDoctorsJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(70, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1118, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(70, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -200,7 +213,8 @@ public class ViewDoctorsJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(252, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -208,7 +222,7 @@ public class ViewDoctorsJPanel extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
-        AddDoctorsJPanel addDoctorsJPanel = new AddDoctorsJPanel(this.userProcessContainer, this.hospitalDirectory, this.doctorDirectory , this.connection , this.hospital);
+        AddDoctorsJPanel addDoctorsJPanel = new AddDoctorsJPanel(this.userProcessContainer, this.hospitalDirectory, this.doctorDirectory , this.connection , this.hospital, null);
         userProcessContainer.add("AddDoctorsJPanel", addDoctorsJPanel);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.next(userProcessContainer);
@@ -223,15 +237,129 @@ public class ViewDoctorsJPanel extends javax.swing.JPanel {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        //this.loadDoctors();
         this.populateDoctorTable();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        int selectedRowIndex = tblDoctors.getSelectedRow();
+        if (selectedRowIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Pls select a row!!", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+        
+       Doctor doc = (Doctor) tblDoctors.getValueAt(selectedRowIndex, 0);
+        
+        AddDoctorsJPanel addDoctorsJPanel = new AddDoctorsJPanel(this.userProcessContainer, this.hospitalDirectory, this.doctorDirectory , this.connection , this.hospital, doc);
+        userProcessContainer.add("AddDoctorsJPanel", addDoctorsJPanel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        // TODO add your handling code here:
+        this.removeDoctor();
+    }//GEN-LAST:event_btnRemoveActionPerformed
+
+        private void loadDoctors(){
+        
+         try {
+                    this.doctorDirectory = new DoctorDirectory();
+                   
+                    String docquery = "SELECT * FROM doctors"; 
+                    PreparedStatement doctstmt = connection.prepareStatement(docquery); 
+                    ResultSet docresultSet = doctstmt.executeQuery();
+            
+                    while(docresultSet.next()){
+                        String docid = docresultSet.getString("DoctorID");
+                        String docname = docresultSet.getString("Name");
+                        String docspecialization = docresultSet.getString("Specialization");
+                        String docphone = docresultSet.getString("Phone");
+                        String hospitalId = docresultSet.getString("HospitalId");
+
+                        Doctor doctor = new Doctor();
+                        doctor.setDoctorId(docid);
+                        doctor.setName(docname);
+                        doctor.setSpecialization(docspecialization);
+                        doctor.setPhone(docphone);
+                        doctor.setHospitalId(hospitalId);
+                        
+                        this.doctorDirectory.addNewDoctor(doctor);
+                    }
+                    //connection.close();
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error fetching user data1.", "Error", JOptionPane.ERROR_MESSAGE);
+        }        
+    }
+    
+    private void removeDoctor() {
+    int selectedRowIndex = tblDoctors.getSelectedRow();
+    if (selectedRowIndex < 0) {
+        JOptionPane.showMessageDialog(null, "Please select a row!", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    Doctor doc = (Doctor) tblDoctors.getValueAt(selectedRowIndex, 0);
+    
+    this.hospital.getDoctorDirectory().getDoctorDirectory().remove(doc);
+    String doctorId = doc.getDoctorId();
+
+    try {
+        // Start transaction
+        this.connection.setAutoCommit(false);
+
+        // Delete from user table
+        String deleteUserSql = "DELETE FROM user WHERE ReferenceID = ?";
+        PreparedStatement userStmt = this.connection.prepareStatement(deleteUserSql);
+        userStmt.setString(1, doctorId);
+        int userRowsAffected = userStmt.executeUpdate();
+        userStmt.close();
+
+        if (userRowsAffected > 0) {
+            // Delete from doctors table
+            String deleteDoctorSql = "DELETE FROM doctors WHERE DoctorID = ?";
+            PreparedStatement doctorStmt = this.connection.prepareStatement(deleteDoctorSql);
+            doctorStmt.setString(1, doctorId);
+            int doctorRowsAffected = doctorStmt.executeUpdate();
+            doctorStmt.close();
+
+            if (doctorRowsAffected > 0) {
+                // Commit transaction
+                this.connection.commit();
+                JOptionPane.showMessageDialog(null, "Doctor record removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                // Rollback in case of failure
+                this.connection.rollback();
+                JOptionPane.showMessageDialog(null, "Failed to delete doctor record.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            // Rollback if user deletion fails
+            this.connection.rollback();
+            JOptionPane.showMessageDialog(null, "Failed to delete user record.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Reset auto-commit
+        this.connection.setAutoCommit(true);
+
+        this.populateDoctorTable();
+    } catch (SQLException e) {
+        try {
+            this.connection.rollback();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "An unexpected error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRemove;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

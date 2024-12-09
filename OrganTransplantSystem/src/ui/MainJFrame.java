@@ -21,6 +21,7 @@ import model.Lawyer.LawyerDirectory;
 import ui.HospitalManagement.*;
 import ui.AdministrativeRole.HomePanel;
 import ui.Lawyer.LawyerWorkAreaJPanel;
+import ui.Lawyer.ViewLawyerJPanel;
 import ui.Transportation.TransportationJPanel;
 /**
  *
@@ -202,6 +203,9 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void loginJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginJButtonActionPerformed
 
+        this.createUser();
+        this.loadHospitals();
+        this.loadDoctors();
         String userName = userNameJTextField.getText();
         char[] passwordCharArray = passwordField.getPassword();
         String password = String.valueOf(passwordCharArray);
@@ -209,6 +213,7 @@ public class MainJFrame extends javax.swing.JFrame {
         if (authenticateUser(userName, password)){
             JOptionPane.showMessageDialog(this, "Login Successful", "Welcome!", JOptionPane.INFORMATION_MESSAGE);
         
+            
         
         JPanel profilePanel = this.loadProfile();
         container.add("profilePanel", profilePanel);
@@ -222,6 +227,11 @@ public class MainJFrame extends javax.swing.JFrame {
             
 
         }
+        
+        else{
+            JOptionPane.showMessageDialog(this, "PLEASE CHECK THE USERNAME AND PASSWORD AGAIN!", "Welcome!", JOptionPane.INFORMATION_MESSAGE);
+        
+        }
     }//GEN-LAST:event_loginJButtonActionPerformed
 
     private void btnRegisterDonorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterDonorActionPerformed
@@ -234,6 +244,9 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
+                this.createUser();
+        this.loadHospitals();
+        this.loadDoctors();
         userNameJTextField.setEnabled(true);
         passwordField.setEnabled(true);
         loginJButton.setEnabled(true);
@@ -322,7 +335,7 @@ public class MainJFrame extends javax.swing.JFrame {
     public void createUser(){
         
         Connection connection = connectToDatabase();
-        
+        this.userDirectory = new UserDirectory();
         try {
             String query = "SELECT * FROM user"; // Query to fetch all users
             PreparedStatement stmt = connection.prepareStatement(query); 
@@ -388,6 +401,9 @@ public class MainJFrame extends javax.swing.JFrame {
                     TransportationJPanel transportationJPanel = new TransportationJPanel(container);
                     return transportationJPanel;
                     
+                case "LAWYER ADMIN":
+                    ViewLawyerJPanel viewLawyerJPanel = new ViewLawyerJPanel(container,this.currentConnection);
+                    return viewLawyerJPanel;
                 default:
                     System.out.println("Unrecognized role. Access denied.");
                     // Handle unrecognized role
@@ -435,6 +451,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private void loadDoctors(){
         
          try {
+                    this.doctorDirectory = new DoctorDirectory();
                     Connection connection = connectToDatabase();
                     String docquery = "SELECT * FROM doctors"; 
                     PreparedStatement doctstmt = connection.prepareStatement(docquery); 
@@ -465,7 +482,7 @@ public class MainJFrame extends javax.swing.JFrame {
     
     private void loadHospitals(){
         Connection connection = connectToDatabase();
-        
+        this.hospitalDirectory = new HospitalDirectory();
         try {
             String query = "SELECT * FROM Hospitals"; // Query to fetch all users
             PreparedStatement stmt = connection.prepareStatement(query); 

@@ -159,6 +159,11 @@ public class AddTransplantCaseJPanel extends javax.swing.JPanel {
         });
 
         btnBack1.setText("BACK");
+        btnBack1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBack1ActionPerformed(evt);
+            }
+        });
 
         txtMedicalHistory.setColumns(20);
         txtMedicalHistory.setRows(5);
@@ -350,6 +355,13 @@ public class AddTransplantCaseJPanel extends javax.swing.JPanel {
         
 
     }//GEN-LAST:event_cmbDoctorActionPerformed
+
+    private void btnBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack1ActionPerformed
+        // TODO add your handling code here:
+        userProcessContainer.remove(this);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.previous(userProcessContainer);
+    }//GEN-LAST:event_btnBack1ActionPerformed
 
     private boolean validateFields() {
     if (txtPatientName.getText().trim().isEmpty()) {

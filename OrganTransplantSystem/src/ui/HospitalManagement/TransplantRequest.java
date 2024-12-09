@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import DatabaseConn.DatabaseConnection;
+import java.awt.CardLayout;
 import model.users.*;
 /**
  *
@@ -27,13 +28,14 @@ public class TransplantRequest extends javax.swing.JPanel {
     Connection connection = dbConn.getConnection();
     User user;
     Hospital hospital;
+    JPanel userProcessContainer;
     ArrayList<TransplantRequest> TransplantRequestDirectory = new ArrayList<TransplantRequest>();
-    public TransplantRequest(User user, Hospital hospital) {
+    public TransplantRequest(JPanel userProcessContainer, User user, Hospital hospital) {
         initComponents();
         this.user = user;
         this.hospital = hospital;
         this.populateTransplantTable();
-        
+        this.userProcessContainer = userProcessContainer;
     }
     public void populateTransplantTable() {
     
@@ -80,10 +82,11 @@ public class TransplantRequest extends javax.swing.JPanel {
             Date transplantDate = resultSet.getDate("TransplantDate");
             String outcome = resultSet.getString("Outcome");
             String legalApproval = resultSet.getString("legalApproval");
-            String transportStatus = resultSet.getString("transportStatus");
+            String unosApproval = resultSet.getString("UNOS_APPROVAL");
+            //String transportStatus = resultSet.getString("transportStatus");
 
             model.addRow(new Object[]{
-                recipientID, donorID, organID, transplantDate, outcome, legalApproval, transportStatus
+                recipientID, donorID, organID, transplantDate, legalApproval , unosApproval, outcome
             });
         }
 
@@ -111,10 +114,11 @@ public class TransplantRequest extends javax.swing.JPanel {
             Date transplantDate = resultSet.getDate("TransplantDate");
             String outcome = resultSet.getString("Outcome");
             String legalApproval = resultSet.getString("legalApproval");
+            String unos = resultSet.getString("UNOS_APPROVAL");
             String transportStatus = resultSet.getString("transportStatus");
 
             model.addRow(new Object[]{
-                recipientID, donorID, organID, transplantDate, outcome, legalApproval, transportStatus
+                recipientID, donorID, organID, transplantDate, legalApproval , unos, outcome, transportStatus
             });
         }
 
@@ -245,6 +249,7 @@ public class TransplantRequest extends javax.swing.JPanel {
         btnSurgerySuccess = new javax.swing.JButton();
         btnSurgeryUnsuccessful = new javax.swing.JButton();
         btnApproveTransplant = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(22, 29, 29));
         setMaximumSize(new java.awt.Dimension(1200, 830));
@@ -252,17 +257,17 @@ public class TransplantRequest extends javax.swing.JPanel {
 
         tblTransplant.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "RecepientID", "DonorID", "OrganID", "Transplant Date", "Legal Approval", "Outcome"
+                "RecepientID", "DonorID", "OrganID", "Transplant Date", "Legal Approval", "Unos Approval", "Outcome"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -270,6 +275,9 @@ public class TransplantRequest extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(tblTransplant);
+        if (tblTransplant.getColumnModel().getColumnCount() > 0) {
+            tblTransplant.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         jButton1.setText("VIEW CASE");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -317,6 +325,13 @@ public class TransplantRequest extends javax.swing.JPanel {
             }
         });
 
+        jButton2.setText("BACK");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -324,11 +339,6 @@ public class TransplantRequest extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSurgeryUnsuccessful, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1064, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(86, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -344,12 +354,20 @@ public class TransplantRequest extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtDate)
                             .addComponent(btnSetTransplantDate, javax.swing.GroupLayout.PREFERRED_SIZE, 172, Short.MAX_VALUE))
-                        .addGap(152, 152, 152))))
+                        .addGap(152, 152, 152))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSurgeryUnsuccessful, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1064, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(86, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(139, 139, 139)
+                .addGap(23, 23, 23)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(74, 74, 74)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -361,8 +379,8 @@ public class TransplantRequest extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSurgerySuccess, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSetTransplantDate, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -374,6 +392,17 @@ public class TransplantRequest extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+                        int selectedRowIndex = tblTransplant.getSelectedRow();
+        if (selectedRowIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Pls select a row!!", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+        
+       Object obj = tblTransplant.getValueAt(selectedRowIndex, 0);
+        
+        ViewTransplantCaseJPanel viewTransplantCaseJPanel = new ViewTransplantCaseJPanel(this.userProcessContainer, tblTransplant.getValueAt(selectedRowIndex, 0).toString());
+        userProcessContainer.add("ViewTransplantCaseJPanel", viewTransplantCaseJPanel);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnRequestUnosApprovalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestUnosApprovalActionPerformed
@@ -404,6 +433,13 @@ public class TransplantRequest extends javax.swing.JPanel {
         // TODO add your handling code here:
         this.surgeryUnSuccessful();
     }//GEN-LAST:event_btnSurgeryUnsuccessfulActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        userProcessContainer.remove(this);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.previous(userProcessContainer);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public void setTransplantDate() {
     int selectedRow = tblTransplant.getSelectedRow();
@@ -459,6 +495,7 @@ public class TransplantRequest extends javax.swing.JPanel {
     private javax.swing.JButton btnSurgerySuccess;
     private javax.swing.JButton btnSurgeryUnsuccessful;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl;
     private javax.swing.JTable tblTransplant;

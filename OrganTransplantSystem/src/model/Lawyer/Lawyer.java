@@ -15,6 +15,15 @@ public class Lawyer {
     private String HospitalID;
     private String phone;
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    private String email;
+
     public String getLawyerID() {
         return lawyerID;
     }

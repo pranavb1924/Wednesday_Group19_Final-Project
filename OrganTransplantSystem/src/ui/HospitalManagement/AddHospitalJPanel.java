@@ -3,13 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package ui.HospitalManagement;
-
+import java.awt.Component;
+import java.awt.CardLayout;
 import javax.swing.JPanel;
 import model.HospitalManagement.HospitalDirectory;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import model.HospitalManagement.*;
 import java.sql.*;
 import java.util.UUID;
+import DatabaseConn.DatabaseConnection;
 
 /**
  *
@@ -24,12 +26,14 @@ public class AddHospitalJPanel extends javax.swing.JPanel {
     JPanel userProcessContainer;
     HospitalDirectory hospitalDirectory;
     Hospital hospital;
-    Connection connection;
-    public AddHospitalJPanel(JPanel userProcessContainer, HospitalDirectory hospitalDirectory, Connection connection) {
+    DatabaseConnection db = new DatabaseConnection();
+    Connection connection = db.getConnection();
+    String mode;
+    public AddHospitalJPanel(JPanel userProcessContainer, HospitalDirectory hospitalDirectory, Connection connection, String mode) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
         this.hospitalDirectory = hospitalDirectory;
-        this.connection = connection;
+        this.mode = mode;
     }
 
     public void validateFields() {
@@ -86,7 +90,6 @@ public class AddHospitalJPanel extends javax.swing.JPanel {
         txtHospitalState = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         btnSave = new javax.swing.JButton();
-        btnUpdate = new javax.swing.JButton();
         txtAdminName = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtAdminUsername = new javax.swing.JTextField();
@@ -142,11 +145,6 @@ public class AddHospitalJPanel extends javax.swing.JPanel {
             }
         });
 
-        btnUpdate.setBackground(new java.awt.Color(111, 147, 146));
-        btnUpdate.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
-        btnUpdate.setText("UPDATE");
-
         jLabel6.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("ADMIN NAME");
@@ -201,10 +199,9 @@ public class AddHospitalJPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(515, 515, 515)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
-                                    .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)))
+                                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createSequentialGroup()
@@ -331,185 +328,201 @@ public class AddHospitalJPanel extends javax.swing.JPanel {
                             .addComponent(jLabel12))))
                 .addGap(65, 65, 65)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(283, Short.MAX_VALUE))
+                .addContainerGap(350, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        
-        // Validate fields
- // Validate fields
-this.validateFields();
 
-// Gather input values
-String hospitalName = txtHospitalName.getText();
-String hospitalAddress = txtHospitalAddress.getText();
-String hospitalCity = txtHospitalCity.getText();
-String hospitalState = txtHospitalState.getText();
-String hospitalPhone = txtHospitalPhone.getText();
-String adminName = txtAdminName.getText();
-String adminUsername = txtAdminUsername.getText();
-String adminPassword = txtAdminPassword.getText();
-String adminEmail = txtAdminEmail.getText();
-String coordinatorName = txtTcName.getText();
-String coordinatorUsername = txtTcUsername.getText();
-String coordinatorPassword = txtTcPassword.getText();
-String coordinatorEmail = txtTcEmail.getText();
+        this.validateFields();
 
-// Ensure usernames are not the same
-if (adminUsername.equals(coordinatorUsername)) {
-    JOptionPane.showMessageDialog(null, "Admin and Coordinator usernames must be unique.", "Validation Error", JOptionPane.ERROR_MESSAGE);
-    return;
-}
+        String hospitalName = txtHospitalName.getText();
+        String hospitalAddress = txtHospitalAddress.getText();
+        String hospitalCity = txtHospitalCity.getText();
+        String hospitalState = txtHospitalState.getText();
+        String hospitalPhone = txtHospitalPhone.getText();
+        String adminName = txtAdminName.getText();
+        String adminUsername = txtAdminUsername.getText();
+        String adminPassword = txtAdminPassword.getText();
+        String adminEmail = txtAdminEmail.getText();
+        String coordinatorName = txtTcName.getText();
+        String coordinatorUsername = txtTcUsername.getText();
+        String coordinatorPassword = txtTcPassword.getText();
+        String coordinatorEmail = txtTcEmail.getText();
 
-try {
-    // Check if adminUsername already exists in the user table
-    String checkUsernameSql = "SELECT username FROM user WHERE username IN (?, ?)";
-    PreparedStatement checkUserStmt = this.connection.prepareStatement(checkUsernameSql);
-    checkUserStmt.setString(1, adminUsername);
-    checkUserStmt.setString(2, coordinatorUsername);
-
-    ResultSet resultSet = checkUserStmt.executeQuery();
-    boolean adminExists = false;
-    boolean coordinatorExists = false;
-
-    while (resultSet.next()) {
-        String existingUsername = resultSet.getString("username");
-        if (existingUsername.equals(adminUsername)) {
-            adminExists = true;
+        // Ensure usernames are not the same
+        if (adminUsername.equals(coordinatorUsername)) {
+            JOptionPane.showMessageDialog(null, "Admin and Coordinator usernames must be unique.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-        if (existingUsername.equals(coordinatorUsername)) {
-            coordinatorExists = true;
+
+        try {
+            // Check if adminUsername already exists in the user table
+            String checkUsernameSql = "SELECT username FROM user WHERE username IN (?, ?)";
+            PreparedStatement checkUserStmt = this.connection.prepareStatement(checkUsernameSql);
+            checkUserStmt.setString(1, adminUsername);
+            checkUserStmt.setString(2, coordinatorUsername);
+
+            ResultSet resultSet = checkUserStmt.executeQuery();
+            boolean adminExists = false;
+            boolean coordinatorExists = false;
+
+            while (resultSet.next()) {
+                String existingUsername = resultSet.getString("username");
+                if (existingUsername.equals(adminUsername)) {
+                    adminExists = true;
+                }
+                if (existingUsername.equals(coordinatorUsername)) {
+                    coordinatorExists = true;
+                }
+            }
+
+            if (adminExists) {
+                JOptionPane.showMessageDialog(null, "Admin username already exists. Please choose a different username.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (coordinatorExists) {
+                JOptionPane.showMessageDialog(null, "Coordinator username already exists. Please choose a different username.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            checkUserStmt.close();
+
+            // Generate IDs
+            String adminId = UUID.randomUUID().toString();
+            String coordinatorId = UUID.randomUUID().toString();
+            String hospitalId = UUID.randomUUID().toString();
+
+            // Insert into coordinators table
+            String coordinatorInsertSql = "INSERT INTO coordinators (CoordinatorID, Name, Email) VALUES (?, ?, ?)";
+            PreparedStatement coordinatorStmt = this.connection.prepareStatement(coordinatorInsertSql);
+            coordinatorStmt.setString(1, coordinatorId);
+            coordinatorStmt.setString(2, coordinatorName);
+            coordinatorStmt.setString(3, coordinatorEmail);
+
+            int coordinatorRowsAffected = coordinatorStmt.executeUpdate();
+
+            if (coordinatorRowsAffected > 0) {
+                // Insert into user table for coordinator
+                String userCoordinatorInsertSql = "INSERT INTO user (username, password, email, Role, ReferenceID) VALUES (?, ?, ?, ?, ?)";
+                PreparedStatement userCoordinatorStmt = this.connection.prepareStatement(userCoordinatorInsertSql);
+                userCoordinatorStmt.setString(1, coordinatorUsername);
+                userCoordinatorStmt.setString(2, coordinatorPassword);
+                userCoordinatorStmt.setString(3, coordinatorEmail);
+                userCoordinatorStmt.setString(4, "3"); // Role ID for coordinator
+                userCoordinatorStmt.setString(5, coordinatorId);
+
+                int userCoordinatorRowsAffected = userCoordinatorStmt.executeUpdate();
+
+                if (userCoordinatorRowsAffected <= 0) {
+                    JOptionPane.showMessageDialog(null, "Failed to insert user record for Coordinator.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                userCoordinatorStmt.close();
+            } else {
+                JOptionPane.showMessageDialog(null, "Failed to insert Coordinator record.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            coordinatorStmt.close();
+
+            // Insert into admins table
+            String adminInsertSql = "INSERT INTO admins (AdminID, Name, Email) VALUES (?, ?, ?)";
+            PreparedStatement adminStmt = this.connection.prepareStatement(adminInsertSql);
+            adminStmt.setString(1, adminId);
+            adminStmt.setString(2, adminName);
+            adminStmt.setString(3, adminEmail);
+
+            int adminRowsAffected = adminStmt.executeUpdate();
+
+            if (adminRowsAffected > 0) {
+                // Insert into user table for admin
+                String userAdminInsertSql = "INSERT INTO user (username, password, email, Role, ReferenceID) VALUES (?, ?, ?, ?, ?)";
+                PreparedStatement userAdminStmt = this.connection.prepareStatement(userAdminInsertSql);
+                userAdminStmt.setString(1, adminUsername);
+                userAdminStmt.setString(2, adminPassword);
+                userAdminStmt.setString(3, adminEmail);
+                userAdminStmt.setString(4, "5"); // Role ID for admin
+                userAdminStmt.setString(5, adminId);
+
+                int userAdminRowsAffected = userAdminStmt.executeUpdate();
+
+                if (userAdminRowsAffected <= 0) {
+                    JOptionPane.showMessageDialog(null, "Failed to insert user record for Admin.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                userAdminStmt.close();
+            } else {
+                JOptionPane.showMessageDialog(null, "Failed to insert Admin record.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            adminStmt.close();
+
+            // Insert into hospitals table
+            String hospitalInsertSql = "INSERT INTO hospitals (HospitalID, Name, Address, City, State, Phone, coordinatorId, AdminId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement hospitalStmt = this.connection.prepareStatement(hospitalInsertSql);
+
+            hospitalStmt.setString(1, hospitalId);
+            hospitalStmt.setString(2, hospitalName);
+            hospitalStmt.setString(3, hospitalAddress);
+            hospitalStmt.setString(4, hospitalCity);
+            hospitalStmt.setString(5, hospitalState);
+            hospitalStmt.setString(6, hospitalPhone);
+            hospitalStmt.setString(7, coordinatorId);
+            hospitalStmt.setString(8, adminId);
+
+            int hospitalRowsAffected = hospitalStmt.executeUpdate();
+
+            if (hospitalRowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Hospital record inserted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Failed to insert hospital record.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            hospitalStmt.close();
+            txtHospitalName.setText("");
+            txtHospitalAddress.setText("");
+            txtHospitalCity.setText("");
+            txtHospitalState.setText("");
+            txtHospitalPhone.setText("");
+            txtAdminName.setText("");
+            txtAdminUsername.setText("");
+            txtAdminPassword.setText("");
+            txtAdminEmail.setText("");
+            txtTcName.setText("");
+            txtTcUsername.setText("");
+            txtTcPassword.setText("");
+            txtTcEmail.setText("");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "An unexpected error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    if (adminExists) {
-        JOptionPane.showMessageDialog(null, "Admin username already exists. Please choose a different username.", "Validation Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    if (coordinatorExists) {
-        JOptionPane.showMessageDialog(null, "Coordinator username already exists. Please choose a different username.", "Validation Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    checkUserStmt.close();
-
-    // Generate IDs
-    String adminId = UUID.randomUUID().toString();
-    String coordinatorId = UUID.randomUUID().toString();
-    String hospitalId = UUID.randomUUID().toString();
-
-    // Insert into coordinators table
-    String coordinatorInsertSql = "INSERT INTO coordinators (CoordinatorID, Name, Email) VALUES (?, ?, ?)";
-    PreparedStatement coordinatorStmt = this.connection.prepareStatement(coordinatorInsertSql);
-    coordinatorStmt.setString(1, coordinatorId);
-    coordinatorStmt.setString(2, coordinatorName);
-    coordinatorStmt.setString(3, coordinatorEmail);
-
-    int coordinatorRowsAffected = coordinatorStmt.executeUpdate();
-
-    if (coordinatorRowsAffected > 0) {
-        // Insert into user table for coordinator
-        String userCoordinatorInsertSql = "INSERT INTO user (username, password, email, Role, ReferenceID) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement userCoordinatorStmt = this.connection.prepareStatement(userCoordinatorInsertSql);
-        userCoordinatorStmt.setString(1, coordinatorUsername);
-        userCoordinatorStmt.setString(2, coordinatorPassword);
-        userCoordinatorStmt.setString(3, coordinatorEmail);
-        userCoordinatorStmt.setString(4, "3"); // Role ID for coordinator
-        userCoordinatorStmt.setString(5, coordinatorId);
-
-        int userCoordinatorRowsAffected = userCoordinatorStmt.executeUpdate();
-
-        if (userCoordinatorRowsAffected <= 0) {
-            JOptionPane.showMessageDialog(null, "Failed to insert user record for Coordinator.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        userCoordinatorStmt.close();
-    } else {
-        JOptionPane.showMessageDialog(null, "Failed to insert Coordinator record.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    coordinatorStmt.close();
-
-    // Insert into admins table
-    String adminInsertSql = "INSERT INTO admins (AdminID, Name, Email) VALUES (?, ?, ?)";
-    PreparedStatement adminStmt = this.connection.prepareStatement(adminInsertSql);
-    adminStmt.setString(1, adminId);
-    adminStmt.setString(2, adminName);
-    adminStmt.setString(3, adminEmail);
-
-    int adminRowsAffected = adminStmt.executeUpdate();
-
-    if (adminRowsAffected > 0) {
-        // Insert into user table for admin
-        String userAdminInsertSql = "INSERT INTO user (username, password, email, Role, ReferenceID) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement userAdminStmt = this.connection.prepareStatement(userAdminInsertSql);
-        userAdminStmt.setString(1, adminUsername);
-        userAdminStmt.setString(2, adminPassword);
-        userAdminStmt.setString(3, adminEmail);
-        userAdminStmt.setString(4, "5"); // Role ID for admin
-        userAdminStmt.setString(5, adminId);
-
-        int userAdminRowsAffected = userAdminStmt.executeUpdate();
-
-        if (userAdminRowsAffected <= 0) {
-            JOptionPane.showMessageDialog(null, "Failed to insert user record for Admin.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        userAdminStmt.close();
-    } else {
-        JOptionPane.showMessageDialog(null, "Failed to insert Admin record.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    adminStmt.close();
-
-    // Insert into hospitals table
-    String hospitalInsertSql = "INSERT INTO hospitals (HospitalID, Name, Address, City, State, Phone, coordinatorId, AdminId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    PreparedStatement hospitalStmt = this.connection.prepareStatement(hospitalInsertSql);
-
-    hospitalStmt.setString(1, hospitalId);
-    hospitalStmt.setString(2, hospitalName);
-    hospitalStmt.setString(3, hospitalAddress);
-    hospitalStmt.setString(4, hospitalCity);
-    hospitalStmt.setString(5, hospitalState);
-    hospitalStmt.setString(6, hospitalPhone);
-    hospitalStmt.setString(7, coordinatorId);
-    hospitalStmt.setString(8, adminId);
-
-    int hospitalRowsAffected = hospitalStmt.executeUpdate();
-
-    if (hospitalRowsAffected > 0) {
-        JOptionPane.showMessageDialog(null, "Hospital record inserted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-    } else {
-        JOptionPane.showMessageDialog(null, "Failed to insert hospital record.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    hospitalStmt.close();
-
-} catch (SQLException e) {
-    e.printStackTrace();
-    JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-} catch (Exception e) {
-    e.printStackTrace();
-    JOptionPane.showMessageDialog(null, "An unexpected error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-}
-
-
-
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        
+        userProcessContainer.remove(this);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.previous(userProcessContainer);
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void clearTextFields(JPanel panel) {
+    for (Component component : panel.getComponents()) {
+        if (component instanceof JTextField) {
+            ((JTextField) component).setText("");
+        } else if (component instanceof JPanel) {
+            clearTextFields((JPanel) component); // Recursively clear nested panels
+        }
+    }
+}
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnSave;
-    private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

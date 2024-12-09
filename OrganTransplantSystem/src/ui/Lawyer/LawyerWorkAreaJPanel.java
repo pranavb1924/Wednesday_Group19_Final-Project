@@ -111,20 +111,20 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
         tblLawyerDetail.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         tblLawyerDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Lawyer ID", "Lawyer Name", "Phone", "Specialization"
+                "Lawyer ID", "Lawyer Name", "Phone"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -250,13 +250,12 @@ public class LawyerWorkAreaJPanel extends javax.swing.JPanel {
                 String id = resultSet.getString("LawyerID"); 
                 String name = resultSet.getString("Name"); 
                 String phone = resultSet.getString("Phone");
-                String specialization = resultSet.getString("Specialization"); 
                 
                 Object[] row = new Object[4];
                 row[0] = id;
                 row[1] = name;
                 row[2] = phone;
-                row[3] = specialization;
+
             
             model.addRow(row);
             } 
