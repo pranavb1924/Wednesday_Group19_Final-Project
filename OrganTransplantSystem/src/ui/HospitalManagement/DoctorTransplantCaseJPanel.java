@@ -153,7 +153,7 @@ private String getOrganNameByID(String organID) {
         tblRecepient = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblDonor = new javax.swing.JTable();
-        jTextField2 = new javax.swing.JTextField();
+        txtSearchCriteria = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -257,6 +257,11 @@ private String getOrganNameByID(String organID) {
 
         jButton3.setBackground(new java.awt.Color(110, 146, 147));
         jButton3.setText("SEARCH");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setBackground(new java.awt.Color(110, 146, 147));
         jButton4.setText("ADD TO REQUEST");
@@ -266,7 +271,9 @@ private String getOrganNameByID(String organID) {
             }
         });
 
-        jLabel1.setText("Patient Name");
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("SEARCH CRITERIA");
 
         jButton5.setBackground(new java.awt.Color(110, 146, 147));
         jButton5.setText("ADD TO REQUEST");
@@ -330,7 +337,7 @@ private String getOrganNameByID(String organID) {
                                     .addGap(141, 141, 141)
                                     .addComponent(jLabel1)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtSearchCriteria, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jButton3))
                                 .addComponent(jScrollPane2))
@@ -354,7 +361,7 @@ private String getOrganNameByID(String organID) {
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                        .addComponent(txtSearchCriteria, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -486,6 +493,11 @@ private String getOrganNameByID(String organID) {
         this.insertTransplantRecord(this.selectedRq.getId(), this.selectedTc.getPatientID(), this.selectedTc.getOrganID());
     }//GEN-LAST:event_btnInitiateRequestActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        searchDonorRegistrationRequests(txtSearchCriteria.getText());
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     public void insertTransplantRecord(String donorID, String recipientID, String organID) {
     String insertQuery = "INSERT INTO transplant (TransplantID, DonorID, RecipientID, OrganID, legalApproval, transportStatus) "
                        + "VALUES (?, ?, ?, ?, ?, ?)";
@@ -514,48 +526,77 @@ private String getOrganNameByID(String organID) {
     private void addPatient(TransplantCase tc){
       DefaultTableModel model = (DefaultTableModel) tblRecepient.getModel();
       model.setRowCount(0);
-Object[][] rows = {
-    {"Transplant Case", tc != null ? tc : "N/A"},
-    {"Patient ID", tc.getPatientID() != null ? tc.getPatientID() : "N/A"},
-    {"Patient Name", tc.getPatientName() != null ? tc.getPatientName() : "N/A"},
-    {"Date of Birth", tc.getDateOfBirth() != null ? tc.getDateOfBirth() : "N/A"},
-    {"Scan Image", tc.getScanImage() != null ? "[Binary Data]" : "N/A"},
-    {"Patient Info", tc.getPatientInfo() != null ? tc.getPatientInfo() : "N/A"},
-    {"Required Transplant", tc.getRequiredTransplant() != null ? tc.getRequiredTransplant().toUpperCase() : "N/A"},
-    {"Organ ID", tc.getOrganID() != null ? tc.getOrganID() : "N/A"},
-    {"Blood Type", tc.getBloodType() != null ? tc.getBloodType() : "N/A"},
-    {"Priority Score", tc.getPriorityScore() != 0.0 ? tc.getPriorityScore() : "N/A"},
-    {"Urgency Level", tc.getUrgencyLevel() != null ? tc.getUrgencyLevel() : "N/A"},
-    {"Added Date", tc.getAddedDate() != null ? tc.getAddedDate() : "N/A"},
-    {"Approval Status", tc.getApprovalStatus() != null ? tc.getApprovalStatus() : "N/A"},
-    {"Size Requirement", tc.getSizeRequirement() != 0 ? tc.getSizeRequirement() : "N/A"},
-    {"Reason for Removal", tc.getReasonForRemoval() != null ? tc.getReasonForRemoval() : "N/A"},
-    {"Assigned Doctor", tc.getAssignedDoctor() != null ? tc.getAssignedDoctor() : "N/A"}
-};
+        Object[][] rows = {
+            {"Transplant Case", tc != null ? tc : "N/A"},
+            {"Patient ID", tc.getPatientID() != null ? tc.getPatientID() : "N/A"},
+            {"Patient Name", tc.getPatientName() != null ? tc.getPatientName() : "N/A"},
+            {"Date of Birth", tc.getDateOfBirth() != null ? tc.getDateOfBirth() : "N/A"},
+            {"Scan Image", tc.getScanImage() != null ? "[Binary Data]" : "N/A"},
+            {"Patient Info", tc.getPatientInfo() != null ? tc.getPatientInfo() : "N/A"},
+            {"Required Transplant", tc.getRequiredTransplant() != null ? tc.getRequiredTransplant().toUpperCase() : "N/A"},
+            {"Organ ID", tc.getOrganID() != null ? tc.getOrganID() : "N/A"},
+            {"Blood Type", tc.getBloodType() != null ? tc.getBloodType() : "N/A"},
+            {"Priority Score", tc.getPriorityScore() != 0.0 ? tc.getPriorityScore() : "N/A"},
+            {"Urgency Level", tc.getUrgencyLevel() != null ? tc.getUrgencyLevel() : "N/A"},
+            {"Added Date", tc.getAddedDate() != null ? tc.getAddedDate() : "N/A"},
+            {"Approval Status", tc.getApprovalStatus() != null ? tc.getApprovalStatus() : "N/A"},
+            {"Size Requirement", tc.getSizeRequirement() != 0 ? tc.getSizeRequirement() : "N/A"},
+            {"Reason for Removal", tc.getReasonForRemoval() != null ? tc.getReasonForRemoval() : "N/A"},
+            {"Assigned Doctor", tc.getAssignedDoctor() != null ? tc.getAssignedDoctor() : "N/A"}
+        };
+
+            // Add each row to the table
+            for (Object[] row : rows) {
+                model.insertRow(model.getRowCount(), row);
+            }
+            }
+            private void addDonor(DonorRegistrationRequest tc){
+              DefaultTableModel model = (DefaultTableModel) tblDonor.getModel();
+              model.setRowCount(0);
+        Object[][] rows = {
+            {"Donor", tc != null ? tc : "N/A"},
+            {"Donor ID", tc.getId() != null ? tc.getId() : "N/A"},
+            {"Date of Birth", tc.getDateOfBirth() != null ? tc.getDateOfBirth() : "N/A"},
+            {"Organ Available", tc.getOrgan() != null ? tc.getOrgan().toUpperCase() : "N/A"},
+            {"Blood Type", tc.getBloodType() != null ? tc.getBloodType() : "N/A"},
+            {"Approval Status", tc.getRegistrationApproved() != null ? tc.getRegistrationApproved() : "N/A"},
+            {"Size Requirement", tc.getOrganSize() != null ? tc.getOrganSize() : "N/A"}
+        };
 
     // Add each row to the table
     for (Object[] row : rows) {
         model.insertRow(model.getRowCount(), row);
     }
     }
-    private void addDonor(DonorRegistrationRequest tc){
-      DefaultTableModel model = (DefaultTableModel) tblDonor.getModel();
-      model.setRowCount(0);
-Object[][] rows = {
-    {"Donor", tc != null ? tc : "N/A"},
-    {"Donor ID", tc.getId() != null ? tc.getId() : "N/A"},
-    {"Date of Birth", tc.getDateOfBirth() != null ? tc.getDateOfBirth() : "N/A"},
-    {"Organ Available", tc.getOrgan() != null ? tc.getOrgan().toUpperCase() : "N/A"},
-    {"Blood Type", tc.getBloodType() != null ? tc.getBloodType() : "N/A"},
-    {"Approval Status", tc.getRegistrationApproved() != null ? tc.getRegistrationApproved() : "N/A"},
-    {"Size Requirement", tc.getOrganSize() != null ? tc.getOrganSize() : "N/A"}
-};
+            
+            public void searchDonorRegistrationRequests(String searchQuery) {
+    String query = "SELECT * FROM donorRegistrationRequests WHERE FirstName LIKE ? OR LastName LIKE ? OR City LIKE ?";
+    try (PreparedStatement preparedStatement = this.connection.prepareStatement(query)) {
+        preparedStatement.setString(1, "%" + searchQuery + "%");
+        preparedStatement.setString(2, "%" + searchQuery + "%");
+        preparedStatement.setString(3, "%" + searchQuery + "%");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        DefaultTableModel model = (DefaultTableModel) tblDonorRequests.getModel();
+        model.setRowCount(0);
+        while (resultSet.next()) {
+            model.addRow(new Object[]{
+                resultSet.getString("RequestID"),
+                resultSet.getString("FirstName"),
+                resultSet.getString("LastName"),
+                resultSet.getString("City"),
+                resultSet.getString("State"),
+                resultSet.getString("RegistrationApproved")
+            });
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error searching donor registration requests: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
 
-    // Add each row to the table
-    for (Object[] row : rows) {
-        model.insertRow(model.getRowCount(), row);
-    }
-    }
+public void refreshDonorRegistrationRequestsTable() {
+    populateDonorRegistrationRequestsTable();
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -572,10 +613,10 @@ Object[][] rows = {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTable tblDonor;
     private javax.swing.JTable tblDonorRequests;
     private javax.swing.JTable tblRecepient;
     private javax.swing.JTable tblTransplantCase;
+    private javax.swing.JTextField txtSearchCriteria;
     // End of variables declaration//GEN-END:variables
 }
