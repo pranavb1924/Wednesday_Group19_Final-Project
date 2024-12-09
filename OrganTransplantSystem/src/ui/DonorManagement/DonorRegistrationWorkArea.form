@@ -139,7 +139,7 @@
                                   <Group type="102" attributes="0">
                                       <Component id="jLabel24" min="-2" pref="91" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="txtPhone1" min="-2" pref="155" max="-2" attributes="0"/>
+                                      <Component id="txtPhone" min="-2" pref="155" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -198,7 +198,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                   <Component id="jLabel24" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                                  <Component id="txtPhone1" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                                  <Component id="txtPhone" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                               </Group>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="txtCity" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
@@ -534,7 +534,7 @@
         <Property name="text" type="java.lang.String" value="SSN"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtPhone1">
+    <Component class="javax.swing.JTextField" name="txtPhone">
     </Component>
   </SubComponents>
 </Form>

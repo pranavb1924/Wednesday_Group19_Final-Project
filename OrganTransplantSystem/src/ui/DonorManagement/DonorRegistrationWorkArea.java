@@ -44,6 +44,9 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
         this.connection = databaseConnection.getConnection();
         this.loadStatusData();
         this.loadBloodTypes();
+        btnSign.setVisible(false);
+        consentArea.setVisible(false);
+        btnSave.setVisible(false);
     }
 
     /**
@@ -87,7 +90,7 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
         jLabel24 = new javax.swing.JLabel();
         txtSsn = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
-        txtPhone1 = new javax.swing.JTextField();
+        txtPhone = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(111, 147, 146));
         setMaximumSize(new java.awt.Dimension(1200, 830));
@@ -300,7 +303,7 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtPhone1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                        .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(201, Short.MAX_VALUE))
         );
 
@@ -350,7 +353,7 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtPhone1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtCity, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -403,6 +406,8 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
                     url = file.toURI().toURL();
                     logoImage = new ImageIcon(url);
                     logoImage = new ImageIcon(logoImage.getImage().getScaledInstance(300, 150, Image.SCALE_SMOOTH));
+                    btnSign.setVisible(true);
+                    consentArea.setVisible(true);
             }    catch(MalformedURLException ex){
                 Logger.getLogger(this.getName()).log(Level.SEVERE,null,ex);
             }          
@@ -419,44 +424,95 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
     }
 
     
-    public void validateFields() {
-        // Retrieve inputs from text fields
-        String firstName = txtFirstName.getText();
-        String middleName = txtMiddleName.getText();
-        String lastName = txtLastName.getText();
-        String dateOfBirth = txtDateOfBirth.getText();
-        String city = txtCity.getText();
-        String state = txtState.getText();
-        String addressLine1 = txtAddressLine.getText();
-        String addressLine2 = txtZipCode.getText();
-        String ssn = txtSsn.getText();
-        //String consentText = consentArea.getText();
-
-        // Validate required fields
-        if (firstName.isEmpty() || lastName.isEmpty() || dateOfBirth.isEmpty() || city.isEmpty() ||
-            state.isEmpty() || addressLine1.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "All required fields must be filled.", "Validation Error", JOptionPane.ERROR_MESSAGE);
-            throw new IllegalArgumentException("Validation Error: Missing required fields.");
-        }
-
-        // Validate name fields (letters and spaces only)
-        if (!isValidName(firstName) || !isValidName(middleName) || !isValidName(lastName)) {
-            JOptionPane.showMessageDialog(null, "Names must contain only letters and spaces.", "Validation Error", JOptionPane.ERROR_MESSAGE);
-            throw new IllegalArgumentException("Validation Error: Invalid name format.");
-        }
-
-        // Validate date of birth (basic YYYY-MM-DD format check)
-        if (!isValidDate(dateOfBirth)) {
-            JOptionPane.showMessageDialog(null, "Date of birth must be in the format YYYY-MM-DD.", "Validation Error", JOptionPane.ERROR_MESSAGE);
-            throw new IllegalArgumentException("Validation Error: Invalid date format.");
-        }
-
-        // Validate city and state (letters, spaces, and hyphens only)
-        if (!isValidName(city) || !isValidName(state)) {
-            JOptionPane.showMessageDialog(null, "City and State must contain only letters, spaces, or hyphens.", "Validation Error", JOptionPane.ERROR_MESSAGE);
-            throw new IllegalArgumentException("Validation Error: Invalid city or state format.");
-        }
+    private boolean validateFields() {
+    if (txtFirstName.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "First Name cannot be empty.");
+        txtFirstName.requestFocus();
+        return false;
     }
+    if (!txtFirstName.getText().matches("[a-zA-Z]+")) {
+        JOptionPane.showMessageDialog(this, "First Name can only contain alphabets.");
+        txtFirstName.requestFocus();
+        return false;
+    }
+    if (txtLastName.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Last Name cannot be empty.");
+        txtLastName.requestFocus();
+        return false;
+    }
+    if (!txtLastName.getText().matches("[a-zA-Z]+")) {
+        JOptionPane.showMessageDialog(this, "Last Name can only contain alphabets.");
+        txtLastName.requestFocus();
+        return false;
+    }
+    if (txtDateOfBirth.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Date of Birth cannot be empty.");
+        txtDateOfBirth.requestFocus();
+        return false;
+    }
+    if (txtCity.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "City cannot be empty.");
+        txtCity.requestFocus();
+        return false;
+    }
+    if (!txtCity.getText().matches("[a-zA-Z]+")) {
+        JOptionPane.showMessageDialog(this, "City can only contain alphabets.");
+        txtCity.requestFocus();
+        return false;
+    }
+    if (txtState.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "State cannot be empty.");
+        txtState.requestFocus();
+        return false;
+    }
+    if (!txtState.getText().matches("[a-zA-Z]+")) {
+        JOptionPane.showMessageDialog(this, "State can only contain alphabets.");
+        txtState.requestFocus();
+        return false;
+    }
+    if (txtAddressLine.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Address Line cannot be empty.");
+        txtAddressLine.requestFocus();
+        return false;
+    }
+    if (txtZipCode.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Zip Code cannot be empty.");
+        txtZipCode.requestFocus();
+        return false;
+    }
+    if (!txtZipCode.getText().matches("\\d+")) {
+        JOptionPane.showMessageDialog(this, "Zip Code must contain only numbers.");
+        txtZipCode.requestFocus();
+        return false;
+    }
+    if (txtSsn.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "SSN cannot be empty.");
+        txtSsn.requestFocus();
+        return false;
+    }
+    if (!txtSsn.getText().matches("\\d{9}")) {
+        JOptionPane.showMessageDialog(this, "SSN must contain exactly 9 digits.");
+        txtSsn.requestFocus();
+        return false;
+    }
+    if (txtPhone.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Phone number cannot be empty.");
+        txtPhone.requestFocus();
+        return false;
+    }
+    if (!txtPhone.getText().matches("\\d+")) {
+        JOptionPane.showMessageDialog(this, "Phone number must contain only numbers.");
+        txtPhone.requestFocus();
+        return false;
+    }
+    if (txtPhone.getText().length() < 10 || txtPhone.getText().length() > 15) {
+        JOptionPane.showMessageDialog(this, "Phone number must be between 10 and 15 digits.");
+        txtPhone.requestFocus();
+        return false;
+    }
+    return true;
+}
+
     
         public void loadBloodTypes() {
     String[] bloodTypes = {"A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"};
@@ -469,10 +525,8 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
         validateFields();
 
         try {
-            // Generate a unique RequestID
+            
             String requestId = UUID.randomUUID().toString();
-
-            // Retrieve inputs from text fields
             String firstName = txtFirstName.getText();
             String middleName = txtMiddleName.getText();
             String lastName = txtLastName.getText();
@@ -481,16 +535,13 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
             String state = txtState.getText();
             String addressLine = txtAddressLine.getText();
             String zipCode = txtZipCode.getText();
-            String phone = txtPhone1.getText();
+            String phone = txtPhone.getText();
+            String ssn = txtSsn.getText();
             String bloodType = cmbBloodType.getSelectedItem().toString();
-            // Assuming the signature image is uploaded and stored in the 'signature' JLabel
-            //java.sql.Blob signatureBlob = null; // Add logic to retrieve and convert the signature if available
-
-            // Prepare the SQL insert statement
             String sql = "INSERT INTO DonorRegistrationRequests " +
                          "(RequestID, FirstName, MiddleName, LastName, DateOfBirth, AddressLine2, " +
-                         "City, State, ConsentStatus, RegistrationApproved, Zip, Phone, BloodType) " +
-                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+                         "City, State, ConsentStatus, RegistrationApproved, Zip, Phone, BloodType, ssn) " +
+                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
 
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, requestId);
@@ -506,8 +557,8 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
             stmt.setString(11, zipCode);
             stmt.setString(12, phone);
             stmt.setString(13, bloodType);
+            stmt.setString(14, ssn);
 
-            // Execute the insert query
             int rowsAffected = stmt.executeUpdate();
 
             if (rowsAffected > 0) {
@@ -539,14 +590,30 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         this.insertDonorRegistrationRequest();
+        this.clearAllFields();
         
         
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void clearAllFields() {
+    txtFirstName.setText("");
+    txtMiddleName.setText("");
+    txtLastName.setText("");
+    txtDateOfBirth.setText("");
+    txtCity.setText("");
+    txtState.setText("");
+    txtAddressLine.setText("");
+    txtZipCode.setText("");
+    txtSsn.setText("");
+    txtPhone.setText("");
+    consentArea.setVisible(false);
+}
 
     private void btnSignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignActionPerformed
         // TODO add your handling code here:
         imglogo.setIcon(logoImage);
         this.consent = "Accepted";
+        btnSave.setVisible(true);
     }//GEN-LAST:event_btnSignActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -600,7 +667,7 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtMiddleName;
-    private javax.swing.JTextField txtPhone1;
+    private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtSsn;
     private javax.swing.JTextField txtState;
     private javax.swing.JTextField txtZipCode;

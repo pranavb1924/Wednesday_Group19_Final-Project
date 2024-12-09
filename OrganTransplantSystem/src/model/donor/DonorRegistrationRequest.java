@@ -20,6 +20,35 @@ public class DonorRegistrationRequest {
     private String registrationApproved;
     private String zipCode;
 
+    public String getOrgan() {
+        return organ;
+    }
+
+    public void setOrgan(String organ) {
+        this.organ = organ;
+    }
+
+    public String getOrganSize() {
+ 
+        return this.organSize != null ? this.organSize : "";
+    }
+
+    public void setOrganSize(String organSize) {
+        this.organSize = organSize;
+    }
+
+    public String getSsn() {
+        return ssn;
+    }
+
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
+    }
+    private String organ;
+    private String organSize;
+    private String ssn;
+   
+
     public String getPhone() {
         return phone;
     }

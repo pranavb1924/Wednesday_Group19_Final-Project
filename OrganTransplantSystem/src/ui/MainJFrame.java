@@ -126,7 +126,7 @@ public class MainJFrame extends javax.swing.JFrame {
         btnBack.setBackground(new java.awt.Color(41, 28, 28));
         btnBack.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         btnBack.setForeground(new java.awt.Color(255, 255, 255));
-        btnBack.setText("HOME");
+        btnBack.setText("LOG OUT");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBackActionPerformed(evt);
@@ -214,7 +214,7 @@ public class MainJFrame extends javax.swing.JFrame {
         container.add("profilePanel", profilePanel);
         CardLayout layout = (CardLayout) container.getLayout();
         layout.next(container);
-        this.setComponentsVisibility(true);
+        this.setComponentsVisibility(false);
                 loginJButton.setEnabled(true);
         btnBack.setEnabled(true);
         userNameJTextField.setEnabled(true);
