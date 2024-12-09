@@ -30,10 +30,25 @@ public class HospitalDirectory {
         this.hospitalDirectory.add(hospital);
     }
     
+    public void deleteHospital(Hospital hospital){
+        this.hospitalDirectory.remove(hospital);
+    }
+    
     public Hospital findHospital(String id){
         if(this.hospitalDirectory != null){
             for (Hospital h : this.hospitalDirectory){
                 if (h.getId().equals(id)){
+                    return h;
+                }
+        }
+        }
+        return null;
+    }
+    
+    public Hospital searchHospitalName(String name){
+        if(this.hospitalDirectory != null){
+            for (Hospital h : this.hospitalDirectory){
+                if (h.getName().equals(name)){
                     return h;
                 }
         }
