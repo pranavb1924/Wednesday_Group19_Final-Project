@@ -481,7 +481,7 @@ public class DonorRegistrationWorkArea extends javax.swing.JPanel {
             String state = txtState.getText();
             String addressLine = txtAddressLine.getText();
             String zipCode = txtZipCode.getText();
-            String phone = txtPhotxtSsnxt();
+            String phone = txtPhone1.getText();
             String bloodType = cmbBloodType.getSelectedItem().toString();
             // Assuming the signature image is uploaded and stored in the 'signature' JLabel
             //java.sql.Blob signatureBlob = null; // Add logic to retrieve and convert the signature if available

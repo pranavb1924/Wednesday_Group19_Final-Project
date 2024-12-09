@@ -15,7 +15,7 @@ import java.sql.Connection;
 public class DatabaseConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/OrganTransplantDb";
     private static final String USER = "root";
-    private static final String PASSWORD = ""; 
+    private static final String PASSWORD = "sql123456"; 
     private static Connection connection = null;
 
     public static Connection getConnection() { 
