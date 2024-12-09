@@ -55,7 +55,7 @@ public class ViewDoctorsJPanel extends javax.swing.JPanel {
     public void populateDoctorTable(){
 
             
-            DefaultTableModel model = (DefaultTableModel) tblDoctors.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblDoctors.getModel();
         
         model.setRowCount(0);
         
